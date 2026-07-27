@@ -600,9 +600,7 @@ class ProxyManager:
                     elif time.time() - start_ts > 25:
                         if time.time() - last_home_check_ts >= 15:
                             last_home_check_ts = time.time()
-                            self.log(f"[⚠️] Failed to reach Home screen within {int(time.time() - start_ts)}s. Dismissing popups/keyboards...")
-                            ADBManager.run_adb(self.device_id, "shell input keyevent 4")
-                            time.sleep(2)
+                            self.log(f"[⚠️] Failed to reach Home screen within {int(time.time() - start_ts)}s. Retrying popup dismiss...")
                             MacroExecutor.run_step(self.device_id, "exact:닫기", category="DismissPopup")
                             MacroExecutor.run_step(self.device_id, "exact:확인", category="DismissPopup")
                             MacroExecutor.run_step(self.device_id, "exact:나중에 하기", category="DismissPopup")

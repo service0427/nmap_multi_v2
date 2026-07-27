@@ -63,9 +63,10 @@ This project is **Nmap Multi V2**, an enterprise multi-device Android automation
 
 ## 4. System Maintenance & Operational Commands
 
-1. **Launch Async Parallel Scheduler**: `./start.sh --mode eth`
-2. **Execute Single Device Control Action**: `./start.sh --device <DEVICE_ID> --action <restart|stop|pause|start|mute|clear_cooldown>`
-3. **Display LTE Modem Signals**: `./start.sh --signals`
+1. **New Server / New Phone Initial Setup Pipeline**: `./tools/device_init.sh` (or `./cmd.sh --init`)
+2. **Launch Async Parallel Scheduler**: `./start.sh --mode eth`
+3. **Execute Single Device Control Action**: `./start.sh --device <DEVICE_ID> --action <restart|stop|pause|start|mute|clear_cooldown>`
+4. **Display LTE Modem Signals**: `./start.sh --signals`
 
 ---
 

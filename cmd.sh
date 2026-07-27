@@ -11,6 +11,7 @@ import manifest
 def print_help():
     print("Nmap Multi V2: Concurrent Phone Control CLI")
     print("Usage:")
+    print("  ./cmd.sh --init               Run initial phone setup (APKs, certs, system settings)")
     print("  ./cmd.sh --reboot             Sequentially reboot all phones")
     print("  ./cmd.sh --wifi               Interactive Wi-Fi scan & connect menu")
     print("  ./cmd.sh --wifi <SSID> <PW>   Reset & connect all phones to SSID directly")
@@ -37,7 +38,12 @@ def main():
 
     print(f"[*] Found {len(devices)} active devices: {', '.join(devices)}")
 
-    if flag == "--reboot":
+    if flag == "--init":
+        import subprocess
+        init_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", "device_init.sh")
+        subprocess.run(["bash", init_script])
+
+    elif flag == "--reboot":
         print("[*] Sequentially rebooting devices...")
         for dev in devices:
             print(f"  -> Rebooting {dev}...")
