@@ -20,3 +20,8 @@ logs/locks/*
 
 # PM2 dumps
 .pm2/
+
+# Large binaries & APK assets (downloaded locally via update_nmap.sh)
+install/
+*.apk
+*.zip
