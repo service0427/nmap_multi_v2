@@ -34,13 +34,21 @@ def check_and_install_naver_map(dev):
 
 def check_and_install_gps_emulator(dev):
     """Installs GPS Emulator if missing and grants Mock Location appops."""
+    pkgs_out = run_shell(dev, "pm list packages")
+    gps_pkgs = ["com.rosteam.gpsemulator", "uy.digitools.rutasgps.mocklocation", "uy.digitools.rutasgps", "com.lsw.gpsemulator"]
+    for p in gps_pkgs:
+        if p in pkgs_out:
+            run_su(dev, f"appops set {p} android:mock_location allow")
+            return True, f"Installed ({p}) & Mock Location Allowed"
+
     apk_dir = os.path.join(INSTALL_DIR, "gpsemulator")
     if os.path.exists(apk_dir):
         apks = [os.path.join(apk_dir, f) for f in os.listdir(apk_dir) if f.endswith(".apk")]
         if apks:
-            ADBManager.run_adb(dev, f"install-multiple -r {' '.join(apks)}")
-            run_su(dev, "appops set uy.digitools.rutasgps.mocklocation android:mock_location allow")
-            return True, "Installed & Mock Location Allowed"
+            res = ADBManager.run_adb(dev, f"install-multiple -r {' '.join(apks)}")
+            if res[2] == 0:
+                run_su(dev, "appops set com.rosteam.gpsemulator android:mock_location allow")
+                return True, "Installed (com.rosteam.gpsemulator) & Mock Location Allowed"
     return False, "Not Installed"
 
 def check_and_install_adb_keyboard(dev):
@@ -150,10 +158,15 @@ def init_single_device(dev):
         print(f"  [{'✓' if map_ok else '❌'}] Naver Map App: {map_msg}")
 
     # GPS Emulator Audit
-    if "uy.digitools.rutasgps" in pkgs_out:
-        gps_pkg = "uy.digitools.rutasgps.mocklocation" if "uy.digitools.rutasgps.mocklocation" in pkgs_out else "uy.digitools.rutasgps"
-        run_su(dev, f"appops set {gps_pkg} android:mock_location allow")
-        print(f"  [✓] GPS Emulator App: Installed ({gps_pkg}) & Mock Location Allowed")
+    gps_found = None
+    for p in ["com.rosteam.gpsemulator", "uy.digitools.rutasgps.mocklocation", "uy.digitools.rutasgps", "com.lsw.gpsemulator"]:
+        if p in pkgs_out:
+            gps_found = p
+            break
+
+    if gps_found:
+        run_su(dev, f"appops set {gps_found} android:mock_location allow")
+        print(f"  [✓] GPS Emulator App: Installed ({gps_found}) & Mock Location Allowed")
     else:
         gps_ok, gps_msg = check_and_install_gps_emulator(dev)
         print(f"  [{'✓' if gps_ok else '❌'}] GPS Emulator App: {gps_msg}")
