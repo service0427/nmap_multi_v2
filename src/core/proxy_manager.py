@@ -35,6 +35,12 @@ class ProxyManager:
         
         self.task_id = task_data.get("task_id")
         self.device_seq = task_data.get("device_seq")
+        if self.device_seq is None:
+            try:
+                ordered_devices = manifest.get_ordered_devices(include_offline=True)
+                self.device_seq = ordered_devices.index(self.device_id) + 1 if self.device_id in ordered_devices else 1
+            except Exception:
+                self.device_seq = 1
         self.dest_id = task_data.get("destination", {}).get("id")
         self.dest_name = task_data.get("destination", {}).get("target_name")
         self.dest_addr = task_data.get("destination", {}).get("address", "")
