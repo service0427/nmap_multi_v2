@@ -3,9 +3,10 @@ import sys
 import os
 import time
 
-# Ensure we import ADBManager from src/lib
+# Ensure we import ADBManager and manifest from src/lib
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "lib"))
 from adb import ADBManager
+import manifest
 
 def print_help():
     print("Nmap Multi V2: Concurrent Phone Control CLI")
@@ -103,9 +104,13 @@ def main():
             print("============================================================")
             print(f"  [A] ALL connected devices ({len(devices)} devices)")
             for idx, dev in enumerate(devices, 1):
-                subnet = manifest.get_device_subnet(dev)
-                usb_port = manifest.get_device_usb_port(dev)
-                print(f"  [{idx:2d}] {dev:<15} (Subnet: {subnet:<5} | Port: {usb_port})")
+                try:
+                    subnet = manifest.get_device_subnet(dev) or "N/A"
+                    usb_port = manifest.get_device_usb_port(dev) or "N/A"
+                except:
+                    subnet = "N/A"
+                    usb_port = "N/A"
+                print(f"  [{idx:2d}] {dev:<15} (Subnet: {str(subnet):<5} | Port: {usb_port})")
             print("============================================================")
 
             dev_choice = input(f"Select Target Devices (A=ALL, 1,3,5, or 1-10) [A]: ").strip()
