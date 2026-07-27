@@ -41,8 +41,9 @@ class ProxyManager:
         self.dest_lat = task_data.get("destination", {}).get("lat")
         self.dest_lng = task_data.get("destination", {}).get("lng")
         
-        self.start_lat = task_data.get("start_pos", {}).get("lat")
-        self.start_lng = task_data.get("start_pos", {}).get("lng")
+        self.start_pos = task_data.get("start_pos", {})
+        self.start_lat = self.start_pos.get("lat")
+        self.start_lng = self.start_pos.get("lng")
         self.arrival_time = task_data.get("arrival_time", 300)
         
         # Identity pairs

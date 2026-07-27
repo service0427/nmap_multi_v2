@@ -17,7 +17,7 @@ def _log_api_backup(endpoint, payload, response_str, device_id="SYSTEM"):
     """Replicates V1 log_api_backup by writing transaction logs to api_backup/ folder."""
     try:
         today = datetime.now().strftime("%Y%m%d")
-        backup_dir = f"/home/tech/nmap_multi_v1/api_backup/{today}/{device_id}"
+        backup_dir = f"/home/tech/nmap_multi_v2/api_backup/{today}/{device_id}"
         os.makedirs(backup_dir, exist_ok=True)
         backup_file = os.path.join(backup_dir, "api.log")
         

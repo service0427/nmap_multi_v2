@@ -235,8 +235,8 @@ run_user_setup() {
 
     if [ "$has_nmap_apk" = false ]; then
         echo -e "${YELLOW}[*] 네이버 지도 v${TARGET_NMAP_VERSION} 자산이 없습니다. 다운로드를 시작합니다...${NC}"
-        if [ -f "/home/tech/nmap_multi_v1/update_nmap.sh" ]; then
-            bash "/home/tech/nmap_multi_v1/update_nmap.sh" --non-interactive
+        if [ -f "$SCRIPT_DIR/tools/update_nmap.sh" ]; then
+            bash "$SCRIPT_DIR/tools/update_nmap.sh" --non-interactive
         else
             echo -e "${RED}[-] 오류: update_nmap.sh 파일이 없습니다.${NC}"
         fi
