@@ -68,31 +68,35 @@ def main():
                         if raw_ssid and raw_ssid not in ssids and not raw_ssid.startswith("[") and not raw_ssid.isdigit():
                             ssids.append(raw_ssid)
 
+            # Bring 'Tech_5G' to top of list if present
+            DEFAULT_SSID = "Tech_5G"
+            if DEFAULT_SSID in ssids:
+                ssids.remove(DEFAULT_SSID)
+                ssids.insert(0, DEFAULT_SSID)
+            elif not ssids:
+                ssids = [DEFAULT_SSID]
+
             print("============================================================")
             print("📶 Available Wi-Fi Networks Nearby:")
             print("============================================================")
-            if ssids:
-                for idx, s in enumerate(ssids, 1):
-                    print(f"  [{idx}] {s}")
-                print("  [C] Enter Custom SSID manually")
-            else:
-                print("  (No SSIDs found automatically)")
-                print("  [C] Enter Custom SSID manually")
+            for idx, s in enumerate(ssids, 1):
+                marker = " (Default)" if s == DEFAULT_SSID else ""
+                print(f"  [{idx}] {s}{marker}")
+            print("  [C] Enter Custom SSID manually")
             print("============================================================")
 
-            choice = input("Select Wi-Fi number or enter Custom SSID [1]: ").strip()
+            choice = input(f"Select Wi-Fi number or enter Custom SSID (Default: {DEFAULT_SSID}) [1]: ").strip()
             if choice.upper() == 'C':
                 ssid = input("Enter Wi-Fi SSID name: ").strip()
-            elif not choice and ssids:
-                ssid = ssids[0]
+            elif not choice:
+                ssid = DEFAULT_SSID
             elif choice.isdigit() and 1 <= int(choice) <= len(ssids):
                 ssid = ssids[int(choice) - 1]
             else:
                 ssid = choice
 
             if not ssid:
-                print("[-] Error: No SSID selected. Aborting.")
-                sys.exit(1)
+                ssid = DEFAULT_SSID
 
             input_pw = input(f"Enter Wi-Fi Password (default: {pw}): ").strip()
             if input_pw:
