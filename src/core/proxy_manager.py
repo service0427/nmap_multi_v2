@@ -574,7 +574,17 @@ class ProxyManager:
                 if now - last_ui_check_ts >= 10:
                     last_ui_check_ts = now
                     xml_file, _ = ui_clicker.get_ui_dump_pair(self.device_id, "check_fatal")
+                    now = time.time()  # Refresh timestamp after UI dump delay
                     if xml_file:
+                        try:
+                            with open(xml_file, "r", encoding="utf-8", errors="ignore") as f_check:
+                                dump_text = f_check.read()
+                            if ("네이버지도 검색" in dump_text or "btn_home_search" in dump_text) and state_flags["STEP_02_HOME"] == 0:
+                                self.log("[✓] Home screen search bar found in XML dump. Marking Home ready.")
+                                state_flags["STEP_02_HOME"] = 1
+                                step1_home_ts = now
+                        except: pass
+
                         # 1. Check fatal UI errors
                         is_fatal, fatal_text = ui_clicker.check_fatal_errors(xml_file)
                         if is_fatal:
@@ -586,6 +596,9 @@ class ProxyManager:
                         try:
                             os.remove(xml_file)
                         except: pass
+
+                # Refresh current timestamp before step evaluations
+                now = time.time()
 
                 # routeend detection
                 if state_flags["STEP_08_DRIVING_GOAL"] == 0:
@@ -606,15 +619,21 @@ class ProxyManager:
                             step1_home_ts = now
                     
                     # Fallback Home Recovery
-                    elif time.time() - start_ts > 25:
-                        if time.time() - last_home_check_ts >= 15:
-                            last_home_check_ts = time.time()
-                            self.log(f"[⚠️] Failed to reach Home screen within {int(time.time() - start_ts)}s. Retrying popup dismiss...")
-                            MacroExecutor.run_step(self.device_id, "exact:닫기", category="DismissPopup")
-                            MacroExecutor.run_step(self.device_id, "exact:확인", category="DismissPopup")
-                            MacroExecutor.run_step(self.device_id, "exact:나중에 하기", category="DismissPopup")
-                            ADBManager.run_adb(self.device_id, "shell am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity")
-                            ADBManager.run_adb(self.device_id, "shell monkey -p com.nhn.android.nmap -c android.intent.category.LAUNCHER 1")
+                    elif now - start_ts > 25:
+                        if now - last_home_check_ts >= 15:
+                            last_home_check_ts = now
+                            self.log(f"[⚠️] Checking Home search field before popup recovery ({int(now - start_ts)}s)...")
+                            success = MacroExecutor.run_step(self.device_id, "entry_search_field", category="01.SearchAndNavi")
+                            if success:
+                                state_flags["STEP_02_HOME"] = 1
+                                step1_home_ts = now
+                            else:
+                                self.log(f"[⚠️] Failed to reach Home screen within {int(now - start_ts)}s. Retrying popup dismiss...")
+                                MacroExecutor.run_step(self.device_id, "exact:닫기", category="DismissPopup")
+                                MacroExecutor.run_step(self.device_id, "exact:확인", category="DismissPopup")
+                                MacroExecutor.run_step(self.device_id, "exact:나중에 하기", category="DismissPopup")
+                                ADBManager.run_adb(self.device_id, "shell am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity")
+                                ADBManager.run_adb(self.device_id, "shell monkey -p com.nhn.android.nmap -c android.intent.category.LAUNCHER 1")
 
                 # Step 2: Typing search keyword
                 elif state_flags["STEP_03_TYPING"] == 0:
