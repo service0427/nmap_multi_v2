@@ -588,13 +588,14 @@ class ProxyManager:
 
                 # Step 1: Home screen and search field click
                 if state_flags["STEP_02_HOME"] == 0:
-                    # Trigger condition: events.log has "home"
-                    if any("home" in evt.lower() for evt in events):
+                    # Dual Trigger: nlogapp packet event 'home' OR 3.0s elapsed since app launch
+                    if any("home" in evt.lower() for evt in events) or (now - start_ts > 3.0):
                         self.log("[✓] Home screen UI elements detected. Tapping search field.")
                         self.report_live_status("HOME_READY")
                         success = MacroExecutor.run_step(self.device_id, "entry_search_field", category="01.SearchAndNavi")
                         if success:
                             state_flags["STEP_02_HOME"] = 1
+                            step1_home_ts = now
                     
                     # Fallback Home Recovery
                     elif time.time() - start_ts > 25:
@@ -609,7 +610,8 @@ class ProxyManager:
 
                 # Step 2: Typing search keyword
                 elif state_flags["STEP_03_TYPING"] == 0:
-                    if any("sch.all.entry" in evt.lower() for evt in events):
+                    step1_elapsed = (now - step1_home_ts) if 'step1_home_ts' in locals() else 99
+                    if any("sch.all.entry" in evt.lower() for evt in events) or step1_elapsed > 1.0:
                         self.log(f"[Action] Typing destination keyword: {self.dest_name}")
                         self.report_live_status("SEARCHING")
                         type_helper.type_humanized(self.device_id, self.dest_name)
