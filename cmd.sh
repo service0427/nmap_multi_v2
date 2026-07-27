@@ -11,7 +11,8 @@ def print_help():
     print("Nmap Multi V2: Concurrent Phone Control CLI")
     print("Usage:")
     print("  ./cmd.sh --reboot             Sequentially reboot all phones")
-    print("  ./cmd.sh --wifi <SSID> <PW>   Reset & connect all phones to SSID")
+    print("  ./cmd.sh --wifi               Interactive Wi-Fi scan & connect menu")
+    print("  ./cmd.sh --wifi <SSID> <PW>   Reset & connect all phones to SSID directly")
     print("  ./cmd.sh --dark               Enable system dark mode")
     print("  ./cmd.sh --light              Enable system light mode")
     print("  ./cmd.sh --portrait           Lock screen rotation to portrait")
@@ -44,13 +45,58 @@ def main():
         print("[✓] Reboot signals transmitted.")
 
     elif flag == "--wifi":
-        if len(sys.argv) < 3:
-            print("[-] Error: Wifi SSID required (e.g. ./cmd.sh --wifi Tech_5G 13241324)")
-            sys.exit(1)
-        ssid = sys.argv[2]
-        pw = sys.argv[3] if len(sys.argv) > 3 else "13241324"
-        print(f"[*] Provisioning Wifi SSID '{ssid}' on all devices...")
-        # Wipe old networks, toggle, and connect
+        ssid = None
+        pw = "13241324"
+
+        if len(sys.argv) >= 3:
+            ssid = sys.argv[2]
+            if len(sys.argv) >= 4:
+                pw = sys.argv[3]
+        else:
+            print("[*] Scanning nearby Wi-Fi networks via ADB...")
+            target_dev = devices[0]
+            scan_out, _, _ = ADBManager.run_adb(target_dev, "shell \"su -c 'cmd wifi scan >/dev/null 2>&1; sleep 1; cmd wifi list-scan-results'\"")
+            
+            ssids = []
+            if scan_out:
+                for line in scan_out.splitlines()[1:]:
+                    parts = line.strip().split()
+                    if len(parts) >= 5:
+                        raw_ssid = parts[4]
+                        if raw_ssid and raw_ssid not in ssids and not raw_ssid.startswith("[") and not raw_ssid.isdigit():
+                            ssids.append(raw_ssid)
+
+            print("============================================================")
+            print("📶 Available Wi-Fi Networks Nearby:")
+            print("============================================================")
+            if ssids:
+                for idx, s in enumerate(ssids, 1):
+                    print(f"  [{idx}] {s}")
+                print("  [C] Enter Custom SSID manually")
+            else:
+                print("  (No SSIDs found automatically)")
+                print("  [C] Enter Custom SSID manually")
+            print("============================================================")
+
+            choice = input("Select Wi-Fi number or enter Custom SSID [1]: ").strip()
+            if choice.upper() == 'C':
+                ssid = input("Enter Wi-Fi SSID name: ").strip()
+            elif not choice and ssids:
+                ssid = ssids[0]
+            elif choice.isdigit() and 1 <= int(choice) <= len(ssids):
+                ssid = ssids[int(choice) - 1]
+            else:
+                ssid = choice
+
+            if not ssid:
+                print("[-] Error: No SSID selected. Aborting.")
+                sys.exit(1)
+
+            input_pw = input(f"Enter Wi-Fi Password (default: {pw}): ").strip()
+            if input_pw:
+                pw = input_pw
+
+        print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on all {len(devices)} devices...")
         wifi_setup_cmds = (
             "shell su -c 'settings put global captive_portal_mode 0 && "
             "settings put global captive_portal_detection_enabled 0 && "
