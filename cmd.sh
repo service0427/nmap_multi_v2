@@ -155,7 +155,43 @@ def main():
                 print("[-] Error: No valid target devices selected. Aborting.")
                 sys.exit(1)
 
-        print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on {len(target_devices)} selected devices...")
+        # Check existing Wi-Fi connection state on target_devices
+        already_connected = []
+        need_provision = []
+
+        print(f"\n[*] Auditing existing Wi-Fi state on {len(target_devices)} target devices...")
+        status_results = ADBManager.run_concurrent('shell "cmd wifi status"', target_devices)
+        ip_results = ADBManager.run_concurrent('shell "ip -4 addr show wlan0"', target_devices)
+
+        for dev in target_devices:
+            curr_out, _, _ = status_results.get(dev, ("", "", -1))
+            ip_out, _, _ = ip_results.get(dev, ("", "", -1))
+
+            curr_ssid = ""
+            if "SSID:" in curr_out:
+                for line in curr_out.splitlines():
+                    if "SSID:" in line:
+                        curr_ssid = line.split("SSID:")[1].strip().strip('"')
+                        break
+
+            match = re.search(r"inet\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", ip_out)
+            curr_ip = match.group(1) if match else None
+
+            if curr_ssid == ssid and curr_ip:
+                already_connected.append(dev)
+                print(f"  [✓] [{dev}]: Already connected to '{ssid}' (IP: {curr_ip}) -> [PASS]")
+            else:
+                need_provision.append(dev)
+
+        if already_connected:
+            print(f"[*] {len(already_connected)}/{len(target_devices)} devices are already connected to '{ssid}' [PASS].")
+
+        if not need_provision:
+            print(f"\n[✓] All {len(target_devices)} target devices are already on '{ssid}'. Wi-Fi provisioning complete! [PASS]")
+            sys.exit(0)
+
+        target_devices = need_provision
+        print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on remaining {len(target_devices)} devices...")
         ADBManager.run_concurrent('shell "su -c \\"settings put global captive_portal_mode 0\\""', target_devices)
         ADBManager.run_concurrent('shell "su -c \\"settings put global captive_portal_detection_enabled 0\\""', target_devices)
         ADBManager.run_concurrent('shell "su -c \\"cmd wifi remove-all-suggestions\\""', target_devices)
