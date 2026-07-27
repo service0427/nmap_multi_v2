@@ -744,6 +744,8 @@ class ProxyManager:
                         success = MacroExecutor.run_step(self.device_id, "btn_start_guidance", category="01.SearchAndNavi")
                         if success:
                             state_flags["STEP_07_NAVI_START"] = 1
+                            state_flags["STEP_07_2_DRIVING_STARTED"] = 1
+                            self.report_live_status("DRIVING")
                         else:
                             self.log("[🚨] '안내시작' button not found. Aborting.")
                             self.cleanup("GUIDANCE_NOT_FOUND")
