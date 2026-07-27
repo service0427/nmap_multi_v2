@@ -84,18 +84,9 @@ else
     echo "[!] tools/sync_modems.py not found. Skipping."
 fi
 
-# 6. Register Dev Control API (Port 5555) & Web Dashboard (Port 5001)
-if [ -f "dev_control/api/server.py" ]; then
-    echo "[*] Registering Dev Control API (Port 5555)..."
-    pm2 delete nmap-dev-api 2>/dev/null
-    pm2 start dev_control/api/server.py --name "nmap-dev-api" --interpreter python3
-fi
-
-if [ -f "dev_control/web/app.py" ]; then
-    echo "[*] Registering Dev Control Web (Port 5001)..."
-    pm2 delete nmap-dev-web 2>/dev/null
-    pm2 start dev_control/web/app.py --name "nmap-dev-web" --interpreter python3
-fi
+# 6. Dev Control API (Port 5555) & Web Dashboard (Port 5001) - Disabled by default
+pm2 delete nmap-dev-web 2>/dev/null
+pm2 delete nmap-dev-api 2>/dev/null
 
 # Save PM2 configuration
 pm2 save
