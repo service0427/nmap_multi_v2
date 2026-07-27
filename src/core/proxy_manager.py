@@ -427,15 +427,18 @@ class ProxyManager:
         # 7. Start Naver Map App
         self.log(f"[*] Launching Naver Map...")
         ADBManager.run_adb(self.device_id, "shell am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity")
-        ADBManager.run_adb(self.device_id, "shell monkey -p com.nhn.android.nmap -c android.intent.category.LAUNCHER 1")
 
         # Poll for Map pid
         pid = None
-        for _ in range(15):
+        for i in range(20):
             out, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
-            pid = out.strip()
-            if pid:
+            pids = out.strip().split()
+            if pids:
+                pid = pids[0]
                 break
+            if i in [5, 12]:
+                self.log("  [*] Retrying am start for Naver Map...")
+                ADBManager.run_adb(self.device_id, "shell am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity")
             time.sleep(1)
             
         if not pid:
