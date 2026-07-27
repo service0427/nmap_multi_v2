@@ -47,6 +47,7 @@ def main():
     elif flag == "--wifi":
         ssid = None
         pw = "13241324"
+        target_devices = devices
 
         if len(sys.argv) >= 3:
             ssid = sys.argv[2]
@@ -96,7 +97,50 @@ def main():
             if input_pw:
                 pw = input_pw
 
-        print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on all {len(devices)} devices...")
+            # Step 2: Target Device Selection Menu
+            print("\n============================================================")
+            print(f"📱 Select Target Devices (Total Connected: {len(devices)}):")
+            print("============================================================")
+            print(f"  [A] ALL connected devices ({len(devices)} devices)")
+            for idx, dev in enumerate(devices, 1):
+                subnet = manifest.get_device_subnet(dev)
+                usb_port = manifest.get_device_usb_port(dev)
+                print(f"  [{idx:2d}] {dev:<15} (Subnet: {subnet:<5} | Port: {usb_port})")
+            print("============================================================")
+
+            dev_choice = input(f"Select Target Devices (A=ALL, 1,3,5, or 1-10) [A]: ").strip()
+            target_devices = []
+            
+            if not dev_choice or dev_choice.upper() in ["A", "ALL"]:
+                target_devices = devices
+            else:
+                try:
+                    parts = [p.strip() for p in dev_choice.split(",")]
+                    for p in parts:
+                        if "-" in p:
+                            s_str, e_str = p.split("-", 1)
+                            start, end = int(s_str.strip()), int(e_str.strip())
+                            for i in range(start, end + 1):
+                                if 1 <= i <= len(devices):
+                                    if devices[i - 1] not in target_devices:
+                                        target_devices.append(devices[i - 1])
+                        elif p.isdigit():
+                            i = int(p)
+                            if 1 <= i <= len(devices):
+                                if devices[i - 1] not in target_devices:
+                                    target_devices.append(devices[i - 1])
+                        elif p in devices:
+                            if p not in target_devices:
+                                target_devices.append(p)
+                except Exception as e:
+                    print(f"[-] Device selection parsing error: {e}. Fallback to ALL devices.")
+                    target_devices = devices
+
+            if not target_devices:
+                print("[-] Error: No valid target devices selected. Aborting.")
+                sys.exit(1)
+
+        print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on {len(target_devices)} selected devices...")
         wifi_setup_cmds = (
             "shell su -c 'settings put global captive_portal_mode 0 && "
             "settings put global captive_portal_detection_enabled 0 && "
@@ -106,7 +150,7 @@ def main():
             "cmd wifi set-wifi-enabled enabled && sleep 1 && "
             f"cmd wifi connect-network \"{ssid}\" wpa2 \"{pw}\"'"
         )
-        results = ADBManager.run_concurrent(wifi_setup_cmds, devices)
+        results = ADBManager.run_concurrent(wifi_setup_cmds, target_devices)
         for dev, (out, err, rc) in results.items():
             status = "Success" if rc == 0 else f"Failed ({err.strip()})"
             print(f"  [{dev}]: {status}")
