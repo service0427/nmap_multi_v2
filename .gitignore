@@ -1,0 +1,22 @@
+# Python & OS
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Temporary logs & locks (keep log directory structure)
+logs/devices/*
+!logs/devices/.gitkeep
+logs/macro_car/*
+!logs/macro_car/.gitkeep
+logs/stealth_logs/*
+logs/locks/*
+*.log
+
+# PM2 dumps
+.pm2/

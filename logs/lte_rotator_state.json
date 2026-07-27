@@ -1,0 +1,51 @@
+{
+  "lte11": {
+    "next_scheduled_rotation": "2026-07-27 11:26:17",
+    "last_toggle": "2026-07-27 08:29:03",
+    "current_ip": "175.223.11.229",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte12": {
+    "next_scheduled_rotation": "2026-07-27 11:51:59",
+    "last_toggle": "2026-07-27 08:58:48",
+    "current_ip": "175.223.35.24",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte13": {
+    "next_scheduled_rotation": "2026-07-27 11:16:00",
+    "last_toggle": "2026-07-27 08:27:47",
+    "current_ip": "39.7.51.188",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte14": {
+    "next_scheduled_rotation": "2026-07-27 12:47:26",
+    "last_toggle": "2026-07-27 10:18:15",
+    "current_ip": "175.223.45.70",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte15": {
+    "next_scheduled_rotation": "2026-07-27 10:43:40",
+    "last_toggle": "2026-07-27 08:43:26",
+    "current_ip": "175.223.15.220",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte16": {
+    "next_scheduled_rotation": "2026-07-27 10:43:32",
+    "last_toggle": "2026-07-27 08:02:21",
+    "current_ip": "39.7.58.55",
+    "ip_score": 0,
+    "last_score_update": ""
+  },
+  "lte17": {
+    "next_scheduled_rotation": "2026-07-27 10:51:44",
+    "last_toggle": "2026-07-27 08:13:32",
+    "current_ip": "39.7.54.64",
+    "ip_score": 0,
+    "last_score_update": ""
+  }
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nmap Multi V2 - AG Grid Enterprise Control Hub (Port 5001)</title>
+    <!-- Pretendard Korean Font -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <!-- AG Grid Community Library & Dark Quartz Theme -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/dist/ag-grid-community.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@31.3.2/styles/ag-theme-quartz.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="brand">
+            <span class="brand-icon">⚡</span>
+            <div>
+                <div class="brand-title">Nmap Multi AG-Grid 관제 대시보드</div>
+                <div class="brand-sub">서버 주소: <code>http://100.97.230.66:5001/</code></div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-warning" onclick="triggerHotReload()">⚡ 라이브 코드 패치</button>
+            <button class="btn btn-danger" onclick="emergencyStopAll()">🛑 전체 강제 중지</button>
+        </div>
+    </nav>
+
+    <!-- Subnet Filter & Search Bar -->
+    <div class="subnet-bar">
+        <span class="subnet-label">LTE 서브넷 필터:</span>
+        <button class="subnet-chip active" onclick="filterSubnet('ALL', this)">전체 ALL (60)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte11', this)">lte11 (5)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte12', this)">lte12 (5)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte13', this)">lte13 (5)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte14', this)">lte14 (8)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte15', this)">lte15 (10)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte16', this)">lte16 (12)</button>
+        <button class="subnet-chip" onclick="filterSubnet('lte17', this)">lte17 (15)</button>
+
+        <input type="text" id="device-search" class="search-input" placeholder="🔍 초고속 필터 검색..." oninput="onSearchChange()">
+    </div>
+
+    <div class="container">
+        <!-- Live Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card stat-total">
+                <div class="stat-header">전체 연결 단말기</div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-footer">Connected ADB Devices</div>
+            </div>
+            <div class="stat-card stat-running">
+                <div class="stat-header">실시간 구동 중 🟢</div>
+                <div class="stat-value" id="stat-running">0</div>
+                <div class="stat-footer">Active Process & Lock</div>
+            </div>
+            <div class="stat-card stat-idle">
+                <div class="stat-header">작업 대기 중 🟡</div>
+                <div class="stat-value" id="stat-idle">0</div>
+                <div class="stat-footer">Awaiting New Task</div>
+            </div>
+            <div class="stat-card stat-cooldown">
+                <div class="stat-header">IP 쿨다운 / 패널티 🔴</div>
+                <div class="stat-value" id="stat-cooldown">0</div>
+                <div class="stat-footer">IP Gate & Penalty Cooldown</div>
+            </div>
+        </div>
+
+        <!-- AG Grid Container -->
+        <div id="grid-wrapper" class="device-table-container" style="padding: 0.5rem;">
+            <div id="myGrid" class="ag-theme-quartz-dark" style="height: 680px; width: 100%;"></div>
+        </div>
+    </div>
+
+    <!-- Screen Inspection Modal Popup -->
+    <div id="screen-modal" class="modal-overlay" onclick="closeScreenModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-dev-id">단말기 실시간 화면 검사</h3>
+                    <span id="modal-subnet" class="card-subnet">lte11</span>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <a id="modal-port5000-link" href="#" target="_blank" class="btn btn-primary btn-sm">🖥️ 5000번 Scrcpy 터치 미러링 열기</a>
+                    <button class="modal-close-btn" onclick="closeScreenModal()">✖</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-screen-container">
+                    <img id="modal-screen-img" src="" alt="Live Device Screen">
+                </div>
+                <div class="modal-info-panel">
+                    <div class="modal-info-item">
+                        <span class="info-label">관제 진행 단계:</span>
+                        <span id="modal-step" class="badge badge-running">WORKING</span>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="info-label">Task ID (회차):</span>
+                        <code id="modal-task-id">-</code>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="info-label">목적지 정보:</span>
+                        <span id="modal-dest" style="font-weight: 700; color: var(--neon-blue);">-</span>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="info-label">할당 LTE IP:</span>
+                        <span id="modal-ip">-</span>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="info-label">최근 반응 시간:</span>
+                        <span id="modal-active-time">-</span>
+                    </div>
+                    
+                    <div class="modal-actions-grid" style="margin-top: 1rem;">
+                        <button class="btn btn-warning" onclick="modalControlAction('restart')">🔄 즉시 재시작 (Restart)</button>
+                        <button class="btn btn-danger" onclick="modalControlAction('stop')">🛑 강제 중지 (Force Stop)</button>
+                        <button class="btn btn-primary" onclick="modalControlAction('pause')">⏸ 작업 유예 (Hold Next Task)</button>
+                        <button class="btn btn-success" onclick="modalControlAction('start')">▶ 작업 재개 (Resume)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

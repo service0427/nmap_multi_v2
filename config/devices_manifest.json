@@ -1,0 +1,302 @@
+{
+  "R3CR70AV5ZZ": {
+    "usb_port": "usb:1-2.4.1",
+    "subnet": 11,
+    "is_excluded": false
+  },
+  "R3CR70D3ECZ": {
+    "usb_port": "usb:1-2.2.2",
+    "subnet": 11,
+    "is_excluded": false
+  },
+  "R3CR70JFWXJ": {
+    "usb_port": "usb:1-2.2.3",
+    "subnet": 11,
+    "is_excluded": false
+  },
+  "R3CR70SZ0JJ": {
+    "usb_port": "usb:1-2.3.2",
+    "subnet": 11,
+    "is_excluded": false
+  },
+  "R3CR70WD1KX": {
+    "usb_port": "usb:3-2.1.1",
+    "subnet": 11,
+    "is_excluded": false
+  },
+  "R3CR70WD7NA": {
+    "usb_port": "usb:3-2.4.4",
+    "subnet": 12,
+    "is_excluded": false
+  },
+  "R3CR804583K": {
+    "usb_port": "usb:1-2.4.4",
+    "subnet": 12,
+    "is_excluded": false
+  },
+  "R3CR8045YWN": {
+    "usb_port": "usb:3-2.2.2",
+    "subnet": 12,
+    "is_excluded": false
+  },
+  "R3CR80LSWGD": {
+    "usb_port": "usb:1-1.5.2",
+    "subnet": 12,
+    "is_excluded": false
+  },
+  "R3CR80NVXJE": {
+    "usb_port": "usb:1-2.1.2",
+    "subnet": 12,
+    "is_excluded": false
+  },
+  "R3CR90CCP1D": {
+    "usb_port": "usb:1-1.6.3",
+    "subnet": 13,
+    "is_excluded": false
+  },
+  "R3CR90CE67P": {
+    "usb_port": "usb:1-2.3.1.2",
+    "subnet": 13,
+    "is_excluded": false
+  },
+  "R3CR90GC5AP": {
+    "usb_port": "usb:1-2.4.3",
+    "subnet": 13,
+    "is_excluded": false
+  },
+  "R3CR90GCB5L": {
+    "usb_port": "usb:1-1.5.3",
+    "subnet": 13,
+    "is_excluded": false
+  },
+  "R3CR90H1NCP": {
+    "usb_port": "usb:3-2.4.3",
+    "subnet": 13,
+    "is_excluded": false
+  },
+  "R3CR90HEZDB": {
+    "usb_port": "usb:1-1.2.2",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CR90MAW4B": {
+    "usb_port": "usb:3-2.1.2",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CR90SJ6SW": {
+    "usb_port": "usb:3-2.4.2",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRA09DW9E": {
+    "usb_port": "usb:3-2.4.1",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRA0EJ6SD": {
+    "usb_port": "usb:3-2.3.1.3",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRA0GP5YP": {
+    "usb_port": "usb:1-1.5.4",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRB0ATRRK": {
+    "usb_port": "usb:1-1.5.1",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRB0PZGDR": {
+    "usb_port": "usb:1-1.2.1",
+    "subnet": 14,
+    "is_excluded": false
+  },
+  "R3CRB0WCGET": {
+    "usb_port": "usb:1-2.3.3",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R3CRC0RBEPP": {
+    "usb_port": "usb:3-2.3.3",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R3CRC0XSEHY": {
+    "usb_port": "usb:1-2.3.1.1",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R3CRC0ZCD2Z": {
+    "usb_port": "usb:1-1.3.4",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR713T5WT": {
+    "usb_port": "usb:1-2.2.1.2",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR715VSTX": {
+    "usb_port": "usb:1-2.2.1.1",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR802BBLB": {
+    "usb_port": "usb:1-1.6.2",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR802CTAL": {
+    "usb_port": "usb:1-1.3.3",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR802VA4D": {
+    "usb_port": "usb:3-2.3.4",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR804V9CT": {
+    "usb_port": "usb:1-2.1.1",
+    "subnet": 15,
+    "is_excluded": false
+  },
+  "R5CR807XTKD": {
+    "usb_port": "usb:1-2.2.4",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80BKKQH": {
+    "usb_port": "usb:1-1.7.3",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80DSS2W": {
+    "usb_port": "usb:3-2.2.3",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80E53QP": {
+    "usb_port": "usb:3-2.1.3",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80ZNCXT": {
+    "usb_port": "usb:1-1.3.2",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80ZNFTH": {
+    "usb_port": "usb:1-2.1.4",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80ZPJ0Z": {
+    "usb_port": "usb:3-2.1.4",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR80ZYL9K": {
+    "usb_port": "usb:1-1.2.4",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR813E9AB": {
+    "usb_port": "usb:1-2.3.1.3",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR8153KWN": {
+    "usb_port": "usb:1-1.7.2",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR818AW0R": {
+    "usb_port": "usb:1-2.1.3",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR81PA2GT": {
+    "usb_port": "usb:1-1.6.1",
+    "subnet": 16,
+    "is_excluded": false
+  },
+  "R5CR81QCVCK": {
+    "usb_port": "usb:3-2.2.1.3",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR81S2C2J": {
+    "usb_port": "usb:3-2.3.2",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR81SQ8JJ": {
+    "usb_port": "usb:3-2.2.1.2",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR82CEZBN": {
+    "usb_port": "usb:1-2.4.2",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR82FNMVX": {
+    "usb_port": "usb:1-1.7.1",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR82H78WT": {
+    "usb_port": "usb:1-2.3.4",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR82NR07J": {
+    "usb_port": "usb:3-2.3.1.1",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR919ZL9A": {
+    "usb_port": "usb:1-1.6.4",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR91SH8LM": {
+    "usb_port": "usb:1-1.2.3",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CR9336DSB": {
+    "usb_port": "usb:1-1.3.1",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CRA0PW01W": {
+    "usb_port": "usb:3-2.3.1.2",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CRA0TJHLK": {
+    "usb_port": "usb:1-2.2.1.3",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CRA19WHAD": {
+    "usb_port": "usb:1-2.2.4",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CRC2RDAFB": {
+    "usb_port": "usb:1-1.7.4",
+    "subnet": 17,
+    "is_excluded": false
+  },
+  "R5CRC3DZRQH": {
+    "usb_port": "usb:3-2.2.1.1",
+    "subnet": 17,
+    "is_excluded": false
+  }
+}
