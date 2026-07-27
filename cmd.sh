@@ -150,18 +150,22 @@ def main():
                 sys.exit(1)
 
         print(f"\n[*] Provisioning Wi-Fi SSID '{ssid}' on {len(target_devices)} selected devices...")
-        wifi_setup_cmds = (
-            "shell su -c 'settings put global captive_portal_mode 0 && "
-            "settings put global captive_portal_detection_enabled 0 && "
-            "cmd wifi remove-all-suggestions && "
-            "for id in $(seq 0 20); do cmd wifi forget-network $id; done && "
-            "cmd wifi set-wifi-enabled disabled && sleep 1 && "
-            "cmd wifi set-wifi-enabled enabled && sleep 1 && "
-            f"cmd wifi connect-network \"{ssid}\" wpa2 \"{pw}\"'"
-        )
-        results = ADBManager.run_concurrent(wifi_setup_cmds, target_devices)
+        ADBManager.run_concurrent('shell "su -c \\"settings put global captive_portal_mode 0\\""', target_devices)
+        ADBManager.run_concurrent('shell "su -c \\"settings put global captive_portal_detection_enabled 0\\""', target_devices)
+        ADBManager.run_concurrent('shell "su -c \\"cmd wifi remove-all-suggestions\\""', target_devices)
+        ADBManager.run_concurrent('shell "su -c \\"cmd wifi set-wifi-enabled disabled\\""', target_devices)
+        time.sleep(1)
+        ADBManager.run_concurrent('shell "su -c \\"cmd wifi set-wifi-enabled enabled\\""', target_devices)
+        time.sleep(1)
+
+        add_cmd = f'shell "su -c \\"cmd wifi add-network {ssid} wpa2 {pw}\\""'
+        ADBManager.run_concurrent(add_cmd, target_devices)
+        time.sleep(1)
+
+        conn_cmd = f'shell "su -c \\"cmd wifi connect-network {ssid} wpa2 {pw}\\""'
+        results = ADBManager.run_concurrent(conn_cmd, target_devices)
         for dev, (out, err, rc) in results.items():
-            status = "Success" if rc == 0 else f"Failed ({err.strip() if err else out.strip()})"
+            status = "Success" if rc == 0 and "SecurityException" not in err else f"Failed ({err.strip() if err else out.strip()})"
             print(f"  [{dev}]: {status}")
 
     elif flag == "--dark":
