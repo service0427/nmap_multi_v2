@@ -337,15 +337,9 @@ class ProxyManager:
         # Enable Global Do Not Disturb (DND Total Silence mode - zen_mode 2) to block Speed Camera Sonification Bypass Audio
         ADBManager.run_adb(self.device_id, "shell settings put global zen_mode 2")
         ADBManager.run_adb(self.device_id, "shell cmd notification set_dnd on")
-        # Natively randomize system display theme mode (50% split)
-        night_mode = random.choice(["yes", "no"])
-        ADBManager.run_adb(self.device_id, f"shell cmd uimode night {night_mode}")
-        # Randomize font scale (0.95 ~ 1.15) for natural display diversity
-        rand_font_scale = random.choice(["0.95", "1.0", "1.05", "1.1"])
-        ADBManager.run_adb(self.device_id, f"shell settings put system font_scale {rand_font_scale}")
-        # Randomize safe screen density (450 ~ 520 DPI)
-        rand_density = random.choice(["450", "480", "500", "520"])
-        ADBManager.run_adb(self.device_id, f"shell wm density {rand_density}")
+        # Ensure system display theme and density remain stable
+        # ADBManager.run_adb(self.device_id, "shell cmd uimode night yes")
+        # ADBManager.run_adb(self.device_id, "shell wm density reset")
 
         # 3. Forwards & Reverse Proxy Tunnels
         if self.config.get("USE_FRIDA", True):
@@ -543,9 +537,15 @@ class ProxyManager:
             # 2. Check Frida connection
             if self.config.get("USE_FRIDA", True) and self.frida_proc:
                 if self.frida_proc.poll() is not None:
-                    self.log("[!] Frida instrumentation hook crash detected.")
-                    self.cleanup("Frida Crash (Connection lost)")
-                    break
+                    # Check if Naver Map app process is still alive on device
+                    map_status, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
+                    if map_status.strip():
+                        self.log("[ℹ️] Frida client detached (hooks remain active in memory). Session continuing...")
+                        self.frida_proc = None
+                    else:
+                        self.log("[!] Frida instrumentation hook crash detected (App process died).")
+                        self.cleanup("Frida Crash (Connection lost)")
+                        break
                     
             # 3. Check mitmproxy
             if self.config.get("USE_PROXY", True) and self.mitm_proc:
