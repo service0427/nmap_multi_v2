@@ -561,8 +561,16 @@ class ProxyManager:
             if self.config.get("USE_MACRO", True):
                 events = self.get_events()
                 
-                # Global Fast Recovery for Fatal UI / Dismiss Popups
                 now = time.time()
+                # Auto-heal ADB reverse proxy tunnel if dropped by ADB daemon re-enumeration
+                if self.config.get("USE_PROXY", True) and (now - getattr(self, "last_reverse_check_ts", 0) >= 5):
+                    self.last_reverse_check_ts = now
+                    rev_list, _, _ = ADBManager.run_adb(self.device_id, "reverse --list")
+                    if str(self.mitm_port) not in rev_list:
+                        ADBManager.run_adb(self.device_id, f"reverse tcp:{self.mitm_port} tcp:{self.mitm_port}")
+                        ADBManager.run_adb(self.device_id, f"shell settings put global http_proxy localhost:{self.mitm_port}")
+
+                # Global Fast Recovery for Fatal UI / Dismiss Popups
                 if now - last_ui_check_ts >= 10:
                     last_ui_check_ts = now
                     xml_file, _ = ui_clicker.get_ui_dump_pair(self.device_id, "check_fatal")
