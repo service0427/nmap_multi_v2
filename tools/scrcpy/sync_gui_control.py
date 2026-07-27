@@ -28,7 +28,7 @@ LOG_BASE_DIR = os.path.join(V2_ROOT, "logs")
 import sys
 sys.path.insert(0, os.path.join(V2_ROOT, "src", "lib"))
 import manifest
-
+MAX_SLOTS = get_connected_devices_count()
 device_slots = [None] * MAX_SLOTS
 diag_cache = {}
 battery_cache = {}
