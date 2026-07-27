@@ -22,8 +22,7 @@ def get_connected_devices_count():
     except:
         return 10
 
-MAX_SLOTS = get_connected_devices_count()
-V2_ROOT = "/home/tech/nmap_multi_v2"
+V2_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 LOG_BASE_DIR = os.path.join(V2_ROOT, "logs")
 
 import sys
@@ -271,17 +270,29 @@ def refresh_device_slots():
         output = subprocess.check_output(["adb", "devices", "-l"], timeout=5).decode("utf-8")
         lines = output.strip().split("\n")[1:]
         current_connected = {}
+        unauthorized_devices = set()
+        offline_devices = set()
         usb_mapping_updates = {}
         for line in lines:
-            if not line.strip() or "device" not in line: continue
+            if not line.strip(): continue
             parts = line.split()
+            if not parts: continue
             serial = parts[0]
             model = "Unknown"
             usb_path = "N/A"
+            state = parts[1] if len(parts) >= 2 else "unknown"
+            
             for p in parts:
                 if p.startswith("model:"): model = p.split(":")[1]
                 if p.startswith("usb:"): usb_path = p
-            current_connected[serial] = model
+                
+            if state == "device":
+                current_connected[serial] = model
+            elif state == "unauthorized":
+                unauthorized_devices.add(serial)
+            elif state == "offline":
+                offline_devices.add(serial)
+
             if usb_path != "N/A":
                 usb_mapping_updates[serial] = usb_path
 
@@ -318,12 +329,42 @@ def refresh_device_slots():
                     "offline": False,
                     **diag
                 }
+            elif serial in unauthorized_devices:
+                device_slots[i] = {
+                    "id": serial,
+                    "model": "Unknown",
+                    "offline": False,
+                    "status": "UNAUTHORIZED",
+                    "ip": "N/A",
+                    "temp": "??",
+                    "battery": "??",
+                    "latest_log": "-",
+                    "current_task": None,
+                    "disabled": is_excluded,
+                    "usb_path": usb_path,
+                    "subnet": manifest.get_device_subnet(serial)
+                }
+            elif serial in offline_devices:
+                device_slots[i] = {
+                    "id": serial,
+                    "model": "Unknown",
+                    "offline": True,
+                    "status": "ADB_OFFLINE",
+                    "ip": "N/A",
+                    "temp": "??",
+                    "battery": "??",
+                    "latest_log": "-",
+                    "current_task": None,
+                    "disabled": is_excluded,
+                    "usb_path": usb_path,
+                    "subnet": manifest.get_device_subnet(serial)
+                }
             else:
                 device_slots[i] = {
                     "id": serial,
                     "model": "Unknown",
                     "offline": True,
-                    "status": "DISABLED" if is_excluded else "OFFLINE",
+                    "status": "DISABLED" if is_excluded else "DISCONNECTED",
                     "ip": "N/A",
                     "temp": "??",
                     "battery": "??",
