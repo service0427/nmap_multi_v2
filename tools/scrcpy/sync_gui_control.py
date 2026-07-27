@@ -31,6 +31,26 @@ import manifest
 
 device_slots = [None] * MAX_SLOTS
 diag_cache = {}
+battery_cache = {}
+
+def battery_poll_loop():
+    while True:
+        try:
+            order_list = manifest.get_ordered_devices()
+            for serial in order_list:
+                try:
+                    batt_raw = subprocess.check_output(["adb", "-s", serial, "shell", "dumpsys battery"], timeout=2).decode()
+                    b_lvl, t_val = "??", "??"
+                    for line in batt_raw.splitlines():
+                        if "level:" in line: b_lvl = line.split(":")[1].strip()
+                        if "temperature:" in line: t_val = int(line.split(":")[1].strip()) / 10
+                    battery_cache[serial] = {"battery": b_lvl, "temp": t_val}
+                except: pass
+        except: pass
+        time.sleep(30)
+
+b_thread = threading.Thread(target=battery_poll_loop, daemon=True)
+b_thread.start()
 
 TEMPLATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "monitor.html")
 
@@ -83,13 +103,10 @@ def get_device_diagnostics(serial):
                         info["status"] = cstatus
         except: pass
 
-    # Get battery info
-    try:
-        batt_raw = subprocess.check_output(["adb", "-s", serial, "shell", "dumpsys battery"], timeout=5).decode()
-        for line in batt_raw.splitlines():
-            if "level:" in line: info["battery"] = line.split(":")[1].strip()
-            if "temperature:" in line: info["temp"] = int(line.split(":")[1].strip()) / 10
-    except: pass
+    # Non-blocking cached battery info
+    if serial in battery_cache:
+        info["battery"] = battery_cache[serial].get("battery", "??")
+        info["temp"] = battery_cache[serial].get("temp", "??")
 
     task_data = {
         "dest_name": "Unknown",

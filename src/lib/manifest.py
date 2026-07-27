@@ -5,7 +5,7 @@ import re
 import subprocess
 import fcntl
 
-V2_ROOT = "/home/tech/nmap_multi_v2"
+V2_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 MANIFEST_PATH = os.path.join(V2_ROOT, "config", "devices_manifest.json")
 
 def get_usb_port_via_sysfs(serial):
