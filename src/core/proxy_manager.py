@@ -231,6 +231,12 @@ class ProxyManager:
 
     def verify_network_ip(self):
         """Verifies actual outbound internet connectivity and queries public external IP."""
+        if self.mode == "local":
+            self.real_ip = "LOCAL_WAN"
+            self.bind_ip = None
+            self.log(f"[🌐] Local routing mode active (Bypassing host PBR constraints).")
+            return
+
         # 1. Query actual external IP from inside the device first (True network validation)
         self.log(f"[🌐] Querying external public IP from inside device {self.device_id}...")
         device_ip = ADBManager.get_device_external_ip(self.device_id)
@@ -242,11 +248,6 @@ class ProxyManager:
             self.real_ip = "LOCAL_WAN"
 
         # 2. Resolve interface binding if running in 'eth' PBR mode
-        if self.mode != "eth":
-            self.bind_ip = ADBManager.get_bind_ip(self.device_id, mode="local")
-            self.log(f"[🌐] Local routing mode active (Bypassing host PBR constraints).")
-            return
-            
         self.bind_ip = ADBManager.get_bind_ip(self.device_id, mode="eth")
         self.log(f"[🌐] Resolving LTE dynamic route for {self.device_id} -> BIND_IP: {self.bind_ip}")
         if self.bind_ip:
@@ -350,47 +351,49 @@ class ProxyManager:
                 time.sleep(1)
             ADBManager.run_adb(self.device_id, f"forward --remove tcp:{self.frida_port}")
             ADBManager.run_adb(self.device_id, f"forward tcp:{self.frida_port} tcp:27042")
-        if self.config.get("USE_PROXY", True):
-            ADBManager.run_adb(self.device_id, f"reverse --remove tcp:{self.mitm_port}")
-            ADBManager.run_adb(self.device_id, f"reverse tcp:{self.mitm_port} tcp:{self.mitm_port}")
-            ADBManager.run_adb(self.device_id, f"shell settings put global http_proxy localhost:{self.mitm_port}")
-        
         # Disable captive portal checks
         ADBManager.run_adb(self.device_id, "shell settings put global captive_portal_mode 0")
         ADBManager.run_adb(self.device_id, "shell settings put global captive_portal_detection_enabled 0")
 
-        # 4. Spawn mitmdump in background
-        self.log(f"[*] Starting mitmdump on port {self.mitm_port}...")
-        # Kill any stale mitmdump process listening on this port
-        subprocess.run(f"pkill -9 -f 'mitmdump.*-p {self.mitm_port}'", shell=True)
-        time.sleep(0.5)
-        mitm_args = ["mitmdump", "-p", str(self.mitm_port), "-s", "/home/tech/nmap_multi_v2/src/mitm/addon.py", "--ssl-insecure", "--listen-host", "0.0.0.0", "--set", "flow_detail=0"]
-        if self.bind_ip:
-            mitm_args.extend(["--set", f"connect_addr={self.bind_ip}"])
-            
-        # Export NMAP environment variables to mitmdump subprocess
-        env = os.environ.copy()
-        env.update({
-            "NMAP_ORIG_SSAID": self.orig_ssaid or "",
-            "NMAP_ORIG_ADID": self.orig_adid or "",
-            "NMAP_ORIG_IDFV": self.orig_idfv or "",
-            "NMAP_ORIG_NI": self.orig_ni or "",
-            "NMAP_ORIG_TOKEN": self.orig_token or "",
-            "NMAP_ID_SSAID": self.id_ssaid or "",
-            "NMAP_ID_ADID": self.id_adid or "",
-            "NMAP_ID_IDFV": self.id_idfv or "",
-            "NMAP_ID_NI": self.id_ni or "",
-            "NMAP_ID_TOKEN": self.id_token or "",
-            "NMAP_DEV_ID": self.device_id,
-            "CAPTURE_LOG_DIR": self.capture_dir,
-            "API_SERVER": API_SERVER,
-            "NMAP_REAL_IP": getattr(self, "real_ip", None) or self.bind_ip or "LOCAL_WAN",
-            "ENABLE_TRAFFIC_SAVER": str(self.config.get("ENABLE_TRAFFIC_SAVER", False)).lower()
-        })
-        
+        # 4. Spawn mitmdump in background first
         if self.config.get("USE_PROXY", True):
+            self.log(f"[*] Starting mitmdump on port {self.mitm_port}...")
+            # Kill any stale mitmdump process listening on this port
+            subprocess.run(f"pkill -9 -f 'mitmdump.*-p {self.mitm_port}'", shell=True)
+            time.sleep(0.3)
+            
+            addon_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "mitm", "addon.py"))
+            mitm_args = ["mitmdump", "-p", str(self.mitm_port), "-s", addon_path, "--ssl-insecure", "--listen-host", "0.0.0.0", "--set", "flow_detail=0"]
+            if self.bind_ip:
+                mitm_args.extend(["--set", f"connect_addr={self.bind_ip}"])
+                
+            env = os.environ.copy()
+            env.update({
+                "NMAP_ORIG_SSAID": self.orig_ssaid or "",
+                "NMAP_ORIG_ADID": self.orig_adid or "",
+                "NMAP_ORIG_IDFV": self.orig_idfv or "",
+                "NMAP_ORIG_NI": self.orig_ni or "",
+                "NMAP_ORIG_TOKEN": self.orig_token or "",
+                "NMAP_ID_SSAID": self.id_ssaid or "",
+                "NMAP_ID_ADID": self.id_adid or "",
+                "NMAP_ID_IDFV": self.id_idfv or "",
+                "NMAP_ID_NI": self.id_ni or "",
+                "NMAP_ID_TOKEN": self.id_token or "",
+                "NMAP_DEV_ID": self.device_id,
+                "CAPTURE_LOG_DIR": self.capture_dir,
+                "API_SERVER": API_SERVER,
+                "NMAP_REAL_IP": getattr(self, "real_ip", None) or self.bind_ip or "LOCAL_WAN",
+                "ENABLE_TRAFFIC_SAVER": str(self.config.get("ENABLE_TRAFFIC_SAVER", False)).lower()
+            })
+            
             mitm_log = open(os.path.join(self.capture_dir, "mitm.log"), "w")
             self.mitm_proc = subprocess.Popen(mitm_args, env=env, stdout=mitm_log, stderr=mitm_log)
+            time.sleep(0.5)
+
+            # Establish reverse proxy tunnel and activate device HTTP proxy AFTER mitmdump is active
+            ADBManager.run_adb(self.device_id, f"reverse --remove tcp:{self.mitm_port}")
+            ADBManager.run_adb(self.device_id, f"reverse tcp:{self.mitm_port} tcp:{self.mitm_port}")
+            ADBManager.run_adb(self.device_id, f"shell settings put global http_proxy localhost:{self.mitm_port}")
 
         # 5. Spawn GPS Simulator path tracker in background
         if self.config.get("USE_GPS", True):
