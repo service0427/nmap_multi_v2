@@ -18,7 +18,8 @@ def print_help():
     print("  ./cmd.sh --dark               Enable system dark mode")
     print("  ./cmd.sh --light              Enable system light mode")
     print("  ./cmd.sh --portrait           Lock screen rotation to portrait")
-    print("  ./cmd.sh --app-version        Audit installed Naver Map versions")
+    print("  ./cmd.sh --nmap               Audit installed Naver Map versions across all devices")
+    print("  ./cmd.sh --app-version        Alias for --nmap")
     print("  ./cmd.sh --wifi-ips           Show wlan0 IP allocations")
     print("  ./cmd.sh --disable-usim       Disable cellular carrier data")
     print("  ./cmd.sh --patch-app          Inject map hosts and SSL bypass patches")
@@ -233,15 +234,30 @@ def main():
         for dev, (_, _, rc) in results.items():
             print(f"  [{dev}]: {'Rotation Locked' if rc == 0 else 'Failed'}")
 
-    elif flag == "--app-version":
-        print("[*] Auditing Naver Map application versions...")
+    elif flag in ["--nmap", "--app-version"]:
+        print("============================================================")
+        print(f"🗺️  Naver Map Package & Version Audit ({len(devices)} devices)")
+        print("============================================================")
         results = ADBManager.run_concurrent("shell \"dumpsys package com.nhn.android.nmap | grep versionName\"", devices)
-        for dev, (out, _, rc) in results.items():
+        
+        ver_stats = {}
+        for dev in devices:
+            out, _, rc = results.get(dev, ("", "", -1))
+            version = "Not Installed"
             if rc == 0 and out:
-                version = out.strip().split("\n")[0].split("=")[-1]
-                print(f"  [{dev}]: Version = {version}")
-            else:
-                print(f"  [{dev}]: Package not installed or query failed")
+                m = re.search(r"versionName=([0-9\.]+)", out)
+                if m:
+                    version = f"v{m.group(1)}"
+            
+            ver_stats[version] = ver_stats.get(version, 0) + 1
+            status_icon = "✓" if version == "v6.8.1.1" else ("⚠️" if version != "Not Installed" else "❌")
+            print(f"  [{status_icon}] [{dev}]: {version}")
+
+        print("------------------------------------------------------------")
+        print("📊 Version Distribution Breakdown:")
+        for v, cnt in ver_stats.items():
+            print(f"   • {v}: {cnt} devices")
+        print("============================================================")
 
     elif flag == "--wifi-ips":
         print("[*] Retrieving Wi-Fi IP allocations...")
