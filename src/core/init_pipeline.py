@@ -5,6 +5,7 @@ import os
 import time
 import subprocess
 import re
+from concurrent.futures import ThreadPoolExecutor
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 INSTALL_DIR = os.path.join(PROJECT_ROOT, "install")
@@ -261,53 +262,68 @@ def ensure_local_install_assets():
         print("[✓] Local 'install' directory and APK assets verified.")
 
 def check_device_root_authorization(devices):
-    """Pre-audits all connected devices for su root shell authorization (uid=0). Summarize root status and halt execution if any device lacks root approval."""
-    print(f"[*] Performing preliminary Root Shell (su) authorization audit on {len(devices)} devices...")
+    """Performs preliminary Root Shell (su) authorization audit on all connected devices concurrently, exactly as V1 device_init.sh did."""
+    print(f"[*] Performing preliminary root authorization check on all {len(devices)} connected devices...")
+    
     authorized_devices = []
-    unauthorized_devices = []
+    failed_devices = []
     no_su_devices = []
 
-    for dev in devices:
-        res = run_su(dev, "id")
-        if "uid=0" in res:
-            authorized_devices.append(dev)
-        else:
-            has_su_bin = run_shell(dev, "which su 2>/dev/null || ls /system/bin/su /system/xbin/su 2>/dev/null")
-            if "su" in has_su_bin:
-                unauthorized_devices.append(dev)
-            else:
-                no_su_devices.append(dev)
-
-    print("\n============================================================")
-    print("🔐 Root Shell (su) Authorization Status Report")
-    print("============================================================")
-    print(f"  [✓] Authorized (uid=0)   : {len(authorized_devices)} devices")
-    if authorized_devices:
-        print(f"      • {', '.join(authorized_devices)}")
+    def check_dev_root(idx, serial):
+        formatted_idx = f"{idx+1:02d}"
         
-    print(f"  [❌] Pending / Denied     : {len(unauthorized_devices)} devices")
-    if unauthorized_devices:
-        print(f"      • {', '.join(unauthorized_devices)}")
+        # Check su binary existence
+        has_su_res = ADBManager.run_adb(serial, "shell \"which su 2>/dev/null || ls /system/bin/su /system/xbin/su /sbin/su 2>/dev/null\"", timeout=3)
+        has_su = has_su_res[0].strip()
+        
+        if not has_su or "su" not in has_su:
+            return (serial, "no_su", f"  - {formatted_idx}. [{serial}]: su not found")
 
-    print(f"  [❌] Missing 'su' Binary   : {len(no_su_devices)} devices")
-    if no_su_devices:
-        print(f"      • {', '.join(no_su_devices)}")
-    print("============================================================")
+        # Test su with a 3-second timeout. If it's waiting for approval, it will time out and trigger the Magisk popup on device.
+        su_test_res = ADBManager.run_adb(serial, "shell \"su -c 'id'\"", timeout=3)
+        if "uid=0" in su_test_res[0]:
+            return (serial, "ok", f"  - {formatted_idx}. [{serial}]: Root shell authorization OK")
+        else:
+            return (serial, "failed", f"  - {formatted_idx}. [{serial}]: Root shell authorization failed / Requesting popup...")
 
-    if unauthorized_devices or no_su_devices:
-        print("\n⛔ [HALT] Root Shell Authorization Failure detected!")
-        print("------------------------------------------------------------")
-        if unauthorized_devices:
-            print(f"[!] {len(unauthorized_devices)} device(s) require Magisk Root approval:")
-            print(f"    Target Devices: {', '.join(unauthorized_devices)}")
-            print("    👉 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 누른 후 스크립트를 재실행해주세요.")
+    # Run root check across all devices concurrently to trigger Magisk popups simultaneously
+    with ThreadPoolExecutor(max_workers=len(devices)) as executor:
+        futures = [executor.submit(check_dev_root, i, dev) for i, dev in enumerate(devices)]
+        results = [fut.result() for fut in futures]
+
+    # Print results sorted by index
+    results.sort(key=lambda x: x[2])
+    for serial, status, log_line in results:
+        print(log_line)
+        if status == "ok":
+            authorized_devices.append(serial)
+        elif status == "failed":
+            failed_devices.append(serial)
+        elif status == "no_su":
+            no_su_devices.append(serial)
+
+    # Check if there are failures (Same exit logic as V1)
+    if failed_devices or no_su_devices:
+        print("\n============================================================")
+        print("⚠️  [일부 디바이스의 Root 권한이 확보되지 않았습니다]")
+        print("============================================================")
+        if failed_devices:
+            print("\n[!] Magisk 권한 승인이 필요한 디바이스:")
+            for s in failed_devices:
+                print(f"  - {s}")
+            print("  👉 대상 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 클릭해주세요.")
+
         if no_su_devices:
-            print(f"[!] {len(no_su_devices)} device(s) do NOT have 'su' binary installed:")
-            print(f"    Target Devices: {', '.join(no_su_devices)}")
-            print("    👉 기기가 정상적으로 루팅(Magisk)되어 있는지 확인해주세요.")
-        print("------------------------------------------------------------")
-        print("❌ Initialization halted. Please resolve root permissions and re-run './cmd.sh --init'.\n")
+            print("\n[!] 'su' 명령어를 찾을 수 없거나 루팅이 확인되지 않는 디바이스:")
+            for s in no_su_devices:
+                print(f"  - {s}")
+            print("  👉 기기가 정상적으로 루팅(Magisk)되어 있는지 확인해주세요.")
+            
+        print("\n승인 완료 후 이 스크립트를 다시 구동해주시기 바랍니다.")
+        print("============================================================\n")
         sys.exit(1)
+
+    print("[✓] All connected devices passed root check. Proceeding to initialization...\n")
 
 def main():
     devices = ADBManager.get_connected_devices()
