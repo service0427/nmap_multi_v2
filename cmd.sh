@@ -12,6 +12,7 @@ def print_help():
     print("Nmap Multi V2: Concurrent Phone Control CLI")
     print("Usage:")
     print("  ./cmd.sh --init               Run initial phone setup (APKs, certs, system settings)")
+    print("  ./cmd.sh --recovery           Deploy native BoringSSL curl & restore HTTPS network connectivity")
     print("  ./cmd.sh --reboot             Sequentially reboot all phones")
     print("  ./cmd.sh --wifi               Interactive Wi-Fi scan & connect menu")
     print("  ./cmd.sh --wifi <SSID> <PW>   Reset & connect all phones to SSID directly")
@@ -43,6 +44,12 @@ def main():
         import subprocess
         init_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", "device_init.sh")
         subprocess.run(["bash", init_script])
+
+    elif flag == "--recovery":
+        import subprocess
+        rec_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "recovery_device.sh")
+        target_dev = sys.argv[2] if len(sys.argv) > 2 else ""
+        subprocess.run(["bash", rec_script, target_dev])
 
     elif flag == "--reboot":
         print("[*] Sequentially rebooting devices...")
