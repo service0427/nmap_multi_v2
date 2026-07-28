@@ -272,17 +272,20 @@ def check_device_root_authorization(devices):
     def check_dev_root(idx, serial):
         formatted_idx = f"{idx+1:02d}"
         
-        # Check su binary existence
+        # Test su directly with a 3-second timeout.
+        # Executing "su -c 'id'" via ADB triggers the Magisk superuser prompt popup on the phone screen.
+        su_test_res = ADBManager.run_adb(serial, "shell \"su -c 'id'\"", timeout=3)
+        stdout_str = su_test_res[0].strip()
+        
+        if "uid=0" in stdout_str:
+            return (serial, "ok", f"  - {formatted_idx}. [{serial}]: Root shell authorization OK")
+
+        # Check if su binary exists on the device
         has_su_res = ADBManager.run_adb(serial, "shell \"which su 2>/dev/null || ls /system/bin/su /system/xbin/su /sbin/su 2>/dev/null\"", timeout=3)
         has_su = has_su_res[0].strip()
         
         if not has_su or "su" not in has_su:
-            return (serial, "no_su", f"  - {formatted_idx}. [{serial}]: su not found")
-
-        # Test su with a 3-second timeout. If it's waiting for approval, it will time out and trigger the Magisk popup on device.
-        su_test_res = ADBManager.run_adb(serial, "shell \"su -c 'id'\"", timeout=3)
-        if "uid=0" in su_test_res[0]:
-            return (serial, "ok", f"  - {formatted_idx}. [{serial}]: Root shell authorization OK")
+            return (serial, "no_su", f"  - {formatted_idx}. [{serial}]: su binary not found")
         else:
             return (serial, "failed", f"  - {formatted_idx}. [{serial}]: Root shell authorization failed / Requesting popup...")
 
