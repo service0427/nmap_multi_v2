@@ -626,23 +626,14 @@ class ProxyManager:
                         if success:
                             state_flags["STEP_02_HOME"] = 1
                             step1_home_ts = now
-                    
-                    # Fallback Home Recovery
-                    elif now - start_ts > 25:
-                        if now - last_home_check_ts >= 15:
-                            last_home_check_ts = now
-                            self.log(f"[⚠️] Checking Home search field before popup recovery ({int(now - start_ts)}s)...")
-                            success = MacroExecutor.run_step(self.device_id, "entry_search_field", category="01.SearchAndNavi")
-                            if success:
-                                state_flags["STEP_02_HOME"] = 1
-                                step1_home_ts = now
-                            else:
-                                self.log(f"[⚠️] Failed to reach Home screen within {int(now - start_ts)}s. Retrying popup dismiss...")
+                        elif now - start_ts > 15:
+                            if now - last_home_check_ts >= 10:
+                                last_home_check_ts = now
+                                self.log(f"[⚠️] Failed to reach Home search field within {int(now - start_ts)}s. Dismissing popups...")
                                 MacroExecutor.run_step(self.device_id, "exact:닫기", category="DismissPopup")
                                 MacroExecutor.run_step(self.device_id, "exact:확인", category="DismissPopup")
                                 MacroExecutor.run_step(self.device_id, "exact:나중에 하기", category="DismissPopup")
                                 ADBManager.run_adb(self.device_id, "shell am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity")
-                                ADBManager.run_adb(self.device_id, "shell monkey -p com.nhn.android.nmap -c android.intent.category.LAUNCHER 1")
 
                 # Step 2: Typing search keyword
                 elif state_flags["STEP_03_TYPING"] == 0:
