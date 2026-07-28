@@ -18,8 +18,7 @@ def run_shell(dev, cmd_str):
 
 def run_su(dev, cmd_str):
     """Executes ADB shell command with su root privileges."""
-    escaped_cmd = cmd_str.replace('"', '\\"')
-    out, err, rc = ADBManager.run_adb(dev, f"shell \"su -c \\\"{escaped_cmd}\\\"\"")
+    out, err, rc = ADBManager.run_adb(dev, f"shell \"su -c '{cmd_str}'\"")
     return out.strip()
 
 def check_and_install_naver_map(dev):
@@ -95,8 +94,10 @@ def check_and_start_frida(dev):
 def verify_and_install_mitm_cert(dev):
     """Verifies host PC mitmproxy CA certificate against device CA store and installs if missing/mismatched."""
     cert_path = os.path.expanduser("~/.mitmproxy/mitmproxy-ca-cert.pem")
+    
+    # 1. Ensure mitmproxy cert exists on host (start mitmdump for 2s if missing)
     if not os.path.exists(cert_path):
-        print("  [*] Host mitmproxy CA certificate missing. Spawning mitmdump to generate...")
+        print("  [*] Host mitmproxy CA certificate missing. Spawning mitmdump for 2s to generate...")
         try:
             proc = subprocess.Popen(["mitmdump"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             time.sleep(2)
@@ -109,6 +110,7 @@ def verify_and_install_mitm_cert(dev):
     if not os.path.exists(cert_path):
         return False, "Host mitmproxy cert (~/.mitmproxy/mitmproxy-ca-cert.pem) missing"
 
+    # 2. Extract host hash and MD5
     try:
         res = subprocess.run(["openssl", "x509", "-inform", "PEM", "-subject_hash_old", "-in", cert_path], capture_output=True, text=True, check=True)
         cert_hash = res.stdout.strip().splitlines()[0].strip()
@@ -125,52 +127,67 @@ def verify_and_install_mitm_cert(dev):
     user_cert_path = f"/data/misc/user/0/cacerts-added/{target_cert_file}"
     magisk_cert_path = f"/data/adb/modules/trustusercerts/system/etc/security/cacerts/{target_cert_file}"
 
-    # Query MD5 on device
-    md5_cmd = f"md5sum {user_cert_path} 2>/dev/null || md5sum {magisk_cert_path} 2>/dev/null"
-    dev_md5_out = run_su(dev, md5_cmd)
-    dev_md5 = None
-    for line in dev_md5_out.splitlines():
-        parts = line.strip().split()
-        if parts and len(parts[0]) == 32:
-            dev_md5 = parts[0]
-            break
+    # 3. Query existing device cert MD5
+    user_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {user_cert_path}'\"")
+    magisk_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {magisk_cert_path}'\"")
 
-    if dev_md5 == host_md5:
+    dev_user_md5 = user_out.split()[0].strip() if user_out and len(user_out.split()[0].strip()) == 32 else ""
+    dev_magisk_md5 = magisk_out.split()[0].strip() if magisk_out and len(magisk_out.split()[0].strip()) == 32 else ""
+
+    if dev_user_md5 == host_md5 or dev_magisk_md5 == host_md5:
         return True, f"Verified & Active (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
 
-    # Push host cert to device /data/local/tmp/
+    # 4. Push host cert to /data/local/tmp/
     tmp_dest = f"/data/local/tmp/{target_cert_file}"
     push_res = ADBManager.run_adb(dev, f"push {cert_path} {tmp_dest}")
     if push_res[2] != 0:
         return False, f"Failed to push cert to device: {push_res[1]}"
 
-    # Execute robust root shell script to copy to user cacerts-added and Magisk trustusercerts
-    install_cmd = (
-        f"mkdir -p /data/misc/user/0/cacerts-added && "
-        f"cp -f {tmp_dest} {user_cert_path} && "
-        f"chown 1000:1000 {user_cert_path} && chmod 644 {user_cert_path} && "
-        f"mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null || true && "
-        f"cp -f {tmp_dest} {magisk_cert_path} 2>/dev/null || true && "
-        f"chown 0:0 {magisk_cert_path} 2>/dev/null || true && "
-        f"chmod 644 {magisk_cert_path} 2>/dev/null || true && "
-        f"chcon u:object_r:system_security_cacerts_file:s0 {magisk_cert_path} 2>/dev/null || true && "
-        f"rm -f {tmp_dest}"
-    )
-    run_su(dev, install_cmd)
-    
-    # Re-check device MD5
-    re_out = run_su(dev, md5_cmd)
-    re_md5 = None
-    for line in re_out.splitlines():
-        parts = line.strip().split()
-        if parts and len(parts[0]) == 32:
-            re_md5 = parts[0]
-            break
+    # 5. Create and push injection script to device
+    local_script = f"/tmp/inject_cert_{dev}.sh"
+    script_content = f"""#!/system/bin/sh
+CERT_FILE="{target_cert_file}"
+TMP_FILE="{tmp_dest}"
+USER_PATH="{user_cert_path}"
+MAGISK_PATH="{magisk_cert_path}"
 
-    if re_md5 == host_md5:
+mkdir -p /data/misc/user/0/cacerts-added
+cp -f "$TMP_FILE" "$USER_PATH"
+chown 1000:1000 "$USER_PATH" 2>/dev/null || chown system:system "$USER_PATH" 2>/dev/null
+chmod 644 "$USER_PATH"
+
+mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null
+cp -f "$TMP_FILE" "$MAGISK_PATH" 2>/dev/null
+chown 0:0 "$MAGISK_PATH" 2>/dev/null || chown root:root "$MAGISK_PATH" 2>/dev/null
+chmod 644 "$MAGISK_PATH" 2>/dev/null
+chcon u:object_r:system_security_cacerts_file:s0 "$MAGISK_PATH" 2>/dev/null
+
+rm -f "$TMP_FILE"
+"""
+    try:
+        with open(local_script, "w", encoding="utf-8") as f:
+            f.write(script_content)
+        ADBManager.run_adb(dev, f"push {local_script} /data/local/tmp/inject_cert.sh")
+        ADBManager.run_adb(dev, "shell \"su -c 'sh /data/local/tmp/inject_cert.sh'\"")
+        ADBManager.run_adb(dev, "shell \"rm -f /data/local/tmp/inject_cert.sh\"")
+    except Exception as e:
+        return False, f"Script injection failed: {e}"
+    finally:
+        if os.path.exists(local_script):
+            try: os.remove(local_script)
+            except: pass
+
+    # 6. Re-check device MD5
+    re_user_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {user_cert_path}'\"")
+    re_magisk_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {magisk_cert_path}'\"")
+
+    re_user_md5 = re_user_out.split()[0].strip() if re_user_out and len(re_user_out.split()[0].strip()) == 32 else ""
+    re_magisk_md5 = re_magisk_out.split()[0].strip() if re_magisk_out and len(re_magisk_out.split()[0].strip()) == 32 else ""
+
+    if re_user_md5 == host_md5 or re_magisk_md5 == host_md5:
         return True, f"Installed & Verified (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
     else:
-        return False, f"Verification Failed (Host: {host_md5[:8]}, Device: {re_md5 or 'None'})"
+        return False, f"Verification Failed (Host: {host_md5[:8]}, User: {re_user_md5 or 'None'}, Magisk: {re_magisk_md5 or 'None'})"
 
 def init_single_device(dev):
     print(f"\n============================================================")
