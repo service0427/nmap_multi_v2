@@ -20,7 +20,7 @@ fi
 if [ -f "tools/scrcpy/sync_gui_control.py" ]; then
     echo "[*] Registering Nmap Web Monitor (Port 5000)..."
     pm2 delete nmap-monitor 2>/dev/null
-    pm2 start tools/scrcpy/sync_gui_control.py --name "nmap-monitor" --interpreter python3
+    pm2 start tools/scrcpy/sync_gui_control.py --name "nmap-monitor" --cwd "$PROJECT_ROOT" --interpreter python3
 else
     echo "[!] tools/scrcpy/sync_gui_control.py not found. Skipping."
 fi
@@ -32,22 +32,22 @@ if [ -f "start.sh" ]; then
     
     # 2.1 Mini PC / Local WAN Mode (Public Wi-Fi / Single PC IP)
     pm2 delete nmap-scheduler-local 2>/dev/null
-    pm2 start ./start.sh --name "nmap-scheduler-local" -- --mode local
+    pm2 start ./start.sh --name "nmap-scheduler-local" --cwd "$PROJECT_ROOT" -- --mode local
     pm2 stop nmap-scheduler-local
     
     # 2.2 Central Multi-LTE Modem PBR Mode (lte11 ~ lteXX)
     pm2 delete nmap-scheduler-eth 2>/dev/null
-    pm2 start ./start.sh --name "nmap-scheduler-eth" -- --mode eth
+    pm2 start ./start.sh --name "nmap-scheduler-eth" --cwd "$PROJECT_ROOT" -- --mode eth
     pm2 stop nmap-scheduler-eth
 
     # 2.3 Multi-Wi-Fi Gateway Mode
     pm2 delete nmap-scheduler-wifi 2>/dev/null
-    pm2 start ./start.sh --name "nmap-scheduler-wifi" -- --mode wifi
+    pm2 start ./start.sh --name "nmap-scheduler-wifi" --cwd "$PROJECT_ROOT" -- --mode wifi
     pm2 stop nmap-scheduler-wifi
 
     # Default Alias (nmap-scheduler -> local)
     pm2 delete nmap-scheduler 2>/dev/null
-    pm2 start ./start.sh --name "nmap-scheduler" -- --mode local
+    pm2 start ./start.sh --name "nmap-scheduler" --cwd "$PROJECT_ROOT" -- --mode local
     pm2 stop nmap-scheduler
 else
     echo "[!] start.sh not found. Skipping."
@@ -58,7 +58,7 @@ if [ -f "tools/clean_logs.sh" ]; then
     echo "[*] Registering Nmap Log Cleaner (Hourly Cron)..."
     chmod +x tools/clean_logs.sh
     pm2 delete nmap-log-cleaner 2>/dev/null
-    pm2 start tools/clean_logs.sh --name "nmap-log-cleaner" --cron "0 * * * *" --no-autorestart
+    pm2 start tools/clean_logs.sh --name "nmap-log-cleaner" --cwd "$PROJECT_ROOT" --cron "0 * * * *" --no-autorestart
 else
     echo "[!] tools/clean_logs.sh not found. Skipping."
 fi
@@ -68,7 +68,7 @@ if [ -f "tools/adb_recovery_monitor.py" ]; then
     echo "[*] Registering ADB Recovery Monitor..."
     chmod +x tools/adb_recovery_monitor.py
     pm2 delete adb-recovery-monitor 2>/dev/null
-    pm2 start tools/adb_recovery_monitor.py --name "adb-recovery-monitor" --interpreter python3
+    pm2 start tools/adb_recovery_monitor.py --name "adb-recovery-monitor" --cwd "$PROJECT_ROOT" --interpreter python3
 else
     echo "[!] tools/adb_recovery_monitor.py not found. Skipping."
 fi
@@ -78,7 +78,7 @@ if [ -f "tools/sync_modems.py" ]; then
     echo "[*] Registering Nmap LTE Usage Sender (Daemon)..."
     chmod +x tools/sync_modems.py
     pm2 delete lte-usage-sender 2>/dev/null
-    pm2 start tools/sync_modems.py --name "lte-usage-sender" --interpreter python3 -- --daemon
+    pm2 start tools/sync_modems.py --name "lte-usage-sender" --cwd "$PROJECT_ROOT" --interpreter python3 -- --daemon
     pm2 stop lte-usage-sender
 else
     echo "[!] tools/sync_modems.py not found. Skipping."
