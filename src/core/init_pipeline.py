@@ -22,15 +22,31 @@ def run_su(dev, cmd_str):
     return out.strip()
 
 def check_and_install_naver_map(dev):
-    """Installs Naver Map v6.8.1.1 if missing."""
-    apk_dir = os.path.join(INSTALL_DIR, "naver_map_6.8.1.1")
-    if os.path.exists(apk_dir):
+    """Installs Naver Map v6.8.1.1 split APKs if missing or version mismatched."""
+    candidate_dirs = [
+        os.path.join(INSTALL_DIR, "naver_map_6.8.1.1"),
+        os.path.join(INSTALL_DIR, "naver_map"),
+        os.path.join(INSTALL_DIR, "com.nhn.android.nmap_6.8.1.1")
+    ]
+    apk_dir = None
+    for c in candidate_dirs:
+        if os.path.exists(c) and os.path.exists(os.path.join(c, "base.apk")):
+            apk_dir = c
+            break
+            
+    if apk_dir:
         apks = [os.path.join(apk_dir, f) for f in os.listdir(apk_dir) if f.endswith(".apk")]
+        # Ensure base.apk is passed FIRST to install-multiple
+        apks = sorted(apks, key=lambda x: (0 if os.path.basename(x) == "base.apk" else 1, x))
         if apks:
-            res = ADBManager.run_adb(dev, f"install-multiple -r {' '.join(apks)}")
+            res = ADBManager.run_adb(dev, f"install-multiple -r -d -g {' '.join(apks)}", timeout=120)
             if res[2] == 0:
                 return True, "v6.8.1.1 (Auto-Installed)"
-    return False, "Not Installed (Missing base.apk)"
+            else:
+                err_msg = res[1].strip() or res[0].strip() or "Unknown ADB Error"
+                return False, f"Installation Failed ({err_msg})"
+                
+    return False, "Not Installed (Missing base.apk in install/)"
 
 def check_and_install_gps_emulator(dev):
     """Installs GPS Emulator if missing and grants Mock Location appops."""
