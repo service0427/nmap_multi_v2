@@ -78,27 +78,26 @@ def auto_generate_manifest():
             "is_excluded": False
         }
         
-    try:
-        with open(MANIFEST_PATH, "w", encoding="utf-8") as f:
-            fcntl.flock(f, fcntl.LOCK_EX)
-            json.dump(manifest_data, f, indent=2)
-    except Exception as e:
-        print(f"[-] Error writing device manifest: {e}")
-        
+    save_manifest(manifest_data)
     return manifest_data
 
-def load_manifest(auto_create=True):
+_MANIFEST_CACHE = None
+
+def load_manifest(auto_create=True, force_refresh=False):
     """Load the devices manifest. Auto-generates it if file is missing."""
+    global _MANIFEST_CACHE
+    if _MANIFEST_CACHE is not None and not force_refresh:
+        return _MANIFEST_CACHE
+
     if not os.path.exists(MANIFEST_PATH):
         if auto_create:
-            return auto_generate_manifest()
+            _MANIFEST_CACHE = auto_generate_manifest()
+            return _MANIFEST_CACHE
         return {}
         
     data = {}
-    needs_update = False
     try:
         with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
-            fcntl.flock(f, fcntl.LOCK_SH)
             data = json.load(f)
 
         # Sync with connected devices if new devices are found (auto-healing)
@@ -111,10 +110,7 @@ def load_manifest(auto_create=True):
                     connected_serials.append(line.split()[0])
         except: pass
 
-        for serial in connected_serials:
-            if serial not in data:
-                needs_update = True
-                break
+        needs_update = any(serial not in data for serial in connected_serials)
 
         if needs_update and auto_create:
             print("[*] New devices detected. Merging into devices_manifest.json...")
@@ -122,25 +118,28 @@ def load_manifest(auto_create=True):
             for k, v in data.items():
                 if k in new_manifest:
                     new_manifest[k]["is_excluded"] = v.get("is_excluded", False)
-            
-            with open(MANIFEST_PATH, "w", encoding="utf-8") as wf:
-                fcntl.flock(wf, fcntl.LOCK_EX)
-                json.dump(new_manifest, wf, indent=2)
-            return new_manifest
+            save_manifest(new_manifest)
+            _MANIFEST_CACHE = new_manifest
+            return _MANIFEST_CACHE
 
-        return data
+        _MANIFEST_CACHE = data
+        return _MANIFEST_CACHE
     except Exception as e:
         if auto_create:
-            return auto_generate_manifest()
+            _MANIFEST_CACHE = auto_generate_manifest()
+            return _MANIFEST_CACHE
         return {}
 
 def save_manifest(data):
-    """Safely save manifest dict to JSON file with exclusive locking."""
+    """Safely save manifest dict to JSON file with atomic replacement."""
+    global _MANIFEST_CACHE
     try:
         os.makedirs(os.path.dirname(MANIFEST_PATH), exist_ok=True)
-        with open(MANIFEST_PATH, "w", encoding="utf-8") as f:
-            fcntl.flock(f, fcntl.LOCK_EX)
+        tmp_path = MANIFEST_PATH + ".tmp"
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        os.replace(tmp_path, MANIFEST_PATH)
+        _MANIFEST_CACHE = data
         return True
     except Exception as e:
         print(f"[-] Failed to save manifest: {e}")
