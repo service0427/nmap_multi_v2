@@ -1,0 +1,30 @@
+{
+  "index": 3,
+  "timestamp": "2026-07-28T14:11:52.130255",
+  "request": {
+    "method": "GET",
+    "url": "https://lcs.naver.com/m?u=client%253A%252F%252Fnavermap.android",
+    "headers": {
+      "accept-encoding": "gzip",
+      "user-agent": "Android/13 Model/SM-F711N com.nhn.android.nmap/6.8.1.1 1000; (60801000,uid:10326) LoginMod/8.9.5"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 05:11:51 GMT",
+      "content-type": "text/plain",
+      "content-length": "1",
+      "set-cookie": "NNB=GPM474AYHJUGU; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure, BUC=iTElJNqT1lwZpGa83G_oxFdil61DG_iOZxYN3waeSfg=; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure; HttpOnly",
+      "pragma": "no-cache",
+      "cache-control": "no-cache, no-store, must-revalidate, max-age=0",
+      "p3p": "CP=\"ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC\"",
+      "expires": "Tue, 01 Jan 1980 09:00:00 GMT",
+      "x-envoy-upstream-service-time": "0",
+      "referrer-policy": "unsafe-url",
+      "server": "nfront"
+    },
+    "body": " "
+  }
+}

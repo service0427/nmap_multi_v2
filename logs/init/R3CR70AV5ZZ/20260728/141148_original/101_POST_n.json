@@ -1,0 +1,91 @@
+{
+  "index": 101,
+  "timestamp": "2026-07-28T14:11:56.158147",
+  "request": {
+    "method": "POST",
+    "url": "https://nlog.naver.com/n",
+    "headers": {
+      "content-length": "1397",
+      "user-agent": "Mozilla/5.0 (Linux; Android 13; SM-F711N Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/108.0.5359.128 Mobile Safari/537.36 NAVER(inapp; map; 101; 6.8.1.1) WebViewSDK(map; dark; portrait)",
+      "content-type": "text/plain",
+      "accept": "*/*",
+      "origin": "https://pages.map.naver.com",
+      "x-requested-with": "com.nhn.android.nmap",
+      "sec-fetch-site": "same-site",
+      "sec-fetch-mode": "no-cors",
+      "sec-fetch-dest": "empty",
+      "referer": "https://pages.map.naver.com/agree-term/ends/app/home?lng=ko&user=&overFourteen=true&eventcheckshow=false&mapsvc=false&maplocsvc=false&naverlocsvc=false",
+      "accept-encoding": "gzip, deflate",
+      "accept-language": "ko,ko-KR;q=0.9,en-US;q=0.8,en;q=0.7",
+      "cookie": "NAPP_DI=57844a03a68816c347e40e9880e9698c, NSCS=1, NNB=Y4WQG2Y2HJUGU, BUC=xmO9gLjB60adLmngsUtZlYI-MJ01L7GyoEHZls4u7Ro="
+    },
+    "body": {
+      "corp": "naver",
+      "svc": "mapplace",
+      "location": "korea_real/korea",
+      "svc_tags": {},
+      "send_ts": 1785215516018,
+      "tool": {
+        "name": "ntm-web",
+        "ver": "nlogLibVersion=v0.1.64; verName=1.0.4; ntmVersion=v1.5.2"
+      },
+      "usr": {},
+      "env": {
+        "os": "Linux armv8l",
+        "br_ln": "ko",
+        "br_sr": "360x801",
+        "device_sr": "360x880",
+        "platform_type": "web",
+        "device_pr": "3",
+        "timezone": "Asia/Seoul"
+      },
+      "evts": [
+        {
+          "page_url": "https://pages.map.naver.com/agree-term/ends/app/home?lng=ko&user=&overFourteen=true&eventcheckshow=false&mapsvc=false&maplocsvc=false&naverlocsvc=false",
+          "page_ref": "",
+          "page_id": "c94a19860cb2630c4b1ff38e45720722",
+          "timing": {
+            "type": "navigate",
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "workerStart": 0,
+            "fetchStart": 13.600000001490116,
+            "domainLookupStart": 13.600000001490116,
+            "domainLookupEnd": 13.600000001490116,
+            "connectStart": 85,
+            "secureConnectionStart": 242.39999999850988,
+            "connectEnd": 520.3999999985099,
+            "requestStart": 524.3999999985099,
+            "responseStart": 567.7000000029802,
+            "responseEnd": 581.2999999970198,
+            "domInteractive": 1430.7000000029802,
+            "domContentLoadedEventStart": 1466.5,
+            "domContentLoadedEventEnd": 1466.6000000014901,
+            "domComplete": 2606.2000000029802,
+            "loadEventStart": 2608.10000000149,
+            "loadEventEnd": 2608.7000000029802,
+            "first_paint": 1430.1000000014901,
+            "first_contentful_paint": 1430.1000000014901
+          },
+          "type": "pageview",
+          "page_sti": "",
+          "evt_ts": 1785215516004,
+          "nlog_id": "b7c795fc-d242-4421-b4fc-64bcc3a1015b"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status_code": 204,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 05:11:56 GMT",
+      "set-cookie": "NNB=Y4WQG2Y2HJUGU; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure, SRT30=1785215516; expires=Tue, 28 Jul 2026 05:41:56 GMT; path=/; domain=.naver.com; SameSite=None; Secure, SRT5=1785215516; expires=Tue, 28 Jul 2026 05:16:56 GMT; path=/; domain=.naver.com; SameSite=None; Secure, BUC=NfI8pYVLN26Of3kTpgUuXOkqfHvob1TiAnlDvYpUyRM=; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "0",
+      "referrer-policy": "unsafe-url",
+      "server": "nfront"
+    },
+    "body": ""
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "index": 15,
+  "timestamp": "2026-07-28T14:11:52.834704",
+  "request": {
+    "method": "POST",
+    "url": "https://nlog.naver.com/nlogapp",
+    "headers": {
+      "Connection": "close",
+      "User-Agent": "nApps (Android 13; samsung SM-F711N; navermap.v5.android; 6.8.1.1)",
+      "da-dd": "8f87ff9a-2b32-4b95-a5be-77a26a835159",
+      "da-dv": "",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Content-Length": "1796",
+      "Host": "nlog.naver.com",
+      "Accept-Encoding": "gzip"
+    },
+    "body": {
+      "corp": "naver",
+      "svc": "mapplace",
+      "location": "korea_real/korea",
+      "tool": {
+        "name": "nlog-sdk",
+        "ver": "2.6.0"
+      },
+      "send_ts": 1785215512683,
+      "usr": {
+        "adid": "8f87ff9a-2b32-4b95-a5be-77a26a835159",
+        "ssaid": "c38fdc08ddeca113",
+        "ni": "57844a03a68816c347e40e9880e9698c"
+      },
+      "env": {
+        "os_type": "android",
+        "os_ver": "13",
+        "device_type": "2",
+        "device_model": "SM-F711N",
+        "device_locale": "ko_",
+        "device_sr": "1080x2402",
+        "device_pr": "3.0",
+        "app_id": "navermap.v5.android",
+        "app_ver": "6.8.1.1",
+        "timezone": "Asia/Seoul",
+        "mcc_mnc": "",
+        "network_type": "wifi",
+        "init_ts": -1,
+        "platform_type": "app"
+      },
+      "evts": [
+        {
+          "type": "session_start",
+          "nlog_send_type": 1,
+          "screen_name": "MainActivity",
+          "nlog_id": "1l6gegn00000.000004.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512230
+        },
+        {
+          "type": "screen_start",
+          "nlog_send_type": 1,
+          "screen_name": "MainActivity",
+          "screen_id": 47034629,
+          "screen_type": 1,
+          "nlog_id": "1l6gegn00000.000005.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512236
+        },
+        {
+          "type": "screen_start",
+          "nlog_send_type": 1,
+          "screen_name": "ActivityBackPressedCallbackFragment",
+          "screen_id": 126914739,
+          "screen_type": 2,
+          "parent_name": "MainActivity",
+          "parent_id": 47034629,
+          "nlog_id": "1l6gegn00000.000006.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512237
+        },
+        {
+          "type": "screen_end",
+          "nlog_send_type": 1,
+          "screen_name": "MainActivity",
+          "screen_id": 47034629,
+          "screen_type": 1,
+          "screen_duration": 315,
+          "nlog_id": "1l6gegn00000.000007.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512552
+        },
+        {
+          "type": "screen_end",
+          "nlog_send_type": 1,
+          "screen_name": "ActivityBackPressedCallbackFragment",
+          "screen_id": 126914739,
+          "screen_type": 2,
+          "screen_duration": 316,
+          "parent_name": "MainActivity",
+          "parent_id": 47034629,
+          "nlog_id": "1l6gegn00000.000008.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512553
+        },
+        {
+          "type": "screen_start",
+          "nlog_send_type": 1,
+          "screen_name": "ConsentActivity",
+          "screen_id": 63725614,
+          "screen_type": 1,
+          "nlog_id": "1l6gegn00000.000009.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512612
+        }
+      ]
+    }
+  },
+  "response": {
+    "status_code": 204,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "set-cookie": "NNB=4ESDMFIYHJUGU; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure, SRT30=1785215512; expires=Tue, 28 Jul 2026 05:41:52 GMT; path=/; domain=.naver.com; SameSite=None; Secure, SRT5=1785215512; expires=Tue, 28 Jul 2026 05:16:52 GMT; path=/; domain=.naver.com; SameSite=None; Secure, BUC=qlYfQsOD_gTu7GfNnbw7cQl_kgAlZE4WNmwcz7ex0Qc=; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "4",
+      "referrer-policy": "unsafe-url",
+      "server": "nfront",
+      "connection": "close"
+    },
+    "body": ""
+  }
+}

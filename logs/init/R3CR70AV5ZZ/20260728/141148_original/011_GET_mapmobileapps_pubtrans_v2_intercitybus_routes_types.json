@@ -1,0 +1,47 @@
+{
+  "index": 11,
+  "timestamp": "2026-07-28T14:11:52.505462",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/pubtrans/v2/intercitybus/routes/types?caller=android_NaverMap_6.8.1.1&msgpad=1785215512444&md=s8Kir1uLDEc5VxvNnpgCg%2FApmUY%3D",
+    "headers": {
+      "x-adid": "8f87ff9a-2b32-4b95-a5be-77a26a835159",
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "accept-language": "ko",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-encoding": "br,gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json;charset=UTF-8",
+      "apigw-uuid": "71c05e46-fd98-4a2d-bf62-a169cb93915e",
+      "content-encoding": "gzip"
+    },
+    "body": [
+      {
+        "id": 400,
+        "name": "시외",
+        "shortName": "시외",
+        "longName": "시외",
+        "iconName": "시외",
+        "color": "#b155b0",
+        "darkColor": "#b155b0"
+      },
+      {
+        "id": 401,
+        "name": "고속",
+        "shortName": "고속",
+        "longName": "고속",
+        "iconName": "고속",
+        "color": "#e94e53",
+        "darkColor": "#CC484C"
+      }
+    ]
+  }
+}

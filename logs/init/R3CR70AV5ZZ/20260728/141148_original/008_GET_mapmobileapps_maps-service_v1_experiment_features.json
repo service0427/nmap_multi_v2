@@ -1,0 +1,36 @@
+{
+  "index": 8,
+  "timestamp": "2026-07-28T14:11:52.450413",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/maps-service/v1/experiment/features?msgpad=1785215512384&md=eXRtyApMkL9ZQNvV9vX7E6mPokg%3D",
+    "headers": {
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-language": "ko",
+      "accept-encoding": "gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json; charset=utf-8",
+      "apigw-uuid": "2379cda0-bc4f-4e28-8514-5f9cec3a91ac",
+      "etag": "W/\"54-YGtDNTh2evKcMGYaS6ZgHc42YtM\"",
+      "content-encoding": "gzip"
+    },
+    "body": {
+      "items": [
+        {
+          "key": "discovery-feed-api-ranker",
+          "value": "rule-based",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

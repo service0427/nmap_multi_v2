@@ -5,7 +5,6 @@ import os
 import time
 import subprocess
 import re
-from concurrent.futures import ThreadPoolExecutor
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 INSTALL_DIR = os.path.join(PROJECT_ROOT, "install")
@@ -19,7 +18,8 @@ def run_shell(dev, cmd_str):
 
 def run_su(dev, cmd_str):
     """Executes ADB shell command with su root privileges."""
-    out, err, rc = ADBManager.run_adb(dev, f"shell \"su -c '{cmd_str}'\"")
+    escaped_cmd = cmd_str.replace('"', '\\"')
+    out, err, rc = ADBManager.run_adb(dev, f"shell \"su -c \\\"{escaped_cmd}\\\"\"")
     return out.strip()
 
 def check_and_install_naver_map(dev):
@@ -95,10 +95,8 @@ def check_and_start_frida(dev):
 def verify_and_install_mitm_cert(dev):
     """Verifies host PC mitmproxy CA certificate against device CA store and installs if missing/mismatched."""
     cert_path = os.path.expanduser("~/.mitmproxy/mitmproxy-ca-cert.pem")
-    
-    # 1. Ensure mitmproxy cert exists on host (start mitmdump for 2s if missing)
     if not os.path.exists(cert_path):
-        print("  [*] Host mitmproxy CA certificate missing. Spawning mitmdump for 2s to generate...")
+        print("  [*] Host mitmproxy CA certificate missing. Spawning mitmdump to generate...")
         try:
             proc = subprocess.Popen(["mitmdump"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             time.sleep(2)
@@ -111,7 +109,6 @@ def verify_and_install_mitm_cert(dev):
     if not os.path.exists(cert_path):
         return False, "Host mitmproxy cert (~/.mitmproxy/mitmproxy-ca-cert.pem) missing"
 
-    # 2. Extract host hash and MD5
     try:
         res = subprocess.run(["openssl", "x509", "-inform", "PEM", "-subject_hash_old", "-in", cert_path], capture_output=True, text=True, check=True)
         cert_hash = res.stdout.strip().splitlines()[0].strip()
@@ -128,55 +125,52 @@ def verify_and_install_mitm_cert(dev):
     user_cert_path = f"/data/misc/user/0/cacerts-added/{target_cert_file}"
     magisk_cert_path = f"/data/adb/modules/trustusercerts/system/etc/security/cacerts/{target_cert_file}"
 
-    # 3. Query existing device cert MD5
-    user_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {user_cert_path}'\"")
-    magisk_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {magisk_cert_path}'\"")
+    # Query MD5 on device
+    md5_cmd = f"md5sum {user_cert_path} 2>/dev/null || md5sum {magisk_cert_path} 2>/dev/null"
+    dev_md5_out = run_su(dev, md5_cmd)
+    dev_md5 = None
+    for line in dev_md5_out.splitlines():
+        parts = line.strip().split()
+        if parts and len(parts[0]) == 32:
+            dev_md5 = parts[0]
+            break
 
-    dev_user_md5 = user_out.split()[0].strip() if user_out and len(user_out.split()[0].strip()) == 32 else ""
-    dev_magisk_md5 = magisk_out.split()[0].strip() if magisk_out and len(magisk_out.split()[0].strip()) == 32 else ""
-
-    if dev_user_md5 == host_md5 or dev_magisk_md5 == host_md5:
+    if dev_md5 == host_md5:
         return True, f"Verified & Active (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
 
-    # 4. Push host cert to /data/local/tmp/
+    # Push host cert to device /data/local/tmp/
     tmp_dest = f"/data/local/tmp/{target_cert_file}"
     push_res = ADBManager.run_adb(dev, f"push {cert_path} {tmp_dest}")
     if push_res[2] != 0:
         return False, f"Failed to push cert to device: {push_res[1]}"
 
-    # 5. Direct atomic root shell commands for certificate installation
-    run_su(dev, "mkdir -p /data/misc/user/0/cacerts-added")
-    run_su(dev, f"cp -f {tmp_dest} {user_cert_path}")
-    run_su(dev, f"chown 1000:1000 {user_cert_path} 2>/dev/null || chown system:system {user_cert_path} 2>/dev/null")
-    run_su(dev, f"chmod 644 {user_cert_path}")
+    # Execute robust root shell script to copy to user cacerts-added and Magisk trustusercerts
+    install_cmd = (
+        f"mkdir -p /data/misc/user/0/cacerts-added && "
+        f"cp -f {tmp_dest} {user_cert_path} && "
+        f"chown 1000:1000 {user_cert_path} && chmod 644 {user_cert_path} && "
+        f"mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null || true && "
+        f"cp -f {tmp_dest} {magisk_cert_path} 2>/dev/null || true && "
+        f"chown 0:0 {magisk_cert_path} 2>/dev/null || true && "
+        f"chmod 644 {magisk_cert_path} 2>/dev/null || true && "
+        f"chcon u:object_r:system_security_cacerts_file:s0 {magisk_cert_path} 2>/dev/null || true && "
+        f"rm -f {tmp_dest}"
+    )
+    run_su(dev, install_cmd)
+    
+    # Re-check device MD5
+    re_out = run_su(dev, md5_cmd)
+    re_md5 = None
+    for line in re_out.splitlines():
+        parts = line.strip().split()
+        if parts and len(parts[0]) == 32:
+            re_md5 = parts[0]
+            break
 
-    run_su(dev, "mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null")
-    run_su(dev, f"cp -f {tmp_dest} {magisk_cert_path} 2>/dev/null")
-    run_su(dev, f"chown 0:0 {magisk_cert_path} 2>/dev/null || chown root:root {magisk_cert_path} 2>/dev/null")
-    run_su(dev, f"chmod 644 {magisk_cert_path} 2>/dev/null")
-    run_su(dev, f"chcon u:object_r:system_security_cacerts_file:s0 {magisk_cert_path} 2>/dev/null")
-    run_su(dev, f"rm -f {tmp_dest}")
-
-    # 6. Re-check device MD5
-    re_user_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {user_cert_path}'\"")
-    re_magisk_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {magisk_cert_path}'\"")
-
-    re_user_md5 = re_user_out.split()[0].strip() if re_user_out and len(re_user_out.split()[0].strip()) == 32 else ""
-    re_magisk_md5 = re_magisk_out.split()[0].strip() if re_magisk_out and len(re_magisk_out.split()[0].strip()) == 32 else ""
-
-    if re_user_md5 == host_md5 or re_magisk_md5 == host_md5:
-        # Reboot device to apply Magisk trustusercerts system mount (matching V1 behavior)
-        print(f"  [*] New certificate injected. Rebooting {dev} to trigger Magisk system cert mount...")
-        ADBManager.run_adb(dev, "reboot")
-        time.sleep(5)
-        wait_res = ADBManager.run_adb(dev, "wait-for-device", timeout=180)
-        if wait_res[2] == 0:
-            time.sleep(5)  # Allow system services to settle
-            return True, f"Installed & Rebooted (Magisk Mounted - Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
-        else:
-            return True, f"Installed & Reboot Triggered (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
+    if re_md5 == host_md5:
+        return True, f"Installed & Verified (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
     else:
-        return False, f"Verification Failed (Host: {host_md5[:8]}, User: {re_user_md5 or 'None'}, Magisk: {re_magisk_md5 or 'None'})"
+        return False, f"Verification Failed (Host: {host_md5[:8]}, Device: {re_md5 or 'None'})"
 
 def init_single_device(dev):
     print(f"\n============================================================")
@@ -270,80 +264,12 @@ def ensure_local_install_assets():
     else:
         print("[✓] Local 'install' directory and APK assets verified.")
 
-def check_device_root_authorization(devices):
-    """Performs preliminary Root Shell (su) authorization audit on all connected devices concurrently, exactly as V1 device_init.sh did."""
-    print(f"[*] Performing preliminary root authorization check on all {len(devices)} connected devices...")
-    
-    authorized_devices = []
-    failed_devices = []
-    no_su_devices = []
-
-    def check_dev_root(idx, serial):
-        formatted_idx = f"{idx+1:02d}"
-        
-        # Test su directly with a 3-second timeout.
-        # Executing "su -c 'id'" via ADB triggers the Magisk superuser prompt popup on the phone screen.
-        su_test_res = ADBManager.run_adb(serial, "shell \"su -c 'id'\"", timeout=3)
-        stdout_str = su_test_res[0].strip()
-        
-        if "uid=0" in stdout_str:
-            return (serial, "ok", f"  - {formatted_idx}. [{serial}]: Root shell authorization OK")
-
-        # Check if su binary exists on the device
-        has_su_res = ADBManager.run_adb(serial, "shell \"which su 2>/dev/null || ls /system/bin/su /system/xbin/su /sbin/su 2>/dev/null\"", timeout=3)
-        has_su = has_su_res[0].strip()
-        
-        if not has_su or "su" not in has_su:
-            return (serial, "no_su", f"  - {formatted_idx}. [{serial}]: su binary not found")
-        else:
-            return (serial, "failed", f"  - {formatted_idx}. [{serial}]: Root shell authorization failed / Requesting popup...")
-
-    # Run root check across all devices concurrently to trigger Magisk popups simultaneously
-    with ThreadPoolExecutor(max_workers=len(devices)) as executor:
-        futures = [executor.submit(check_dev_root, i, dev) for i, dev in enumerate(devices)]
-        results = [fut.result() for fut in futures]
-
-    # Print results sorted by index
-    results.sort(key=lambda x: x[2])
-    for serial, status, log_line in results:
-        print(log_line)
-        if status == "ok":
-            authorized_devices.append(serial)
-        elif status == "failed":
-            failed_devices.append(serial)
-        elif status == "no_su":
-            no_su_devices.append(serial)
-
-    # Check if there are failures (Same exit logic as V1)
-    if failed_devices or no_su_devices:
-        print("\n============================================================")
-        print("⚠️  [일부 디바이스의 Root 권한이 확보되지 않았습니다]")
-        print("============================================================")
-        if failed_devices:
-            print("\n[!] Magisk 권한 승인이 필요한 디바이스:")
-            for s in failed_devices:
-                print(f"  - {s}")
-            print("  👉 대상 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 클릭해주세요.")
-
-        if no_su_devices:
-            print("\n[!] 'su' 명령어를 찾을 수 없거나 루팅이 확인되지 않는 디바이스:")
-            for s in no_su_devices:
-                print(f"  - {s}")
-            print("  👉 기기가 정상적으로 루팅(Magisk)되어 있는지 확인해주세요.")
-            
-        print("\n승인 완료 후 이 스크립트를 다시 구동해주시기 바랍니다.")
-        print("============================================================\n")
-        sys.exit(1)
-
-    print("[✓] All connected devices passed root check. Proceeding to initialization...\n")
-
 def main():
     devices = ADBManager.get_connected_devices()
     if not devices:
         print("[-] No active ADB devices found.")
         sys.exit(1)
         
-    check_device_root_authorization(devices)
     ensure_local_install_assets()
         
     print(f"============================================================")

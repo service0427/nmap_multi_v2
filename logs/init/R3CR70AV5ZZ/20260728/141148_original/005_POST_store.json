@@ -1,0 +1,54 @@
+{
+  "index": 5,
+  "timestamp": "2026-07-28T14:11:52.241521",
+  "request": {
+    "method": "POST",
+    "url": "https://nelo2-col.navercorp.com/_store",
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "506",
+      "Host": "nelo2-col.navercorp.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip",
+      "User-Agent": "Android/13 Model/SM-F711N com.nhn.android.nmap/6.8.1.1 1000; (60801000,uid:10326) LoginMod/8.9.5"
+    },
+    "body": {
+      "Platform": "Android 13",
+      "DeviceModel": "SM-F711N",
+      "NetworkType": "wifi",
+      "DeviceLocked": false,
+      "BiometricEnrolled": false,
+      "PowerSaveMode": false,
+      "DozeMode": false,
+      "FontScale": 1.05,
+      "SystemNightMode": true,
+      "idNo": "",
+      "DeviceId": "57844a03a68816c347e40e9880e9698c",
+      "ServiceCode": "navermap",
+      "ApplicationId": "com.nhn.android.nmap",
+      "ApplicationVersion": "6.8.1.1",
+      "logLevel": "INFO",
+      "txtToken": "6253014aa02b447192e386d5b5b61375",
+      "projectVersion": "LoginMod_8.9.5",
+      "body": "timestamp: 1785215511, msg: GetBCookie::fromJava()"
+    }
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Server": "nginx",
+      "Date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Content-Length": "32",
+      "Connection": "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "PUT, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Encoding"
+    },
+    "body": {
+      "code": 200,
+      "message": "Success"
+    }
+  }
+}

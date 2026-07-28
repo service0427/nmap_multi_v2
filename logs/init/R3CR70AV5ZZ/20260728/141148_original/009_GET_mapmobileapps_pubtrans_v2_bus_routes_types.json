@@ -1,0 +1,281 @@
+{
+  "index": 9,
+  "timestamp": "2026-07-28T14:11:52.498198",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/pubtrans/v2/bus/routes/types?caller=android_NaverMap_6.8.1.1&msgpad=1785215512443&md=1Iz8Devem1AM4T8fhSYQJLn3JWk%3D",
+    "headers": {
+      "x-adid": "8f87ff9a-2b32-4b95-a5be-77a26a835159",
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "accept-language": "ko",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-encoding": "br,gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json;charset=UTF-8",
+      "apigw-uuid": "273ce430-ec13-4905-93d7-5dd82cea83f2",
+      "content-encoding": "gzip"
+    },
+    "body": [
+      {
+        "id": 0,
+        "name": "알수없음",
+        "shortName": "알수없음",
+        "longName": "알수없음",
+        "iconName": "-",
+        "color": "#60676D",
+        "darkColor": "#707880"
+      },
+      {
+        "id": 1,
+        "name": "일반",
+        "shortName": "일반",
+        "longName": "일반",
+        "iconName": "일반",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 2,
+        "name": "좌석",
+        "shortName": "좌석",
+        "longName": "좌석",
+        "iconName": "좌석",
+        "color": "#386de8",
+        "darkColor": "#386de8"
+      },
+      {
+        "id": 3,
+        "name": "마을",
+        "shortName": "마을",
+        "longName": "마을",
+        "iconName": "마을",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 4,
+        "name": "직행좌석",
+        "shortName": "직행좌석",
+        "longName": "직행좌석",
+        "iconName": "직행",
+        "color": "#fb5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 5,
+        "name": "공항",
+        "shortName": "공항",
+        "longName": "공항",
+        "iconName": "공항",
+        "color": "#65a6d2",
+        "darkColor": "#65a6d2"
+      },
+      {
+        "id": 6,
+        "name": "간선급행",
+        "shortName": "간선급행",
+        "longName": "간선급행",
+        "iconName": "급행",
+        "color": "#fb5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 10,
+        "name": "외곽",
+        "shortName": "외곽",
+        "longName": "외곽",
+        "iconName": "외곽",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 11,
+        "name": "간선",
+        "shortName": "간선",
+        "longName": "간선",
+        "iconName": "간선",
+        "color": "#386de8",
+        "darkColor": "#386de8"
+      },
+      {
+        "id": 12,
+        "name": "지선",
+        "shortName": "지선",
+        "longName": "지선",
+        "iconName": "지선",
+        "color": "#3cc344",
+        "darkColor": "#339939"
+      },
+      {
+        "id": 13,
+        "name": "순환",
+        "shortName": "순환",
+        "longName": "순환",
+        "iconName": "순환",
+        "color": "#FFB200",
+        "darkColor": "#D19A04"
+      },
+      {
+        "id": 14,
+        "name": "광역",
+        "shortName": "광역",
+        "longName": "광역",
+        "iconName": "광역",
+        "color": "#fb5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 15,
+        "name": "급행",
+        "shortName": "급행",
+        "longName": "급행",
+        "iconName": "급행",
+        "color": "#FB5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 16,
+        "name": "관광",
+        "shortName": "관광",
+        "longName": "관광",
+        "iconName": "관광",
+        "color": "#FFB200",
+        "darkColor": "#D19A04"
+      },
+      {
+        "id": 20,
+        "name": "농어촌",
+        "shortName": "농어촌",
+        "longName": "농어촌",
+        "iconName": "농어촌",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 21,
+        "name": "제주시외",
+        "shortName": "제주시외",
+        "longName": "제주시외",
+        "iconName": "시외",
+        "color": "#8841D2",
+        "darkColor": "#8841D2"
+      },
+      {
+        "id": 22,
+        "name": "시외",
+        "shortName": "시외",
+        "longName": "시외",
+        "iconName": "시외",
+        "color": "#FB5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 26,
+        "name": "급행간선",
+        "shortName": "급행간선",
+        "longName": "급행간선",
+        "iconName": "급행",
+        "color": "#8841D2",
+        "darkColor": "#8841D2"
+      },
+      {
+        "id": 27,
+        "name": "셔틀",
+        "shortName": "셔틀",
+        "longName": "셔틀",
+        "iconName": "셔틀",
+        "color": "#F0602F",
+        "darkColor": "#C4512A"
+      },
+      {
+        "id": 28,
+        "name": "광역급행",
+        "shortName": "광역급행",
+        "longName": "광역급행",
+        "iconName": "광역",
+        "color": "#FB5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 30,
+        "name": "공영",
+        "shortName": "공영",
+        "longName": "공영",
+        "iconName": "마을",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 31,
+        "name": "첨단(대전)",
+        "shortName": "첨단(대전)",
+        "longName": "첨단(대전)",
+        "iconName": "외곽",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 32,
+        "name": "심야",
+        "shortName": "심야",
+        "longName": "심야",
+        "iconName": "일반",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 33,
+        "name": "시외",
+        "shortName": "시외",
+        "longName": "시외",
+        "iconName": "시외",
+        "color": "#FB5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 34,
+        "name": "농어촌(일반)",
+        "shortName": "농어촌(일반)",
+        "longName": "농어촌(일반)",
+        "iconName": "농어촌",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 35,
+        "name": "농어촌(좌석)",
+        "shortName": "농어촌(좌석)",
+        "longName": "농어촌(좌석)",
+        "iconName": "농어촌",
+        "color": "#87C700",
+        "darkColor": "#6EA104"
+      },
+      {
+        "id": 36,
+        "name": "광역급행",
+        "shortName": "광역급행",
+        "longName": "광역급행",
+        "iconName": "광역",
+        "color": "#FB5852",
+        "darkColor": "#CC4A46"
+      },
+      {
+        "id": 37,
+        "name": "한강",
+        "shortName": "한강",
+        "longName": "한강",
+        "iconName": "한강",
+        "color": "#484FB4",
+        "darkColor": "#535AC4"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+UPDATE `devices` SET `alias`='F711N', `orig_ssaid`='c38fdc08ddeca113', `orig_adid`='8f87ff9a-2b32-4b95-a5be-77a26a835159', `orig_idfv`='732d1073-0a37-e72b-78bc-166fbc4322d0', `orig_ni`='57844a03a68816c347e40e9880e9698c', `orig_token`='LPzYjmXIKxoJ1OLQ' WHERE `device_id`='R3CR70AV5ZZ';

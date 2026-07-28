@@ -1,0 +1,39 @@
+{
+  "index": 88,
+  "timestamp": "2026-07-28T14:11:55.599872",
+  "request": {
+    "method": "POST",
+    "url": "https://android.apis.google.com/c2dm/register3",
+    "headers": {
+      "content-length": "833",
+      "content-type": "application/x-www-form-urlencoded",
+      "authorization": "AidLogin 3571550641388346649:3805367200562185794",
+      "app": "com.nhn.android.nmap",
+      "gcm_ver": "262031029",
+      "app_ver": "60801000",
+      "request_type": "0",
+      "user-agent": "com.google.android.gms/262031029 (Linux; U; Android 13; ko_KR; SM-F711N; Build/TP1A.220624.014; Cronet/148.0.7778.120)",
+      "accept-encoding": "gzip, deflate, br",
+      "priority": "u=1, i"
+    },
+    "body": "X-subtype=982699116299&sender=982699116299&X-app_ver=60801000&X-osv=33&X-cliv=fcm-24.0.0&X-gmsv=262031029&X-appid=dxbvm2akRrSBCbl5Cme0C4&X-scope=*&X-Goog-Firebase-Installations-Auth=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6IjE6OTgyNjk5MTE2Mjk5OmFuZHJvaWQ6MmM4NDE0MTcyMjdjNjAxODU3YzQwZSIsImV4cCI6MTc4NTgyMDMxMiwiZmlkIjoiZHhidm0yYWtSclNCQ2JsNUNtZTBDNCIsInByb2plY3ROdW1iZXIiOjk4MjY5OTExNjI5OX0.AB2LPV8wRQIgV9C9B4nXsjfBbRNBEWZTonj00L06UMMGcR-YgOvJSGsCIQDYCFtwlXKS48rm0vm59FRcU6dgaJcht3EFhiq-wMX1Pw&X-gmp_app_id=1%3A982699116299%3Aandroid%3A2c841417227c601857c40e&X-firebase-app-name-hash=R1dAH9Ui7M-ynoznwBdw01tLxhI&X-app_ver_name=6.8.1.1&app=com.nhn.android.nmap&device=3571550641388346649&app_ver=60801000&info=c16yxhpvjoAXoOhBO1boBVy13H7q7Bk&gcm_ver=262031029&plat=0&cert=08688ae148f57b5cdc3fd6fa52bc649f06390100&target_ver=35"
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "content-type": "text/plain; charset=UTF-8",
+      "content-encoding": "gzip",
+      "date": "Tue, 28 Jul 2026 05:11:55 GMT",
+      "expires": "Tue, 28 Jul 2026 05:11:55 GMT",
+      "cache-control": "private, max-age=0",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "content-security-policy": "frame-ancestors 'self'",
+      "x-xss-protection": "1; mode=block",
+      "content-length": "160",
+      "server": "GSE",
+      "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+    },
+    "body": "token=dxbvm2akRrSBCbl5Cme0C4:APA91bH0JYYepzKvzD0rHuS-6Jwl7Tiyc3-eiYZkmr230t9AMaAT89sRrAWVzyYR1_l3cpQ2-vLfDZyruJzummUkmYiGuAWsaA5s_-esiXSX4YrwFXjfoxo"
+  }
+}

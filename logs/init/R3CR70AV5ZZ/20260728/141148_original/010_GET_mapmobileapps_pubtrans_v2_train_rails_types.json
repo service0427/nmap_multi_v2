@@ -1,0 +1,155 @@
+{
+  "index": 10,
+  "timestamp": "2026-07-28T14:11:52.499578",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/pubtrans/v2/train/rails/types?caller=android_NaverMap_6.8.1.1&msgpad=1785215512443&md=GV6lqNBHS0WFRhNC0xsPDcTNgZ4%3D",
+    "headers": {
+      "x-adid": "8f87ff9a-2b32-4b95-a5be-77a26a835159",
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "accept-language": "ko",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-encoding": "br,gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json;charset=UTF-8",
+      "apigw-uuid": "3bad5901-9ff2-4541-802b-b6a44e642342",
+      "content-encoding": "gzip"
+    },
+    "body": [
+      {
+        "id": 300,
+        "name": "KTX",
+        "shortName": "KTX",
+        "longName": "KTX",
+        "iconName": "KTX",
+        "color": "#3b57a4",
+        "darkColor": "#4768C4"
+      },
+      {
+        "id": 301,
+        "name": "새마을",
+        "shortName": "새마을",
+        "longName": "새마을",
+        "iconName": "새마을",
+        "color": "#577ed2",
+        "darkColor": "#577ed2"
+      },
+      {
+        "id": 302,
+        "name": "무궁화",
+        "shortName": "무궁화",
+        "longName": "무궁화",
+        "iconName": "무궁화",
+        "color": "#f25f30",
+        "darkColor": "#f25f30"
+      },
+      {
+        "id": 303,
+        "name": "통근",
+        "shortName": "통근",
+        "longName": "통근",
+        "iconName": "통근",
+        "color": "#00a43d",
+        "darkColor": "#00a43d"
+      },
+      {
+        "id": 304,
+        "name": "누리로",
+        "shortName": "누리로",
+        "longName": "누리로",
+        "iconName": "누리로",
+        "color": "#046bbb",
+        "darkColor": "#046bbb"
+      },
+      {
+        "id": 305,
+        "name": "KTX-산천",
+        "shortName": "KTX-산천",
+        "longName": "KTX-산천",
+        "iconName": "KTX",
+        "color": "#3b57a4",
+        "darkColor": "#4768C4"
+      },
+      {
+        "id": 306,
+        "name": "ITX-새마을",
+        "shortName": "ITX-새마을",
+        "longName": "ITX-새마을",
+        "iconName": "ITX-새마을",
+        "color": "#C3002F",
+        "darkColor": "#C33B4A"
+      },
+      {
+        "id": 307,
+        "name": "ITX-청춘",
+        "shortName": "ITX-청춘",
+        "longName": "ITX-청춘",
+        "iconName": "ITX-청춘",
+        "color": "#52b571",
+        "darkColor": "#52b571"
+      },
+      {
+        "id": 308,
+        "name": "KTX-산천",
+        "shortName": "KTX-산천",
+        "longName": "KTX-산천",
+        "iconName": "KTX",
+        "color": "#3b57a4",
+        "darkColor": "#4768C4"
+      },
+      {
+        "id": 309,
+        "name": "KTX-이음",
+        "shortName": "KTX-이음",
+        "longName": "KTX-이음",
+        "iconName": "KTX",
+        "color": "#3b57a4",
+        "darkColor": "#4768C4"
+      },
+      {
+        "id": 310,
+        "name": "SRT",
+        "shortName": "SRT",
+        "longName": "SRT",
+        "iconName": "SRT",
+        "color": "#6F135E",
+        "darkColor": "#955288"
+      },
+      {
+        "id": 311,
+        "name": "관광열차",
+        "shortName": "관광열차",
+        "longName": "관광열차",
+        "iconName": "관광",
+        "color": "#FFB200",
+        "darkColor": "#D19A04"
+      },
+      {
+        "id": 312,
+        "name": "ITX-마음",
+        "shortName": "ITX-마음",
+        "longName": "ITX-마음",
+        "iconName": "ITX-마음",
+        "color": "#C3002F",
+        "darkColor": "#C33B4A"
+      },
+      {
+        "id": 313,
+        "name": "KTX-청룡",
+        "shortName": "KTX-청룡",
+        "longName": "KTX-청룡",
+        "iconName": "KTX-청룡",
+        "color": "#3b57a4",
+        "darkColor": "#4768C4"
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "index": 12,
+  "timestamp": "2026-07-28T14:11:52.508150",
+  "request": {
+    "method": "POST",
+    "url": "https://nlog.naver.com/nlogapp/heartbeat",
+    "headers": {
+      "Connection": "close",
+      "User-Agent": "nApps (Android 13; samsung SM-F711N; navermap.v5.android; 6.8.1.1)",
+      "da-dd": "",
+      "da-dv": "",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Content-Length": "621",
+      "Host": "nlog.naver.com",
+      "Accept-Encoding": "gzip"
+    },
+    "body": {
+      "corp": "naver",
+      "svc": "mapplace",
+      "location": "korea_real/korea",
+      "tool": {
+        "name": "nlog-sdk",
+        "ver": "2.6.0"
+      },
+      "send_ts": 1785215512330,
+      "usr": {
+        "ssaid": "c38fdc08ddeca113",
+        "ni": "57844a03a68816c347e40e9880e9698c"
+      },
+      "env": {
+        "os_type": "android",
+        "os_ver": "13",
+        "device_type": "2",
+        "device_model": "SM-F711N",
+        "device_locale": "ko_",
+        "device_sr": "1080x2402",
+        "device_pr": "3.0",
+        "app_id": "navermap.v5.android",
+        "app_ver": "6.8.1.1",
+        "timezone": "Asia/Seoul",
+        "mcc_mnc": "",
+        "network_type": "wifi",
+        "init_ts": -1,
+        "platform_type": "app"
+      },
+      "evts": [
+        {
+          "type": "heartbeat",
+          "nlog_send_type": 1,
+          "nlog_id": "1l6gegn00000.000003.LPzYjmXIKxoJ1OLQ",
+          "evt_ts": 1785215512330
+        }
+      ]
+    }
+  },
+  "response": {
+    "status_code": 204,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "set-cookie": "NNB=QCIH2VQYHJUGU; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure, BUC=ekf9K9mL0FFMXIlgLrgOlITF93FaqWeFZXoqL0MvR30=; expires=Sat, 01 Jan 2050 09:00:00 GMT; path=/; domain=.naver.com; SameSite=None; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "8",
+      "referrer-policy": "unsafe-url",
+      "server": "nfront",
+      "connection": "close"
+    },
+    "body": ""
+  }
+}

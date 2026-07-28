@@ -1,0 +1,36 @@
+{
+  "index": 6,
+  "timestamp": "2026-07-28T14:11:52.250305",
+  "request": {
+    "method": "GET",
+    "url": "https://yyhp7d.cdn-settings.appsflyersdk.com/android/v1/c2376e2a0d0bdd122d6cfe14fa7413ff38edd6ea63d688b0495a657a8335c1b0/settings",
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Host": "yyhp7d.cdn-settings.appsflyersdk.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Content-Length": "45",
+      "Connection": "keep-alive",
+      "Server": "awselb/2.0",
+      "Date": "Tue, 30 Jun 2026 15:02:14 GMT",
+      "x-amz-meta-af-auth-v1": "d509a205680c",
+      "X-Cache": "Hit from cloudfront",
+      "Via": "1.1 ac706f3a00c79ad8c039deb997284aaa.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Pop": "ICN80-P1",
+      "X-Amz-Cf-Id": "fYWDaXohZlsSvMVAI_qs39Vwm7gmLUAZ6as0QwUEtv8ENFMxFXTXdg==",
+      "Age": "2383777"
+    },
+    "body": {
+      "features": {},
+      "ver": "default.v1.1637149529"
+    }
+  }
+}

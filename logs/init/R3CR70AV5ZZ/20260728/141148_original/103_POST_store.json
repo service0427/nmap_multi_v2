@@ -1,0 +1,66 @@
+{
+  "index": 103,
+  "timestamp": "2026-07-28T14:11:56.698620",
+  "request": {
+    "method": "POST",
+    "url": "https://kr-col-ext.nelo.navercorp.com/_store",
+    "headers": {
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Content-Encoding": "gzip",
+      "Transfer-Encoding": "chunked",
+      "Host": "kr-col-ext.nelo.navercorp.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip"
+    },
+    "body": [
+      {
+        "Locale": "ko",
+        "logType": "NeloInit",
+        "appVersion": "6.8.1.1",
+        "Platform": "Android 13",
+        "body": "SessionCreated > App Installed",
+        "txtToken": "48f4de1220b1456abc4711ac399f87bd",
+        "logLevel": "DEBUG",
+        "processName": "com.nhn.android.nmap",
+        "NetworkType": "Wi-Fi",
+        "NeloProcessID": "1aff1616-cc2e-4563-bf28-a259d8b46d7c",
+        "host": "192.168.0.16",
+        "Carrier": "Unknown",
+        "Rooted": "Not Rooted",
+        "CountryCode": "kr",
+        "NeloEvent": "AppInstalled",
+        "DeviceModel": "SM-F711N",
+        "NeloSDK": "android-sdk_1.11.1",
+        "DeviceID": "57844a03a68816c347e40e9880e9698c",
+        "logSource": "nelo2-android",
+        "logTime": 1785215511628,
+        "VersionCode": 60801000,
+        "@ulogId": "63afbd5bf7386a74c291f935d44455e1",
+        "SessionID": "0e8ecb40-eb53-4ac2-87b1-0e34e51faa60",
+        "NeloInstallID": "27e16cb6-4c93-445c-99e5-955d3859efd9",
+        "projectVersion": "6.8.1.1",
+        "sendTime": 1785215516598
+      }
+    ]
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Server": "nginx",
+      "Date": "Tue, 28 Jul 2026 05:11:56 GMT",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Content-Length": "32",
+      "Connection": "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "PUT, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Encoding"
+    },
+    "body": {
+      "code": 200,
+      "message": "Success"
+    }
+  }
+}

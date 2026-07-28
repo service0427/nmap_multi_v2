@@ -1,0 +1,1884 @@
+{
+  "index": 4,
+  "timestamp": "2026-07-28T14:11:52.164505",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/maps-service/v1/bubble-keywords?clientPlatform=ANDROID&caller=android_NaverMap_6.8.1.1&msgpad=1785215512089&md=PrqFVZHLGqwEeRbhcFEG0UCkhtM%3D",
+    "headers": {
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "accept-language": "ko",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-encoding": "br,gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json; charset=utf-8",
+      "apigw-uuid": "c89e5208-6667-4c73-9563-949d9c7c7148",
+      "etag": "W/\"6f68-P0ca6INds8Fns2RwIMVFHrY2OFs\"",
+      "content-encoding": "gzip"
+    },
+    "body": {
+      "result": {
+        "bubbleKeywords": [
+          {
+            "sort": null,
+            "type": "WEB_PAGE",
+            "code": "ADS_3140915",
+            "name": "아이스크림 배달",
+            "query": null,
+            "icon": null,
+            "url": "https://siape.veta.naver.com/fxclick?eu=EU10044988&calp=-&oj=ioaTWkWPg5%2FHEJEbYsFsD8SNTtsUuKtf&ac=9303772&src=8183705&br=4964520&evtcd=P901&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=4dE6Ugk-kH0lj46cf_tfGw&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&tr=ndpetc&a=4BA90B5048147A8C73013E4302C276D4FA44BAA028B868103B0D8E894C1112FEC3058346434DA6720280EB229B3AA3E7A581F7404E5C62A9ED8944E05F18C7BE4A840C74AA68D5A0C0CC95D19DFB9198457152FF4C80EBD663B6C6CAD67EC9B9910B2BB1A436",
+            "menuTabSort": {
+              "ard": 1,
+              "pubtrans": 0,
+              "navi": 0,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": null,
+            "updateVersion": null,
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "#00BE4B",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#00BE4B",
+            "displayShortcutIcon": true,
+            "displayAdIcon": false,
+            "adInfo": {
+              "darkAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/b880773c30d56c20a147_20260720084704226.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/df775427c656821f81c8_20260720084701814.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/c52b019a11f9e41b72a6_20260720084658527.png"
+                }
+              },
+              "lightAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/011b2e1fbf172db69214_20260720084651172.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/1f4b37dbc991755085bf_20260720084644707.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/0e6ba1e10647ef610c68_20260720084642065.png"
+                }
+              },
+              "adViewLogUrl": "https://siape.veta.naver.com/fxview?eu=EU10044988&calp=-&oj=ioaTWkWPg5%2FHEJEbYsFsD8SNTtsUuKtf&ac=9303772&src=8183705&evtcd=V900&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=4dE6Ugk-kH0lj46cf_tfGw&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&eid=V900",
+              "adClickLogUrl": null
+            }
+          },
+          {
+            "sort": null,
+            "type": "WEB_PAGE",
+            "code": "ADS_3140915",
+            "name": "아이스크림 배달",
+            "query": null,
+            "icon": null,
+            "url": "https://siape.veta.naver.com/fxclick?eu=EU10044990&calp=-&oj=ioaTWkWPg5%2FvhJtVCeKW%2FMSNTtsUuKtf&ac=9303772&src=8183705&br=4964520&evtcd=P901&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=U3eWidx1KttKIRzcnpirZw&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&tr=ndpetc&a=4BA90B5048147A8C73013E4302C276D4FA44BAA028B868103B0D8E894C1112FEC3058346434DA6720280EB229B3AA3E7A581F7404E5C62A9ED8944E05F18C7BE4A840C74AA68D5A0C0CC95D19DFB9198457152FF4C80EBD663B6C6CAD67EC9B9910B2BB1A436",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 1,
+              "navi": 0,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": null,
+            "updateVersion": null,
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "#00BE4B",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#00BE4B",
+            "displayShortcutIcon": true,
+            "displayAdIcon": false,
+            "adInfo": {
+              "darkAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/b880773c30d56c20a147_20260720084704226.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/df775427c656821f81c8_20260720084701814.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/c52b019a11f9e41b72a6_20260720084658527.png"
+                }
+              },
+              "lightAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/011b2e1fbf172db69214_20260720084651172.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/1f4b37dbc991755085bf_20260720084644707.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/0e6ba1e10647ef610c68_20260720084642065.png"
+                }
+              },
+              "adViewLogUrl": "https://siape.veta.naver.com/fxview?eu=EU10044990&calp=-&oj=ioaTWkWPg5%2FvhJtVCeKW%2FMSNTtsUuKtf&ac=9303772&src=8183705&evtcd=V900&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=U3eWidx1KttKIRzcnpirZw&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&eid=V900",
+              "adClickLogUrl": null
+            }
+          },
+          {
+            "sort": null,
+            "type": "WEB_PAGE",
+            "code": "ADS_3140915",
+            "name": "아이스크림 배달",
+            "query": null,
+            "icon": null,
+            "url": "https://siape.veta.naver.com/fxclick?eu=EU10044989&calp=-&oj=ioaTWkWPg59Zi4l5QMTPP8SNTtsUuKtf&ac=9303772&src=8183705&br=4964520&evtcd=P901&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=ej66kKdz7gJALnCEGDv1_A&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&tr=ndpetc&a=4BA90B5048147A8C73013E4302C276D4FA44BAA028B868103B0D8E894C1112FEC3058346434DA6720280EB229B3AA3E7A581F7404E5C62A9ED8944E05F18C7BE4A840C74AA68D5A0C0CC95D19DFB9198457152FF4C80EBD663B6C6CAD67EC9B9910B2BB1A436",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 0,
+              "navi": 1,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": null,
+            "updateVersion": null,
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "#00BE4B",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#00BE4B",
+            "displayShortcutIcon": true,
+            "displayAdIcon": false,
+            "adInfo": {
+              "darkAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/b880773c30d56c20a147_20260720084704226.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/df775427c656821f81c8_20260720084701814.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/c52b019a11f9e41b72a6_20260720084658527.png"
+                }
+              },
+              "lightAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/011b2e1fbf172db69214_20260720084651172.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/1f4b37dbc991755085bf_20260720084644707.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/0e6ba1e10647ef610c68_20260720084642065.png"
+                }
+              },
+              "adViewLogUrl": "https://siape.veta.naver.com/fxview?eu=EU10044989&calp=-&oj=ioaTWkWPg59Zi4l5QMTPP8SNTtsUuKtf&ac=9303772&src=8183705&evtcd=V900&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=ej66kKdz7gJALnCEGDv1_A&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&eid=V900",
+              "adClickLogUrl": null
+            }
+          },
+          {
+            "sort": null,
+            "type": "WEB_PAGE",
+            "code": "ADS_3140915",
+            "name": "아이스크림 배달",
+            "query": null,
+            "icon": null,
+            "url": "https://siape.veta.naver.com/fxclick?eu=EU10044991&calp=-&oj=ioaTWkWPg59klzMbzMAgA8SNTtsUuKtf&ac=9303772&src=8183705&br=4964520&evtcd=P901&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=ghdpJP6-ITnY1dgIae8GEQ&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&tr=ndpetc&a=4BA90B5048147A8C73013E4302C276D4FA44BAA028B868103B0D8E894C1112FEC3058346434DA6720280EB229B3AA3E7A581F7404E5C62A9ED8944E05F18C7BE4A840C74AA68D5A0C0CC95D19DFB9198457152FF4C80EBD663B6C6CAD67EC9B9910B2BB1A436",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 0,
+              "navi": 0,
+              "bookmark": 1,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": null,
+            "updateVersion": null,
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "#00BE4B",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#00BE4B",
+            "displayShortcutIcon": true,
+            "displayAdIcon": false,
+            "adInfo": {
+              "darkAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/b880773c30d56c20a147_20260720084704226.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/df775427c656821f81c8_20260720084701814.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/c52b019a11f9e41b72a6_20260720084658527.png"
+                }
+              },
+              "lightAdLogo": {
+                "density": {
+                  "x1": "https://ssl.pstatic.net/melona/libs/1565/1565920/011b2e1fbf172db69214_20260720084651172.png",
+                  "x2": "https://ssl.pstatic.net/melona/libs/1565/1565920/1f4b37dbc991755085bf_20260720084644707.png",
+                  "x3": "https://ssl.pstatic.net/melona/libs/1565/1565920/0e6ba1e10647ef610c68_20260720084642065.png"
+                }
+              },
+              "adViewLogUrl": "https://siape.veta.naver.com/fxview?eu=EU10044991&calp=-&oj=ioaTWkWPg59klzMbzMAgA8SNTtsUuKtf&ac=9303772&src=8183705&evtcd=V900&x_ti=1790&tb=&oid=&sid1=&sid2=&rk=ghdpJP6-ITnY1dgIae8GEQ&eltts=0RS%2FkSRNUeNb95P2A%2Bwjjg%3D%3D&brs=Y&&eid=V900",
+              "adClickLogUrl": null
+            }
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_JEJU",
+            "name": "제주 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_jeju_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=11&mode=half",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 2,
+              "navi": 2,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [
+              "14"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "SUPERMARKET",
+            "name": "마트",
+            "query": "마트",
+            "icon": {
+              "name": "supermarket_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 18,
+              "pubtrans": 18,
+              "navi": 19,
+              "bookmark": 18,
+              "my": 18,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_HONGDAE",
+            "name": "홍대 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_hongdae_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=4&mode=half",
+            "menuTabSort": {
+              "ard": 3,
+              "pubtrans": 4,
+              "navi": 4,
+              "bookmark": 4,
+              "my": 3,
+              "booking": 0
+            },
+            "rcodes": [
+              "09440"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "PICKUP",
+            "name": "포장주문",
+            "query": "네이버주문",
+            "icon": {
+              "name": "pickup_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 11,
+              "pubtrans": 11,
+              "navi": 11,
+              "bookmark": 11,
+              "my": 11,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "PHARMACY",
+            "name": "약국",
+            "query": "약국",
+            "icon": {
+              "name": "pharmacy_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 16,
+              "pubtrans": 16,
+              "navi": 17,
+              "bookmark": 16,
+              "my": 16,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "COUPON",
+            "name": "쿠폰",
+            "query": "쿠폰",
+            "icon": {
+              "name": "coupon_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 21,
+              "pubtrans": 21,
+              "navi": 22,
+              "bookmark": 21,
+              "my": 21,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "EMERGENCYCARE",
+            "name": "응급진료",
+            "query": "응급의료시설",
+            "icon": {
+              "name": "emergencycare_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 22,
+              "pubtrans": 22,
+              "navi": 23,
+              "bookmark": 22,
+              "my": 22,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "BANK",
+            "name": "은행",
+            "query": "은행",
+            "icon": {
+              "name": "bank_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 19,
+              "pubtrans": 19,
+              "navi": 20,
+              "bookmark": 19,
+              "my": 19,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_SEONGSU",
+            "name": "성수 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_seongsu_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=2&mode=half",
+            "menuTabSort": {
+              "ard": 5,
+              "pubtrans": 6,
+              "navi": 6,
+              "bookmark": 6,
+              "my": 5,
+              "booking": 0
+            },
+            "rcodes": [
+              "09200"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "TRIP",
+            "name": "가볼만한곳",
+            "query": "가볼만한곳",
+            "icon": {
+              "name": "trip_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 13,
+              "pubtrans": 13,
+              "navi": 16,
+              "bookmark": 13,
+              "my": 13,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "CAFE",
+            "name": "카페",
+            "query": "카페",
+            "icon": {
+              "name": "cafe_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 9,
+              "pubtrans": 10,
+              "navi": 10,
+              "bookmark": 10,
+              "my": 9,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_JONGNO",
+            "name": "종로 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_jongno_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=5&mode=half",
+            "menuTabSort": {
+              "ard": 2,
+              "pubtrans": 3,
+              "navi": 3,
+              "bookmark": 3,
+              "my": 2,
+              "booking": 0
+            },
+            "rcodes": [
+              "09110"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_YONGSAN",
+            "name": "용산 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_yongsan_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=3&mode=half",
+            "menuTabSort": {
+              "ard": 4,
+              "pubtrans": 5,
+              "navi": 5,
+              "bookmark": 5,
+              "my": 4,
+              "booking": 0
+            },
+            "rcodes": [
+              "09170"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "EVCHARGER",
+            "name": "전기차충전소",
+            "query": "전기차충전소",
+            "icon": {
+              "name": "evcharger_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 0,
+              "navi": 13,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0.1",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0.1",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DRIVING",
+            "name": "안전운행",
+            "query": null,
+            "icon": {
+              "name": "driving_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://navigation",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 0,
+              "navi": 1,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "#006CFF",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#1D87FF",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "PARKING",
+            "name": "주차장",
+            "query": "주차장",
+            "icon": {
+              "name": "parking_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 15,
+              "pubtrans": 15,
+              "navi": 14,
+              "bookmark": 15,
+              "my": 15,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "HAIR",
+            "name": "헤어샵",
+            "query": "헤어샵",
+            "icon": {
+              "name": "hair_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 20,
+              "pubtrans": 20,
+              "navi": 21,
+              "bookmark": 20,
+              "my": 20,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "DINING",
+            "name": "음식점",
+            "query": "음식점",
+            "icon": {
+              "name": "dining_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 8,
+              "pubtrans": 9,
+              "navi": 9,
+              "bookmark": 9,
+              "my": 8,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_GANGNAM",
+            "name": "강남 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_gangnam_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=1&mode=half",
+            "menuTabSort": {
+              "ard": 6,
+              "pubtrans": 7,
+              "navi": 7,
+              "bookmark": 7,
+              "my": 6,
+              "booking": 0
+            },
+            "rcodes": [
+              "09680"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "NEARBYSAVED",
+            "name": "이 주변 저장 장소",
+            "query": null,
+            "icon": {
+              "name": "nearbysaved_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://bookmark/around",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 0,
+              "navi": 0,
+              "bookmark": 1,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "#006CFF",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#1D87FF",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "PENSION",
+            "name": "펜션",
+            "query": "펜션",
+            "icon": {
+              "name": "pension_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 17,
+              "pubtrans": 17,
+              "navi": 18,
+              "bookmark": 17,
+              "my": 17,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "SUBWAY",
+            "name": "지하철노선도",
+            "query": null,
+            "icon": {
+              "name": "subway_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://subway",
+            "menuTabSort": {
+              "ard": 0,
+              "pubtrans": 1,
+              "navi": 0,
+              "bookmark": 0,
+              "my": 0,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "#006CFF",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "#1D87FF",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "POPUPSTORE",
+            "name": "팝업스토어",
+            "query": "팝업스토어",
+            "icon": {
+              "name": "popupstore_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 10,
+              "pubtrans": 0,
+              "navi": 0,
+              "bookmark": 0,
+              "my": 10,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "OIL",
+            "name": "주유소",
+            "query": "주유소",
+            "icon": {
+              "name": "oil_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 14,
+              "pubtrans": 14,
+              "navi": 12,
+              "bookmark": 14,
+              "my": 14,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_JEJU",
+            "name": "제주 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_jeju_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=11&mode=half",
+            "menuTabSort": {
+              "ard": 1,
+              "pubtrans": 0,
+              "navi": 0,
+              "bookmark": 2,
+              "my": 1,
+              "booking": 0
+            },
+            "rcodes": [
+              "14"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "SEARCH_QUERY",
+            "code": "STORE",
+            "name": "편의점",
+            "query": "편의점",
+            "icon": {
+              "name": "store_category",
+              "imageVersion": 132
+            },
+            "url": null,
+            "menuTabSort": {
+              "ard": 12,
+              "pubtrans": 12,
+              "navi": 15,
+              "bookmark": 12,
+              "my": 12,
+              "booking": 0
+            },
+            "rcodes": [],
+            "visibleVersion": {
+              "android": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.26.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#ffffff",
+            "fontColor": "#000000",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": "",
+            "displayShortcutIcon": false
+          },
+          {
+            "sort": null,
+            "type": "URL_SCHEME",
+            "code": "DISCOVERY_BUSAN",
+            "name": "부산 핫플",
+            "query": null,
+            "icon": {
+              "name": "discovery_busan_category",
+              "imageVersion": 132
+            },
+            "url": "nmap://hotplace?id=10&mode=half",
+            "menuTabSort": {
+              "ard": 7,
+              "pubtrans": 8,
+              "navi": 8,
+              "bookmark": 8,
+              "my": 7,
+              "booking": 0
+            },
+            "rcodes": [
+              "08"
+            ],
+            "visibleVersion": {
+              "android": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              },
+              "ios": {
+                "start": "5.36.0",
+                "end": "100.0.0",
+                "exclude": {
+                  "start": null,
+                  "end": null,
+                  "list": []
+                }
+              }
+            },
+            "updateVersion": {
+              "android": {
+                "start": null,
+                "end": null,
+                "list": []
+              },
+              "ios": {
+                "start": null,
+                "end": null,
+                "list": []
+              }
+            },
+            "nclickCode": null,
+            "backgroundColor": "#FFFFFF",
+            "fontColor": "#1C1C1C",
+            "borderColor": "",
+            "darkModeBackgroundColor": "#131313",
+            "darkModeFontColor": "#F8F8F8",
+            "darkModeBorderColor": null,
+            "displayShortcutIcon": false
+          }
+        ]
+      }
+    }
+  }
+}

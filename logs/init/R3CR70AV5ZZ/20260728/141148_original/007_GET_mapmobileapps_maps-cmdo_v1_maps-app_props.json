@@ -1,0 +1,1090 @@
+{
+  "index": 7,
+  "timestamp": "2026-07-28T14:11:52.410112",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.naver.com/mapmobileapps/maps-cmdo/v1/maps-app/props?caller=android_NaverMap_6.8.1.1&msgpad=1785215512359&md=q3o%2Bg4xNH%2Fv4XIcGWPLPnqvy3Ro%3D",
+    "headers": {
+      "referer": "client://NaverMap",
+      "user-agent": "NaverMap/6.8.1.1 (Android 13; SM-F711N)",
+      "accept-language": "ko",
+      "uuid": "57844a03a68816c347e40e9880e9698c",
+      "accept-encoding": "br,gzip"
+    },
+    "body": ""
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "server": "nginx",
+      "date": "Tue, 28 Jul 2026 05:11:52 GMT",
+      "content-type": "application/json",
+      "apigw-uuid": "be23f917-53c9-49cd-a485-934d2353a794",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "referrer-policy": "unsafe-url",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-frame-options": "SAMEORIGIN",
+      "x-xss-protection": "1; mode=block",
+      "x-content-type-options": "nosniff"
+    },
+    "body": {
+      "naviUbiPopup": false,
+      "naviSpotifyBanner": {
+        "highlight": {
+          "ko": "스포티파이",
+          "ja": "Spotify",
+          "en": "Spotify",
+          "zh": "Spotify"
+        },
+        "active": true,
+        "message": {
+          "ko": "네이버플러스 멤버십에서는 스포티파이 매월 무료!",
+          "ja": "Spotify free every month with NAVER membership!",
+          "en": "Spotify free every month with NAVER membership!",
+          "zh": "Spotify free every month with NAVER membership!"
+        },
+        "version": 1,
+        "landingURL": "https://m.naver.com"
+      },
+      "resourceDomain": "https://map.pstatic.net/res",
+      "setting": {
+        "iOSActivityTypeReleaseRate": 100,
+        "appsFlyerDeepLinkAllowDomains": [
+          "naver.com",
+          "naver.co.kr"
+        ],
+        "launcherTooltip": {
+          "tabId": "discovery",
+          "backgroundColor": {
+            "light": "#006Cff",
+            "dark": "#006Cff"
+          },
+          "_comment": [
+            "⚠️⚠️⚠️⚠️⚠️",
+            "️tabId : discovery, pubtrans, navi, myplace, bookmark, booking",
+            "count는 앱 진입 후 노출될 횟수"
+          ],
+          "count": 2,
+          "messages": [
+            {
+              "ko": "새로운 장소 발견하세요👀",
+              "ja": "新しい場所発見👀",
+              "en": "New places? 👀",
+              "zh": "发现新地点👀"
+            },
+            {
+              "ko": "🔥 지금 뜨는 장소는 어디?",
+              "ja": "🔥 今話題の場所は？",
+              "en": "🔥 Trending spots?",
+              "zh": "🔥 当下热门的地点是？"
+            },
+            {
+              "ko": "주변을 탐색해 보아요🔍",
+              "ja": "近くを探索🔍",
+              "en": "Explorer nearby🔍",
+              "zh": "搜索我的周边🔍"
+            },
+            {
+              "ko": "이 순간 인기 장소 확인하기✨",
+              "ja": "人気急上昇✨",
+              "en": "Popular now! ✨",
+              "zh": "当下最受欢迎✨"
+            }
+          ],
+          "isActive": true,
+          "textColor": {
+            "light": "#ffffff",
+            "dark": "#ffffff"
+          }
+        },
+        "homeTabTooltip": {
+          "tabId": "booking",
+          "backgroundColor": {
+            "light": "#006CFF",
+            "dark": "#006CFF"
+          },
+          "_comment": [
+            "⚠️⚠️⚠️⚠️⚠️",
+            "️tabId : discovery, booking, pubtrans, navi, bookmark, myplace",
+            "count는 앱 진입 후 노출될 횟수",
+            "iOS 는 myplace 의 경우, bg,text 색상을 APP 에서 하드코딩함"
+          ],
+          "count": 1,
+          "messages": [
+            {
+              "ko": "여름 레저 특가⛱️",
+              "ja": "地図で予約💫",
+              "en": "Book on Maps💫",
+              "zh": "地图预订💫"
+            }
+          ],
+          "isActive": false,
+          "textColor": {
+            "light": "#FFFFFF",
+            "dark": "#FFFFFF"
+          }
+        },
+        "discoveryNudge": {
+          "showLeadingIcon": true,
+          "showTrailingIcon": true,
+          "_comment": [
+            "⚠️⚠️⚠️⚠️⚠️",
+            "count는 앱 진입 후 노출될 횟수"
+          ],
+          "count": 2,
+          "messages": [
+            {
+              "ko": "뜨는 장소 펼쳐서 확인",
+              "ja": "人気スポット確認",
+              "en": "Show trending places",
+              "zh": "展开查看热门地点"
+            },
+            {
+              "ko": "이 순간 1위 장소 어디?",
+              "ja": "人気No.1スポットは？",
+              "en": "Top spot right now?",
+              "zh": "此刻排名第一的地点是？"
+            },
+            {
+              "ko": "요즘 장소 궁금하다면?",
+              "ja": "最近注目のスポットは？",
+              "en": "Hot spots right now?",
+              "zh": "最近哪里人气爆棚呢？"
+            },
+            {
+              "ko": "느낌있는 주변 장소 찾기",
+              "ja": "周辺のおしゃれスポット",
+              "en": "Find cool spots nearby",
+              "zh": "寻找有氛围的周边地点"
+            },
+            {
+              "ko": "요즘 뜨는 핫플 보기",
+              "ja": "超話題のスポット",
+              "en": "Today's hottest places",
+              "zh": "最近爆火的热门地点"
+            },
+            {
+              "ko": "주변 탐색 시작하기",
+              "ja": "周辺スポット探索",
+              "en": "Start exploring nearby",
+              "zh": "开始探索我的周边"
+            }
+          ],
+          "isActive": true,
+          "landingUrl": "nmap://map?tab=discovery&tabstate=full"
+        },
+        "gscaltexPlusMembership": {
+          "highlight": {
+            "ko": "GS칼텍스 100원/L 적립",
+            "ja": "GSカルテックスで100ウォン/L積立",
+            "en": "100 KRW/L at GS Caltex",
+            "zh": "GS加德士享每升积攒100韩元"
+          },
+          "active": true,
+          "message": {
+            "ko": "네이버 멤버십은 GS칼텍스 100원/L 적립 혜택!",
+            "ja": "NAVERメンバーシップならGSカルテックスで100ウォン/L積立特典！",
+            "en": "NAVER Membership: earn 100 KRW/L at GS Caltex!",
+            "zh": "NAVER会员在GS加德士享每升积攒100韩元优惠！"
+          },
+          "landingUrl": "https://mkt.naver.com/membership_gscaltex?dtm_source=naver_map&dtm_medium=navigation&dtm_campaign=gscaltex"
+        },
+        "naviMapPreloadLogEnabled": true,
+        "improveStoreReviewRating": {
+          "participationRate": 100,
+          "enabled": true
+        },
+        "webViewSettings": {
+          "topSafeAreaWhiteList": [
+            {
+              "paths": [
+                "/products/program",
+                "/products/leisure",
+                "/products/travel",
+                "/products/fine-dining",
+                "/products/restaurant",
+                "/products/magazines",
+                "/maps-bridge",
+                "/promotions"
+              ],
+              "domain": "booking.map.naver.com"
+            },
+            {
+              "paths": [
+                "/inapp/popup"
+              ],
+              "domain": "app.map.naver.com"
+            }
+          ],
+          "toolbarHiddenWhiteList": [
+            {
+              "paths": [
+                "/products/program",
+                "/products/leisure",
+                "/products/travel",
+                "/products/fine-dining",
+                "/products/restaurant",
+                "/products/magazines",
+                "/maps-bridge",
+                "/promotions"
+              ],
+              "domain": "booking.map.naver.com"
+            },
+            {
+              "paths": [
+                "/inapp/popup"
+              ],
+              "domain": "app.map.naver.com"
+            }
+          ]
+        },
+        "adMarkerReleaseRate": 100,
+        "naviNewRouteOrderEnabled": true,
+        "labsExperiments": {
+          "features": [
+            {
+              "feedbackRequest": {
+                "enabled": false
+              },
+              "active": true,
+              "requiresRestart": false,
+              "description": {
+                "previewImageUrl": "https://maps-cmdo-phinf.pstatic.net/MjAyNjA3MTVfNSAg/MDAxNzg0MDgwODQyMTU1.ihuh9dqoxIDb0FmRh-7ljip4MxE1MGhOstA2txIK2Q8g.z57A8rkj8T_0Q9gEK8PUJiNFyLAwO_boFhCI1e0JPU0g.PNG/worldmap.png",
+                "subtitle": "세계 지도 사용을 활성화해서 지도를 자유롭게 확대, 축소, 이동해보세요.",
+                "usage": "1. 모든 화면에서 지도를 자유롭게 확대, 축소, 이동하며 세계 지도를 확인해보세요.\n2. 제보할 내용이 있다면 아래 '피드백 보내기' 버튼을 눌러 제보해주세요.",
+                "title": "세계 지도 사용",
+                "introduction": "세계 지도 사용을 활성화하고 지도를 자유롭게 확대, 축소, 이동하며 세계 지도를 탐색해보세요.\n한국 외 지역에서는 정보의 양과 정확도가 부족할 수 있습니다. 또한 장소 탐색, 길찾기, 발견, 예약 등의 기능은 지원되지 않습니다."
+              },
+              "featureId": 1,
+              "platforms": [
+                {
+                  "minVersion": "6.8.0",
+                  "os": "Android",
+                  "maxVersion": "7.99.99"
+                },
+                {
+                  "minVersion": "6.8.0",
+                  "os": "iOS",
+                  "maxVersion": "7.99.99"
+                }
+              ]
+            },
+            {
+              "feedbackRequest": {
+                "enabled": false
+              },
+              "active": true,
+              "requiresRestart": false,
+              "description": {
+                "subtitle": "저장(★) 버튼을 길게 눌러 저장을 바로 해제해보세요.",
+                "usage": "하나의 폴더에만 저장된 장소·주소에만 적용되며, 아래 화면에서 사용 가능합니다.\n- 장소 화면\n- 주소 화면",
+                "title": "★ 아이콘 길게 눌러 저장 해제",
+                "introduction": "장소·주소 상세에서 저장(★) 버튼을 길게 누르면 바로 저장을 해제할 수 있어요."
+              },
+              "featureId": 2,
+              "platforms": [
+                {
+                  "minVersion": "6.8.0",
+                  "os": "Android",
+                  "maxVersion": "6.10.0"
+                },
+                {
+                  "minVersion": "6.8.0",
+                  "os": "iOS",
+                  "maxVersion": "6.10.0"
+                }
+              ]
+            },
+            {
+              "feedbackRequest": {
+                "minUsageDate": 20,
+                "enabled": true
+              },
+              "active": true,
+              "requiresRestart": true,
+              "description": {
+                "previewImageUrl": "https://maps-cmdo-phinf.pstatic.net/MjAyNjA3MTVfMTkx/MDAxNzg0MDgwODQyMjMy.mWtDuApXXoI3NsGJPydTBQtfbyPGsDh1P19WwfjLQK0g.moI8Ta0ZgzyoC5_ERV5nG8yvQa09Ku5UbwrHBLSdlRIg.PNG/lab_liquidglass2x_20260616.png",
+                "subtitle": "지도 홈 및 일부 화면에 Liquid Glass를 적용합니다.",
+                "usage": "사용 설정 후 지도앱을 완전히 종료해주세요. \n재실행 시점부터 적용됩니다.",
+                "title": "Liquid Glass 디자인",
+                "introduction": "iOS26 이상에서 지원하는 Liquid Glass 디자인을 만날 수 있습니다. (이하 버전에서 미지원)\n지도 홈 화면 및 팝업 등 일부 요소에 적용됩니다."
+              },
+              "featureId": 3,
+              "platforms": [
+                {
+                  "minVersion": "6.8.0",
+                  "os": "iOS",
+                  "endDate": "2027.03.15"
+                }
+              ]
+            },
+            {
+              "feedbackRequest": {
+                "enabled": false
+              },
+              "active": true,
+              "requiresRestart": false,
+              "description": {
+                "subtitle": "휴대폰에 설정된 글자 크기를 위젯에도 적용합니다.",
+                "usage": "위젯을 새로고침하면 변경사항이 반영됩니다.",
+                "title": "위젯에 시스템 글자 크기 적용",
+                "introduction": "휴대폰에 설정된 글자 크기를 위젯에도 적용합니다.\n글자가 커지면 일부 위젯에서 내용이 잘리거나 겹쳐 보일 수 있습니다."
+              },
+              "featureId": 4,
+              "platforms": [
+                {
+                  "minVersion": "6.8.0",
+                  "os": "Android",
+                  "maxVersion": "7.99.99"
+                }
+              ]
+            }
+          ],
+          "totalCount": 4
+        },
+        "naviReportEnabled": true
+      },
+      "resource-v2": {
+        "fixedSelectedMarkerUrl": "/api/v2/image/maps/selected-marker/{id}@{density}x.png?version=21",
+        "naviJuncUrl": "/api/v2/image/maps/navi-junc/{id}.{format}?version={version}",
+        "fixedSearchMarkerUrl": "/api/v2/image/maps/search-marker/{id}@{density}x.png?version=25",
+        "iconMarkerUrl": "/api/v2/image/maps/icon/{id}@{density}x.png?version=9&mapping=marker-212",
+        "searchMarkerUrl": "/api/v2/image/maps/search-marker/{id}@{density}x.png?version=25&mapping=marker-212",
+        "disasterMarkerUrl": "/api/v2/image/maps/disaster-marker/{id}@{density}x.png?version=7",
+        "selectedMarkerUrl": "/api/v2/image/maps/selected-marker/{id}@{density}x.png?version=21&mapping=marker-212",
+        "aroundCategoryUrl": "/api/v2/image/maps/around-category/{id}@{density}x.png",
+        "adMarkerUrl": "/api/v2/image/maps/ad-marker/{id}@{density}x.png?version=7&mapping=marker-212",
+        "adSymbolUrl": "/api/v2/image/maps/ad-symbol/{id}@{density}x.png?version=0&mapping=marker-212",
+        "selectedDisasterMarkerUrl": "/api/v2/image/maps/selected-disaster-marker/{id}@{density}x.png?version=4",
+        "domain": "https://map.pstatic.net/resource",
+        "bookmarkMarkerUrl": "/api/v2/image/maps/bookmark/{id}@{density}x.png?version=4"
+      },
+      "navigation": {
+        "voice": {
+          "NaviDerouteAnnounceTypeKey": 0,
+          "NaviTtsAnnounceEffectKey": 0
+        },
+        "guideStep": {
+          "NaviTtsStepOfSpeedSignalForHighwaySafetyItemKey": 6,
+          "NaviTtsStepOfTollgateForNormalTurnPointKey": 10,
+          "NaviTtsStepOfHipassForNormalTurnPointKey": 10,
+          "NaviTtsStepOfExitForHighwayTurnPointKey": 14,
+          "NaviTtsStepOfSpecialRoadForHighwayTurnPointKey": 14,
+          "NaviTtsStepOfConnectionRoadForNormalTurnPointKey": 6,
+          "NaviTtsStepOfTurningForNormalTurnPointKey": 14,
+          "NaviTtsStepOfSectionSpeedForHighwaySafetyItemKey": 6,
+          "NaviTtsStepOfDirectionForHighwayTurnPointKey": 6,
+          "NaviTtsStepOfTurningForHighwayTurnPointKey": 14,
+          "NaviTtsStepOfSpeedSignalForNormalSafetyItemKey": 2,
+          "NaviTtsStepOfLaneForNormalTurnPointKey": 6,
+          "NaviTtsStepOfDirectionForNormalTurnPointKey": 6,
+          "NaviTtsStepOfConnectionRoadForCrossRoadKey": 6,
+          "NaviTtsStepOfEtcPoliceForHighwaySafetyItemKey": 4,
+          "NaviTtsStepOfRestAreaForHighwayTurnPointKey": 5,
+          "NaviTtsStepOfExtraForNormalSafetyItemKey": 8,
+          "NaviSpeedWarningStartingStepNoramlKey": 2,
+          "NaviTtsStepOfContinuityForHighwayTurnPointKey": 14,
+          "NaviTtsStepOfSectionSpeedForNormalSafetyItemKey": 2,
+          "NaviTtsStepOfEtcPoliceForNormalSafetyItemKey": 4,
+          "NaviTtsStepOfContinuityForCrossRoadKey": 14,
+          "NaviTtsStepOfServiceItemForHighwayTurnPointKey": 3,
+          "NaviTtsStepOfEnteranceForNormalTurnPointKey": 14,
+          "NaviTtsStepOfHipassForHighwayTurnPointKey": 10,
+          "NaviTtsStepOfStraightAtTurnForNormalTurnPointKey": 8,
+          "NaviTtsStepOfExtraForHighwaySafetyItemKey": 8,
+          "NaviSpeedWarningStartingStepHighwayKey": 2,
+          "NaviTtsStepOfConnectionRoadForHighwayTurnPointKey": 6,
+          "NaviTtsStepOfFacilityForHighwaySafetyItemKey": 8,
+          "NaviTtsStepOfTollgateForHighwayTurnPointKey": 10,
+          "NaviTtsStepOfStraightAtTurnForHighwayTurnPointKey": 12,
+          "NaviTtsStepOfDirectionForCrossRoadKey": 6,
+          "NaviTtsStepOfExitForCrossRoadKey": 14,
+          "NaviTtsStepOfDrowsinessShelterForHighwayTurnPointKey": 6,
+          "NaviTtsStepOfLaneForHighwayTurnPointKey": 6,
+          "NaviTtsStepOfContinuityForNormalTurnPointKey": 14,
+          "NaviTtsStepOfEnteranceForHighwayTurnPointKey": 11,
+          "NaviTtsStepOfFacilityForNormalSafetyItemKey": 8,
+          "NaviTtsStepOfTurningForCrossRoadKey": 14,
+          "NaviTtsStepOfSpecialRoadForNormalTurnPointKey": 10
+        },
+        "route": {
+          "NaviPeriodicRerouteKey": true
+        },
+        "safety": {
+          "NaviFirstDistanceForNormalSafetyKey": 1000,
+          "NaviForthDistanceForNormalSafetyKey": 150,
+          "NaviForthDistanceForHighwaySafetyKey": 200,
+          "NaviThirdDistanceForNormalSafetyKey": 300,
+          "NaviSecondDistanceForNormalSafetyKey": 600,
+          "NaviFirstDistanceForHighwaySafetyKey": 2000,
+          "NaviGuideTooAccidentAreaDistanceKey": 500,
+          "NaviSecondDistanceForHighwaySafetyKey": 1000,
+          "NaviContinuousSpeedBumpDistanceKey": 100,
+          "NaviThresholdDistanceForNormalSafetyKey": 20,
+          "NaviThresholdDistanceForHighwaySafetyKey": 30,
+          "NaviGuideTooAccidentPedAreaCountKey": 15,
+          "NaviGuideTooAccidentCarAreaCountKey": 9,
+          "NaviThirdDistanceForHighwaySafetyKey": 500
+        },
+        "mmGps": {
+          "MmHmmLocationCount": 4,
+          "MmResultFilterBreakDistance": 50,
+          "MmWeightFilterWeightForSafe": 0.2,
+          "GpsValidAccuracy": 40,
+          "GpsMinDistance": 0.5,
+          "MmRecentSpeedCountForTunnel": 10,
+          "MmUseTypeBKey": true,
+          "MmCandidateFilterValidDistance": 80,
+          "MmUseAllowAngleForTunnel": 90,
+          "GpsValidSpeed": 3,
+          "MmWeightFilterWeightForRoute": 0.95,
+          "GpsTimeout": 3,
+          "MmDerouteStrategyBreakCount": 2,
+          "MmCandidateFilterValidAngle": 80,
+          "GpsPredictionTime": 1
+        },
+        "turnGuide": {
+          "NaviStraightDistanceForNormalTurnPointKey": 2000,
+          "NaviThresholdDistanceForHighwayTurnPointKey": 30,
+          "NaviMaxStraightAtTurnCountKey": 3,
+          "NaviThresholdDistanceForNormalTurnPointKey": 20,
+          "NaviContinuousDistanceForNormalTurnPointKey": 150,
+          "NaviThirdDistanceForHighwayTurnPointKey": 500,
+          "NaviFirstDistanceForHighwayTurnPointKey": 2000,
+          "NaviDistanceFromNextTurnKey": false,
+          "NaviUserReportDistanceForNormalKey": 150,
+          "NaviContinuousDistanceForHighwayTurnPointKey": 300,
+          "NaviUserReportDistanceForHighwayKey": 200,
+          "NaviForthDistanceForNormalTurnPointKey": 150,
+          "NaviJunctionDistanceForNormalKey": 400,
+          "NaviSecondDistanceForNormalTurnPointKey": 600,
+          "NaviJunctionDistanceForHighwayKey": 700,
+          "NaviForthDistanceForHighwayTurnPointKey": 200,
+          "NaviThirdDistanceForNormalTurnPointKey": 300,
+          "NaviStraightDistanceForHighwayTurnPointKey": 3000,
+          "NaviSecondDistanceForHighwayTurnPointKey": 1000,
+          "NaviFirstDistanceForNormalTurnPointKey": 1000
+        },
+        "freezingSeason": {
+          "NaviGuideFreezingSeasonStartKey": 1604156400000,
+          "NaviGuideFreezingSeasonEndKey": 1615734000000
+        },
+        "phasedRelease": [
+          {
+            "rate": 100,
+            "version": "2.2.6"
+          }
+        ],
+        "map": {
+          "MapFirstZoomLevelForAutoZoom": 16.3,
+          "MapSecondTiltLevelForAutoTilt": 20,
+          "MapAutoTiltByDistance": true,
+          "MapDistanceForAutoTilt": 200,
+          "MapSecondZoomLevelForZoomBySpeed": 15.4,
+          "MapZoomLevelForHighway": 15,
+          "MapMiddleZoomLevelForZoomBySpeed": 15.9,
+          "MapFirstTiltLevelForAutoTilt2": 63,
+          "MapMinZoomForTurnSignal": 10,
+          "MapFirstTiltLevelForAutoTilt": 60,
+          "MapDistanceForAutoPivot": 200,
+          "MapFirstSpeedForZoomBySpeed": 40,
+          "MapAutoPivotByDistance": false,
+          "MapSecondSpeedForZoomBySpeed": 80,
+          "MapSpeedThresholdForZoomBySpeed": 10,
+          "MapSecondZoomLevelForAutoZoom": 16.5,
+          "MapFirstZoomLevelForZoomBySpeed": 16.3,
+          "MapMaxTiltChangeAmountPerSecond": 15,
+          "MapMaxZoomChangeAmountPerSecond": 10,
+          "MapMaxRotateChangeAmountPerSecond": 90,
+          "MapDistanceForAutoZoom": 200
+        }
+      },
+      "staticResourceDomain": "https://ssl.pstatic.net/static",
+      "map": {
+        "renderer": {
+          "devices": {
+            "SM-G900": "opengl",
+            "LG-F650": "opengl",
+            "LG-F350": "opengl",
+            "SM-G600": "opengl",
+            "SM-A520": "opengl",
+            "SM-J415": "opengl",
+            "LG-F670": "opengl",
+            "LGM-K120": "opengl",
+            "SHV-E330": "opengl",
+            "SM-G906": "opengl",
+            "TB-X104": "opengl",
+            "SM-N900": "opengl",
+            "SM-J500": "opengl",
+            "LG-V607": "opengl",
+            "TG-L800S": "opengl",
+            "LG-F720": "opengl",
+            "SM-T290": "opengl",
+            "SM-T550": "opengl",
+            "LM-X410": "opengl",
+            "SHV-E300": "opengl",
+            "LMX210": "opengl",
+            "LM-X415": "opengl",
+            "LG-D838": "opengl",
+            "SM-P555": "opengl",
+            "LG-V930": "opengl",
+            "SM-G160": "opengl",
+            "SHV-E470S": "opengl",
+            "SM-G165": "opengl",
+            "SM-J510": "opengl",
+            "SM-J730": "opengl",
+            "SM-N750": "opengl"
+          },
+          "android": "opengl-msaa",
+          "ios": "metal-msaa"
+        },
+        "preload": {
+          "navi": "https://map.pstatic.net/nvbpc/mvt/standard_schema_navi_local/getRepresentativeVersion"
+        }
+      },
+      "events": [
+        {
+          "start": 1712264400000,
+          "messages": {
+            "placeHolders": {
+              "ko": "사전투표소 검색",
+              "ja": "",
+              "en": "",
+              "zh": ""
+            }
+          },
+          "end": 1712394000000
+        },
+        {
+          "start": 1712696400000,
+          "messages": {
+            "placeHolders": {
+              "ko": "투표소 검색",
+              "ja": "",
+              "en": "",
+              "zh": ""
+            }
+          },
+          "end": 1712739600000
+        }
+      ],
+      "train": {
+        "route": {
+          "banner": {
+            "color": "F0F4FB",
+            "start": 1653598800000,
+            "end": 1906153200000,
+            "text": "네이버 기차 예매하기",
+            "url": ""
+          }
+        }
+      },
+      "naviSpotify": {
+        "active": true,
+        "banner": {
+          "highlight": {
+            "ko": "스포티파이",
+            "ja": "Spotify",
+            "en": "Spotify",
+            "zh": "Spotify"
+          },
+          "active": true,
+          "message": {
+            "ko": "네이버 멤버십, 스포티파이 프리미엄 베이직 무료!",
+            "ja": "Enjoy Spotify with NAVER Membership!",
+            "en": "Enjoy Spotify with NAVER Membership!",
+            "zh": "Enjoy Spotify with NAVER Membership!"
+          },
+          "version": 1,
+          "landingURL": "https://mkt.naver.com/p1/atrb?channel_id=maps_floating&campaign_id=2511-bimpact-001&material=1203&target=https%3A%2F%2Fmkt.naver.com%2Fspotify%3Fdtm_detail%3D1203%26dtm_source%3Dmaps_floating%26dtm_medium%3Dmktatrb%26dtm_campaign%3D2511-bimpact-001"
+        }
+      },
+      "resource": {
+        "markerUrl": "{category}/image/{id}@{density}x.png",
+        "searchMarkerUrl": "search-{category}/image/{id}@{density}x.png"
+      },
+      "naviScoreTooltip": {
+        "insuranceOpen": {
+          "webUrl": "nmap://driving_analysis?focusInsurance=true",
+          "messageTab": {
+            "ko": "할인 보험사 추가!",
+            "ja": "新しい保険会社を追加！",
+            "en": "New insurer added!",
+            "zh": "新增优惠保险公司！"
+          },
+          "active": true,
+          "message": {
+            "ko": "운전점수 할인 보험사가 추가되었어요",
+            "ja": "安全運転割引対象の保険会社を追加！",
+            "en": "New discounted insurer added!",
+            "zh": "新增了一家驾驶积分优惠保险公司。"
+          },
+          "version": 13,
+          "landingUrl": "nmap://driving_analysis?focusInsurance=true"
+        }
+      },
+      "styleUrl": "https://map.pstatic.net/resource/api/v2/style/deployed/fc792e04-259e-4b8f-948d-36e649137d0c/MobileApp_Open.json",
+      "styleUrls": {
+        "default": "https://map.pstatic.net/resource/api/v2/style/deployed/fc792e04-259e-4b8f-948d-36e649137d0c/MobileApp_Open.json",
+        "lite": "https://map.pstatic.net/resource/api/v2/style/deployed/de0f5d9b-a68c-43f6-b74b-8421ec9f4403/MobileApp_Open.json"
+      },
+      "url": {
+        "memberPhoneVerification": "https://nid.naver.com/user2/help/contactInfo.nhn?m=viewPhoneInfo&url={url}",
+        "myCarHome": "https://mycar.naver.com",
+        "searchAdInfoUrl": "https://help.naver.com/service/30026/contents/20518?lang=ko",
+        "memberRealNameVerification": "https://nid.naver.com/mobile/user/help/realNameCheck?type=8&rurl={rurl}&surl={surl}",
+        "myCarTerms": "https://mycar.naver.com/apply/tos/map?from=nmap"
+      },
+      "discoveryTooltip": {
+        "messages": [
+          {
+            "ko": "새로운 장소 발견👀",
+            "ja": "新しい場所発見👀",
+            "en": "New places👀",
+            "zh": "发现新地点👀"
+          },
+          {
+            "ko": "지금 뜨는 장소는?",
+            "ja": "今話題の場所は?",
+            "en": "Trending spots?",
+            "zh": "当下热门的地点是?"
+          },
+          {
+            "ko": "지금 가장 인기✨",
+            "ja": "人気急上昇✨",
+            "en": "Popular now✨",
+            "zh": "当下最受欢迎✨"
+          },
+          {
+            "ko": "내 주변 여기📍",
+            "ja": "近くの場所📍",
+            "en": "Nearby me📍",
+            "zh": "我周边的这里📍"
+          },
+          {
+            "ko": "근처 인기 장소는?",
+            "ja": "近くの人気場所は？",
+            "en": "Hot nearby?",
+            "zh": "周边很受欢迎的地点是?"
+          },
+          {
+            "ko": "내 주변 탐색🔍",
+            "ja": "近くを探索🔍",
+            "en": "Explorer nearby🔍",
+            "zh": "搜索我的周边🔍"
+          },
+          {
+            "ko": "지금 뜨는 핫플🔥",
+            "ja": "今話題の場所🔥",
+            "en": "Trending hotspots🔥",
+            "zh": "当下爆火的热门地点🔥"
+          },
+          {
+            "ko": "우리 동네의 발견",
+            "ja": "近所の穴場",
+            "en": "My neighborhood",
+            "zh": "我们社区的发现"
+          }
+        ],
+        "isActive": true
+      },
+      "bookmark": {
+        "marker": {
+          "fileSuffix": ".png",
+          "iconList": [
+            {
+              "iconId": 1
+            }
+          ],
+          "filePrefix": "bookmark_",
+          "url": "https://ssl.pstatic.net/static/maps/v5/pc/20190403161147/",
+          "colorList": [
+            {
+              "color": "#ff596e",
+              "colorId": 1
+            },
+            {
+              "color": "#ff8801",
+              "colorId": 6
+            },
+            {
+              "color": "#ffc801",
+              "colorId": 2
+            },
+            {
+              "color": "#8fc049",
+              "colorId": 7
+            },
+            {
+              "color": "#01c6d8",
+              "colorId": 3
+            },
+            {
+              "color": "#e355a9",
+              "colorId": 4
+            },
+            {
+              "color": "#ff989f",
+              "colorId": 9
+            },
+            {
+              "color": "#42a37c",
+              "colorId": 8
+            },
+            {
+              "color": "#4596e2",
+              "colorId": 11
+            },
+            {
+              "color": "#005188",
+              "colorId": 12
+            },
+            {
+              "color": "#8a94be",
+              "colorId": 10
+            },
+            {
+              "color": "#767676",
+              "colorId": 5
+            }
+          ]
+        },
+        "limit": {
+          "maxBookmark": 5000,
+          "maxBookmarkPerDefaultFolder": 2000,
+          "maxFolder": 400,
+          "maxFolderPerBookmark": 10,
+          "maxRouteBookmark": 100,
+          "maxFollowingFolder": 1500,
+          "maxMovementBookmark": 100,
+          "maxBookmarkPerFolder": 1000
+        }
+      },
+      "subway": {
+        "versionInfo": [
+          {
+            "country": "KOR",
+            "regions": [
+              {
+                "rname": "수도권",
+                "rcode": "1000",
+                "express": true,
+                "rversion": "20260709_145800"
+              },
+              {
+                "rname": "대전",
+                "rcode": "3000",
+                "express": false,
+                "rversion": "20260702_144818"
+              },
+              {
+                "rname": "대구",
+                "rcode": "4000",
+                "express": false,
+                "rversion": "20260702_144818"
+              },
+              {
+                "rname": "광주",
+                "rcode": "5000",
+                "express": false,
+                "rversion": "20260702_144818"
+              },
+              {
+                "rname": "부산",
+                "rcode": "7000",
+                "express": false,
+                "rversion": "20260702_144818"
+              }
+            ],
+            "name": "지하철노선도",
+            "language": "ko:en"
+          }
+        ]
+      },
+      "markerLabelStyles": [
+        {
+          "naviNight": {
+            "subCaptionColor": "#93CBFF",
+            "captionHaloColor": "#000000",
+            "captionColor": "#FFFFFF",
+            "subCaptionHaloColor": "#000000"
+          },
+          "naviDay": {
+            "subCaptionTextSize": 13,
+            "captionTextSize": 14
+          },
+          "id": "default",
+          "satellite": {
+            "subCaptionColor": "#4E9EFF",
+            "captionHaloColor": "#000000",
+            "captionColor": "#FFFFFF",
+            "subCaptionHaloColor": "#000000"
+          },
+          "basic": {
+            "subCaptionColor": "#006CFF",
+            "selectedSideAlignedCaptionOffset": 0,
+            "captionFontFamily": "NotoSansCJKkr-Medium",
+            "captionHaloColor": "#FFFFFF",
+            "subCaptionTextSize": 12,
+            "captionColor": "#000000",
+            "subCaptionHaloColor": "#FFFFFF",
+            "captionRequestedWidth": 96,
+            "captionTextSize": 12,
+            "normalSideAlignedCaptionOffset": 0
+          }
+        },
+        {
+          "naviNight": {
+            "subCaptionColor": "#93CBFF",
+            "subCaptionHaloColor": "#000000"
+          },
+          "id": "reservation",
+          "satellite": {
+            "subCaptionColor": "#93CBFF",
+            "subCaptionHaloColor": "#000000"
+          },
+          "basic": {
+            "subCaptionColor": "#0385FF",
+            "subCaptionHaloColor": "#FFFFFF"
+          }
+        },
+        {
+          "naviNight": {
+            "subCaptionColor": "#93CBFF",
+            "subCaptionHaloColor": "#000000"
+          },
+          "id": "grey",
+          "basic": {
+            "subCaptionColor": "#424242",
+            "subCaptionHaloColor": "#FFFFFF"
+          }
+        }
+      ],
+      "directions": {
+        "imageJunctionView": {
+          "timestamp_milli": 1784784586000,
+          "version": "2026072100",
+          "url": "https://map.pstatic.net/resource/api/v1/navi"
+        },
+        "feedback": {
+          "keywords": {
+            "1": [
+              "헷갈리는 길 안내",
+              "반복되는 경로이탈",
+              "돌아가는 길 안내",
+              "잘못된 입구로 안내",
+              "부정확한 출발 위치"
+            ],
+            "2": [
+              "헷갈리는 길 안내",
+              "반복되는 경로이탈",
+              "돌아가는 길 안내",
+              "잘못된 입구로 안내",
+              "부정확한 출발 위치"
+            ],
+            "3": [
+              "헷갈리는 길 안내",
+              "반복되는 경로이탈",
+              "돌아가는 길 안내",
+              "잘못된 입구로 안내",
+              "부정확한 출발 위치"
+            ],
+            "4": [
+              "정확한 도착시간",
+              "쉬운 길 안내 방식",
+              "합리적인 경로",
+              "GPS 정확도",
+              "기타"
+            ],
+            "5": [
+              "정확한 도착시간",
+              "쉬운 길 안내 방식",
+              "합리적인 경로",
+              "GPS 정확도",
+              "기타"
+            ]
+          }
+        },
+        "safety": {
+          "timestamp_milli": 1784784586000,
+          "version": "1065"
+        },
+        "link": {
+          "timestamp_milli": 1784784586000,
+          "version": "1065"
+        },
+        "feedback-v2": {
+          "keywords": [
+            {
+              "ko": "경로 안내가 불친절함",
+              "ja": "ルート案内がわかりにくい",
+              "en": "Unfriendly route guidance",
+              "zh": "路线指引不清晰"
+            },
+            {
+              "ko": "운전점수&탐지습관이 맞지 않음",
+              "ja": "運転スコアと運転習慣の誤り",
+              "en": "Driving points and behavior mistake",
+              "zh": "驾驶评分&驾驶习惯分析错误"
+            },
+            {
+              "ko": "GPS 신호가 부정확함",
+              "ja": "GPS信号が不正確",
+              "en": "Inaccurate GPS signal",
+              "zh": "GPS信号不准确"
+            },
+            {
+              "ko": "원하는 경로로 안내하지 않음",
+              "ja": "希望するルートで案内されない",
+              "en": "Not guided to the preferred route",
+              "zh": "没有按照想要的路线导航"
+            },
+            {
+              "ko": "목적지가 부정확함",
+              "ja": "目的地が正しくない",
+              "en": "Incorrect destination",
+              "zh": "目的地不准确"
+            },
+            {
+              "ko": "입구가 부정확함",
+              "ja": "入口の位置が正しくない",
+              "en": "Incorrect entrance location",
+              "zh": "入口位置不准确"
+            },
+            {
+              "ko": "부가정보(통행료, 단속카메라 등)가 맞지 않음",
+              "ja": "付加情報（通行料、速度取締カメラなど）が正しくない",
+              "en": "Incorrect supplementary info (toll, speed cameras, etc.)",
+              "zh": "附加信息（通行费、测速摄像头等）不准确"
+            }
+          ]
+        }
+      },
+      "clova": {
+        "exampleString": {
+          "reportType": [
+            "사고",
+            "통제"
+          ],
+          "audioPlayer": [
+            "일시정지",
+            "인기 차트",
+            "다음",
+            "음소거"
+          ],
+          "multiSearch": [
+            "첫번째",
+            "두번째",
+            "첫번째를 경유지로",
+            "(신촌점)",
+            "(업체명)",
+            "취소"
+          ],
+          "routeGuidance": [
+            "전체경로 보여줘",
+            "근처 주유소 찾아줘",
+            "목적지 근처 주차장",
+            "도착지 위치 보여줘",
+            "도착지 날씨 어때",
+            "'냠냠' 폴더 보여줘",
+            "앞에 어디까지 막혀?",
+            "경유지 추가 해줘",
+            "인기차트 틀어줘",
+            "뉴스 틀어줘",
+            "드라이브할때 노래 틀어줘",
+            "톨게이트 비용 얼마야?",
+            "경로상 휴게소 보여줘",
+            "제보해줘",
+            "클로바 사용법 보여줘",
+            "경로 재탐색",
+            "유인나 목소리로 바꿔줘",
+            "그린이에게 전화해줘",
+            "목적지가 어디야",
+            "안내 종료"
+          ],
+          "safeDrive": [
+            "집으로 가자",
+            "이전 목적지 보여줘",
+            "강남역 맛집 찾아줘",
+            "주변 마트 찾아줘",
+            "클로바 뭐 할수있어?",
+            "근처 주유소 찾아줘",
+            "분당구 불정로 6",
+            "인기 차트",
+            "오늘 미세먼지 어때",
+            "즐겨찾기 보여줘",
+            "샤로수길 카페",
+            "신나는 노래 틀어줘",
+            "최신 음악 틀어줘",
+            "오디오클립 듣고싶어",
+            "무서운이야기 틀어줘",
+            "'냠냠' 폴더 보여줘",
+            "제보해줘",
+            "전체경로 보여줘",
+            "지도 모드 변경해줘",
+            "목소리 바꿔줘"
+          ],
+          "singleSearch": [
+            "첫번째",
+            "응/아니",
+            "응 가자",
+            "경유지로",
+            "취소"
+          ],
+          "searchReady": [
+            "강남역",
+            "집",
+            "을지로 카페",
+            "서울시청",
+            "분당구 불정로 6"
+          ],
+          "singleSelect": [
+            "응/아니",
+            "취소",
+            "그만"
+          ],
+          "multiSelect": [
+            "첫번째",
+            "두번째",
+            "취소"
+          ]
+        }
+      },
+      "translation": {
+        "allPages": false,
+        "whitelist": [
+          "m.blog.naver.com",
+          "m.cafe.naver.com",
+          "m.post.naver.com"
+        ]
+      },
+      "mapVersion": {
+        "bus": 1784754610018,
+        "poi_naver": 1517467453949,
+        "landcover": 1702952778786,
+        "airview": 1773130437982,
+        "admin": 1782869662637,
+        "naver": 1517279754555,
+        "cctv": 1784196687867,
+        "here_world": 1516685704852,
+        "sample": 1784723080417,
+        "bike": 1784108105119,
+        "landparcel": 1784524875203,
+        "mountain": 1782372626553,
+        "panorama": 1784514357113,
+        "navi": 1784785684477,
+        "hillshade": 1712897150795,
+        "indoorgnd": 1784198453014,
+        "bathymetry": 1702888478584,
+        "indoor": 1784198453014,
+        "poi4osm": 1784779496891,
+        "satellite_overlay": 1784723184062,
+        "osm_base": 1661392168668
+      },
+      "indoor": {
+        "groundInfo": "https://map.pstatic.net/nvbpc/indoor/indoor/groundInfo/{buildingId}"
+      }
+    }
+  }
+}

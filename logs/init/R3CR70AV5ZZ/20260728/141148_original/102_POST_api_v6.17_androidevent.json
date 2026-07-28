@@ -1,0 +1,32 @@
+{
+  "index": 102,
+  "timestamp": "2026-07-28T14:11:56.262198",
+  "request": {
+    "method": "POST",
+    "url": "https://yyhp7d.inapps.appsflyersdk.com/api/v6.17/androidevent?app_id=com.nhn.android.nmap&buildnumber=6.17.6",
+    "headers": {
+      "Content-Type": "application/octet-stream",
+      "Content-Length": "1864",
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Host": "yyhp7d.inapps.appsflyersdk.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip"
+    },
+    "body": "base64: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"
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Content-Type": "text/plain",
+      "Content-Length": "2",
+      "Connection": "keep-alive",
+      "Date": "Tue, 28 Jul 2026 05:11:56 GMT",
+      "Server": "http-kit",
+      "X-Cache": "Miss from cloudfront",
+      "Via": "1.1 50afb6a3b8e3b1dd9e7853e2dd99e822.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Pop": "ICN57-P5",
+      "X-Amz-Cf-Id": "IEX-Us65TLWlqPRE0U6Gak0coPgv4CGbrLbdNi5bBk77haP7ZHplAw=="
+    },
+    "body": "ok"
+  }
+}

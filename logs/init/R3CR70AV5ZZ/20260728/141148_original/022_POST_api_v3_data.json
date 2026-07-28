@@ -1,0 +1,118 @@
+{
+  "index": 22,
+  "timestamp": "2026-07-28T14:11:54.182903",
+  "request": {
+    "method": "POST",
+    "url": "https://sdk.iad-07.braze.com/api/v3/data",
+    "headers": {
+      "X-Braze-TriggersRequest": "true",
+      "X-Braze-Req-Tokens-Remaining": "29",
+      "X-Braze-Last-Req-Ms-Ago": "7200000",
+      "X-Braze-DataRequest": "true",
+      "Accept-Encoding": "gzip, deflate",
+      "X-Braze-Req-Attempt": "1",
+      "Content-Type": "application/json",
+      "X-Braze-Api-Key": "17cdd582-2223-4a2a-8777-4afbd0305567",
+      "Content-Length": "578",
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Host": "sdk.iad-07.braze.com",
+      "Connection": "Keep-Alive"
+    },
+    "body": {
+      "device": {
+        "os_version": "33",
+        "carrier": "",
+        "brand": "samsung",
+        "model": "SM-F711N",
+        "locale": "ko",
+        "android_is_background_restricted": false,
+        "time_zone": "Asia/Seoul"
+      },
+      "device_id": "ad872996-e030-4e58-ac17-02f15c08f3f1",
+      "time": 1785215513,
+      "api_key": "17cdd582-2223-4a2a-8777-4afbd0305567",
+      "sdk_version": "42.3.0",
+      "app_version": "6.8.1.1",
+      "app_version_code": "60801000.0.0.0",
+      "attributes": [
+        {
+          "push_subscribe": "opted_in"
+        }
+      ],
+      "events": [
+        {
+          "name": "ss",
+          "data": {},
+          "time": 1785215513.135,
+          "session_id": "fcd144bd-a43e-4a75-bd9a-237cc36e4a66"
+        }
+      ],
+      "respond_with": {
+        "triggers": true,
+        "config": {
+          "config_time": 0
+        }
+      }
+    }
+  },
+  "response": {
+    "status_code": 201,
+    "headers": {
+      "Date": "Tue, 28 Jul 2026 05:11:54 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "CF-Ray": "a22162c1bd0eaa47-ICN",
+      "CF-Cache-Status": "DYNAMIC",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Encoding": "gzip",
+      "Server": "cloudflare",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+      "Vary": "Accept-Encoding",
+      "access-control-allow-headers": "*",
+      "access-control-allow-methods": "POST, OPTIONS",
+      "x-ratelimit-burst-limit": "4720",
+      "x-ratelimit-burst-period": "3",
+      "x-ratelimit-burst-remaining": "4718",
+      "x-ratelimit-burst-reset": "1785215517",
+      "x-ratelimit-limit": "30000000",
+      "x-ratelimit-period": "3600",
+      "x-ratelimit-remaining": "27012267",
+      "x-ratelimit-reset": "1785218400"
+    },
+    "body": {
+      "config": {
+        "attributes_blacklist": [],
+        "events_blacklist": [],
+        "global_request_rate_limit": {
+          "capacity": 30,
+          "enabled": true,
+          "endpoint_overrides": {
+            "banners/sync": {
+              "capacity": 5,
+              "refill_rate": 180
+            },
+            "content_cards/sync": {
+              "capacity": 5,
+              "refill_rate": 180
+            },
+            "push/redeliver": {
+              "capacity": 1,
+              "refill_rate": 180
+            }
+          },
+          "refill_rate": 30
+        },
+        "messaging_session_timeout": 21600,
+        "purchases_blacklist": [],
+        "request_backoff": {
+          "max_sleep_duration_ms": 300000,
+          "min_sleep_duration_ms": 10000,
+          "scale_factor": 3
+        },
+        "time": 1785134299
+      },
+      "triggers": []
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "index": 17,
+  "timestamp": "2026-07-28T14:11:53.813556",
+  "request": {
+    "method": "POST",
+    "url": "https://yyhp7d.dlsdk.appsflyersdk.com/v1.0/android/com.nhn.android.nmap?af_sig=ce9215cc2ef21a2ca853a39c45e1dabf7e883ec9f8a2a21c8882f33001a42e96&sdk_version=6.17",
+    "headers": {
+      "Content-Type": "application/json",
+      "Content-Length": "238",
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Host": "yyhp7d.dlsdk.appsflyersdk.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip"
+    },
+    "body": {
+      "os": "13",
+      "gaid": {
+        "type": "unhashed",
+        "value": "8f87ff9a-2b32-4b95-a5be-77a26a835159"
+      },
+      "is_first": false,
+      "lang": "ko-",
+      "type": "SM-F711N",
+      "request_id": "1785215512154-5161829717890716200",
+      "timestamp": "2026-07-28T05:11:53.438",
+      "request_count": 1
+    }
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "32",
+      "Connection": "keep-alive",
+      "Date": "Tue, 28 Jul 2026 05:11:53 GMT",
+      "Server": "http-kit",
+      "X-Cache": "Miss from cloudfront",
+      "Via": "1.1 96221f46236522ecf0301531f5234df2.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Pop": "ICN57-P5",
+      "X-Amz-Cf-Id": "rXSFSc4NGG0eWtEjcgNo2ilARIQ6BEQEPArwF1f04AFm5yv8ZkkX2g=="
+    },
+    "body": {
+      "found": false,
+      "click_event": {}
+    }
+  }
+}

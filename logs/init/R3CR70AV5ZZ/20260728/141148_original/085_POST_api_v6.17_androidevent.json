@@ -1,0 +1,32 @@
+{
+  "index": 85,
+  "timestamp": "2026-07-28T14:11:55.441932",
+  "request": {
+    "method": "POST",
+    "url": "https://yyhp7d.conversions.appsflyersdk.com/api/v6.17/androidevent?app_id=com.nhn.android.nmap&buildnumber=6.17.6",
+    "headers": {
+      "Content-Type": "application/octet-stream",
+      "Content-Length": "2584",
+      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-F711N Build/TP1A.220624.014)",
+      "Host": "yyhp7d.conversions.appsflyersdk.com",
+      "Connection": "Keep-Alive",
+      "Accept-Encoding": "gzip"
+    },
+    "body": "base64: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"
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "Content-Type": "text/plain",
+      "Content-Length": "2",
+      "Connection": "keep-alive",
+      "Date": "Tue, 28 Jul 2026 05:11:55 GMT",
+      "Server": "http-kit",
+      "X-Cache": "Miss from cloudfront",
+      "Via": "1.1 25e9d27a13efeb34003975561ddcee60.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Pop": "ICN80-P3",
+      "X-Amz-Cf-Id": "Y5qk2_aZs_8mm7CSS9N9P7kIefDhBceHk-cx-6CBRoaOQz8Soobx_w=="
+    },
+    "body": "ok"
+  }
+}
