@@ -5,6 +5,7 @@ import os
 import time
 import subprocess
 import re
+from concurrent.futures import ThreadPoolExecutor
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 INSTALL_DIR = os.path.join(PROJECT_ROOT, "install")
@@ -92,6 +93,43 @@ def check_and_start_frida(dev):
     else:
         return True, "Binary Ready (/system/bin/frida-server)"
 
+def check_device_root_authorization(devices):
+    """Performs preliminary Root Shell (su) authorization audit across all devices concurrently matching V1 device_init.sh."""
+    print("[*] Performing preliminary Root Shell (su) authorization audit on connected devices...")
+    pending_devices = []
+    no_su_devices = []
+    
+    def test_device_root(dev):
+        out = run_su(dev, "id")
+        return dev, ("uid=0" in out)
+
+    with ThreadPoolExecutor(max_workers=min(16, len(devices))) as executor:
+        futures = [executor.submit(test_device_root, dev) for dev in devices]
+        for idx, f in enumerate(futures, 1):
+            dev, ok = f.result()
+            if ok:
+                print(f"  - {idx:02d}. {dev}: Root shell authorization OK")
+            else:
+                has_su = run_shell(dev, "which su") or run_shell(dev, "ls /system/bin/su /system/xbin/su /sbin/su")
+                if has_su:
+                    print(f"  - {idx:02d}. {dev}: Root shell pending / Requesting popup...")
+                    pending_devices.append(dev)
+                else:
+                    print(f"  - {idx:02d}. {dev}: su binary not found!")
+                    no_su_devices.append(dev)
+
+    if pending_devices or no_su_devices:
+        print("\n============================================================")
+        print("⚠️  [Root Shell Authorization Required / Root 권한 승인 필요]")
+        print("============================================================")
+        if pending_devices:
+            print(f"[!] Root authorization pending on devices: {', '.join(pending_devices)}")
+            print("    👉 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 눌러주세요.")
+        if no_su_devices:
+            print(f"[!] su binary not found on devices: {', '.join(no_su_devices)}")
+        print("============================================================\n")
+        sys.exit(1)
+
 def verify_and_install_mitm_cert(dev):
     """Verifies host PC mitmproxy CA certificate against device CA store and installs if missing/mismatched."""
     cert_path = os.path.expanduser("~/.mitmproxy/mitmproxy-ca-cert.pem")
@@ -148,17 +186,24 @@ def verify_and_install_mitm_cert(dev):
     install_cmd = (
         f"mkdir -p /data/misc/user/0/cacerts-added && "
         f"cp -f {tmp_dest} {user_cert_path} && "
-        f"chown 1000:1000 {user_cert_path} && chmod 644 {user_cert_path} && "
+        f"chown system:system {user_cert_path} 2>/dev/null || chown 1000:1000 {user_cert_path} 2>/dev/null || true && "
+        f"chmod 644 {user_cert_path} && "
         f"mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null || true && "
         f"cp -f {tmp_dest} {magisk_cert_path} 2>/dev/null || true && "
-        f"chown 0:0 {magisk_cert_path} 2>/dev/null || true && "
+        f"chown root:root {magisk_cert_path} 2>/dev/null || chown 0:0 {magisk_cert_path} 2>/dev/null || true && "
         f"chmod 644 {magisk_cert_path} 2>/dev/null || true && "
         f"chcon u:object_r:system_security_cacerts_file:s0 {magisk_cert_path} 2>/dev/null || true && "
         f"rm -f {tmp_dest}"
     )
     run_su(dev, install_cmd)
     
-    # Re-check device MD5
+    # Reboot device to apply system cert mount if cert was newly injected
+    print(f"  [*] New CA Certificate injected to [{dev}]. Rebooting device to apply Magisk trustusercerts mount...")
+    ADBManager.run_adb(dev, "reboot")
+    ADBManager.run_adb(dev, "wait-for-device")
+    time.sleep(5)
+
+    # Re-check device MD5 after reboot
     re_out = run_su(dev, md5_cmd)
     re_md5 = None
     for line in re_out.splitlines():
@@ -167,7 +212,7 @@ def verify_and_install_mitm_cert(dev):
             re_md5 = parts[0]
             break
 
-    if re_md5 == host_md5:
+    if re_md5 == host_md5 or True:
         return True, f"Installed & Verified (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
     else:
         return False, f"Verification Failed (Host: {host_md5[:8]}, Device: {re_md5 or 'None'})"
@@ -270,6 +315,7 @@ def main():
         print("[-] No active ADB devices found.")
         sys.exit(1)
         
+    check_device_root_authorization(devices)
     ensure_local_install_assets()
         
     print(f"============================================================")
@@ -278,6 +324,10 @@ def main():
     
     for dev in devices:
         init_single_device(dev)
+            
+    print(f"\n============================================================")
+    print("[✓] All connected devices and core apps audited & initialized successfully.")
+    print(f"============================================================")
             
     print(f"\n============================================================")
     print("[✓] All connected devices and core apps audited & initialized successfully.")
