@@ -143,39 +143,18 @@ def verify_and_install_mitm_cert(dev):
     if push_res[2] != 0:
         return False, f"Failed to push cert to device: {push_res[1]}"
 
-    # 5. Create and push injection script to device
-    local_script = f"/tmp/inject_cert_{dev}.sh"
-    script_content = f"""#!/system/bin/sh
-CERT_FILE="{target_cert_file}"
-TMP_FILE="{tmp_dest}"
-USER_PATH="{user_cert_path}"
-MAGISK_PATH="{magisk_cert_path}"
+    # 5. Direct atomic root shell commands for certificate installation
+    run_su(dev, "mkdir -p /data/misc/user/0/cacerts-added")
+    run_su(dev, f"cp -f {tmp_dest} {user_cert_path}")
+    run_su(dev, f"chown 1000:1000 {user_cert_path} 2>/dev/null || chown system:system {user_cert_path} 2>/dev/null")
+    run_su(dev, f"chmod 644 {user_cert_path}")
 
-mkdir -p /data/misc/user/0/cacerts-added
-cp -f "$TMP_FILE" "$USER_PATH"
-chown 1000:1000 "$USER_PATH" 2>/dev/null || chown system:system "$USER_PATH" 2>/dev/null
-chmod 644 "$USER_PATH"
-
-mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null
-cp -f "$TMP_FILE" "$MAGISK_PATH" 2>/dev/null
-chown 0:0 "$MAGISK_PATH" 2>/dev/null || chown root:root "$MAGISK_PATH" 2>/dev/null
-chmod 644 "$MAGISK_PATH" 2>/dev/null
-chcon u:object_r:system_security_cacerts_file:s0 "$MAGISK_PATH" 2>/dev/null
-
-rm -f "$TMP_FILE"
-"""
-    try:
-        with open(local_script, "w", encoding="utf-8") as f:
-            f.write(script_content)
-        ADBManager.run_adb(dev, f"push {local_script} /data/local/tmp/inject_cert.sh")
-        ADBManager.run_adb(dev, "shell \"su -c 'sh /data/local/tmp/inject_cert.sh'\"")
-        ADBManager.run_adb(dev, "shell \"rm -f /data/local/tmp/inject_cert.sh\"")
-    except Exception as e:
-        return False, f"Script injection failed: {e}"
-    finally:
-        if os.path.exists(local_script):
-            try: os.remove(local_script)
-            except: pass
+    run_su(dev, "mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts 2>/dev/null")
+    run_su(dev, f"cp -f {tmp_dest} {magisk_cert_path} 2>/dev/null")
+    run_su(dev, f"chown 0:0 {magisk_cert_path} 2>/dev/null || chown root:root {magisk_cert_path} 2>/dev/null")
+    run_su(dev, f"chmod 644 {magisk_cert_path} 2>/dev/null")
+    run_su(dev, f"chcon u:object_r:system_security_cacerts_file:s0 {magisk_cert_path} 2>/dev/null")
+    run_su(dev, f"rm -f {tmp_dest}")
 
     # 6. Re-check device MD5
     re_user_out, _, _ = ADBManager.run_adb(dev, f"shell \"su -c 'md5sum {user_cert_path}'\"")
