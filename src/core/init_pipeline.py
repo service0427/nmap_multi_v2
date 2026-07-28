@@ -147,13 +147,23 @@ def init_single_device(dev):
     # 4. Fast Single-Call Package Audit
     pkgs_out = run_shell(dev, "pm list packages")
     
-    # Naver Map Audit
-    if "com.nhn.android.nmap" in pkgs_out:
+    # Naver Map Audit (Check actual installed version on physical device - Target: 6.8.1.1)
+    TARGET_MAP_VER = "6.8.1.1"
+    map_installed = "com.nhn.android.nmap" in pkgs_out
+    curr_map_ver = None
+    if map_installed:
         ver_out = run_shell(dev, "dumpsys package com.nhn.android.nmap | grep versionName")
         m = re.search(r"versionName=([0-9\.]+)", ver_out)
-        ver_str = m.group(1) if m else "6.8.1.1"
-        print(f"  [✓] Naver Map App: v{ver_str} (Installed & Verified)")
+        curr_map_ver = m.group(1) if m else None
+
+    if map_installed and curr_map_ver == TARGET_MAP_VER:
+        print(f"  [✓] Naver Map App: v{curr_map_ver} (Installed & Verified)")
     else:
+        if map_installed:
+            print(f"  [*] Naver Map version mismatch on {dev} (Current: v{curr_map_ver}, Target: v{TARGET_MAP_VER}). Upgrading...")
+        else:
+            print(f"  [*] Naver Map not installed on {dev}. Installing v{TARGET_MAP_VER}...")
+            
         map_ok, map_msg = check_and_install_naver_map(dev)
         print(f"  [{'✓' if map_ok else '❌'}] Naver Map App: {map_msg}")
 
@@ -188,16 +198,27 @@ def init_single_device(dev):
     print(f"  [{'✓' if cert_ok else '❌'}] MITM CA Certificate: {cert_msg}")
 
 def ensure_local_install_assets():
-    """Checks if local install APK assets exist. Downloads them from GDrive via update_nmap.sh if missing."""
+    """Checks if local install directory and required APK assets exist. Compulsorily downloads from GDrive via update_nmap.sh if missing."""
     nmap_apk = os.path.join(INSTALL_DIR, "naver_map_6.8.1.1", "base.apk")
     base_apk = os.path.join(INSTALL_DIR, "ADBKeyboard.apk")
     gps_apk = os.path.join(INSTALL_DIR, "gpsemulator", "base.apk")
     
-    if not (os.path.exists(nmap_apk) and os.path.exists(base_apk) and os.path.exists(gps_apk)):
-        print("[*] Local APK assets missing in install/ directory. Triggering Google Drive auto-downloader...")
+    missing_assets = not (os.path.exists(INSTALL_DIR) and os.path.exists(nmap_apk) and os.path.exists(base_apk) and os.path.exists(gps_apk))
+    
+    if missing_assets:
+        print("\n============================================================")
+        print("📥 [Notice] 'install' directory or APK assets missing!")
+        print("📥 Triggering compulsory Google Drive asset download...")
+        print("============================================================")
         update_script = os.path.join(PROJECT_ROOT, "tools", "update_nmap.sh")
         if os.path.exists(update_script):
-            subprocess.run(["bash", update_script, "--non-interactive"])
+            res = subprocess.run(["bash", update_script, "--non-interactive"])
+            if res.returncode != 0:
+                print("[-] Warning: Failed to download install assets from Google Drive.")
+        else:
+            print("[-] Warning: tools/update_nmap.sh script not found!")
+    else:
+        print("[✓] Local 'install' directory and APK assets verified.")
 
 def main():
     devices = ADBManager.get_connected_devices()
