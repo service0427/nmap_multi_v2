@@ -176,11 +176,25 @@ MITM_LOG="$CAPTURE_LOG_DIR/mitm.log"
 PYTHONWARNINGS=ignore nohup mitmdump -p "$MITM_PORT" -s "$MITM_ADDON_SCRIPT" --ssl-insecure --listen-host 0.0.0.0 --set flow_detail=0 > "$MITM_LOG" 2>&1 &
 MITM_PID=$!
 
+# Pre-flight: Ensure frida-server is running on device
+HAS_SU=$(adb -s "$DEV_ID" shell "which su" 2>/dev/null | tr -d '\r')
+[ -z "$HAS_SU" ] && HAS_SU="su"
+
+FRIDA_SERVER_PID=$(adb -s "$DEV_ID" shell "$HAS_SU -c 'pidof frida-server'" 2>/dev/null | tr -d '\r\n')
+if [ -z "$FRIDA_SERVER_PID" ]; then
+    echo -e "${YELLOW}[$ALIAS] Starting frida-server daemon on device...${NC}"
+    adb -s "$DEV_ID" shell "$HAS_SU -c '/system/bin/frida-server &'" >/dev/null 2>&1
+    sleep 1.5
+fi
+
+adb -s "$DEV_ID" forward --remove tcp:$FRIDA_PORT 2>/dev/null
 adb -s "$DEV_ID" forward tcp:$FRIDA_PORT tcp:27042 >/dev/null 2>&1
 FRIDA_LOG="$CAPTURE_LOG_DIR/frida.log"
 
-echo -e "${YELLOW}[$ALIAS] Starting app via monkey...${NC}"
-adb -s "$DEV_ID" shell monkey -p "$PKG_NAME" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1
+# Dismiss Keyguard & Start Naver Map
+adb -s "$DEV_ID" shell "input keyevent 224; wm dismiss-keyguard" >/dev/null 2>&1
+echo -e "${YELLOW}[$ALIAS] Launching Naver Map (LaunchActivity)...${NC}"
+adb -s "$DEV_ID" shell "am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity" > /dev/null 2>&1
 
 PID=""
 for i in {1..10}; do
@@ -190,7 +204,7 @@ for i in {1..10}; do
 done
 
 if [ -z "$PID" ]; then
-    adb -s "$DEV_ID" shell monkey -p "$PKG_NAME" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1
+    adb -s "$DEV_ID" shell "am start -n com.nhn.android.nmap/com.naver.map.LaunchActivity" > /dev/null 2>&1
     sleep 3
     PID=$(adb -s "$DEV_ID" shell pidof "$PKG_NAME" 2>/dev/null | awk '{print $1}' | tr -d '\r\n')
 fi
