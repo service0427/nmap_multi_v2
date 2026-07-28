@@ -165,7 +165,16 @@ def verify_and_install_mitm_cert(dev):
     re_magisk_md5 = re_magisk_out.split()[0].strip() if re_magisk_out and len(re_magisk_out.split()[0].strip()) == 32 else ""
 
     if re_user_md5 == host_md5 or re_magisk_md5 == host_md5:
-        return True, f"Installed & Verified (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
+        # Reboot device to apply Magisk trustusercerts system mount (matching V1 behavior)
+        print(f"  [*] New certificate injected. Rebooting {dev} to trigger Magisk system cert mount...")
+        ADBManager.run_adb(dev, "reboot")
+        time.sleep(5)
+        wait_res = ADBManager.run_adb(dev, "wait-for-device", timeout=180)
+        if wait_res[2] == 0:
+            time.sleep(5)  # Allow system services to settle
+            return True, f"Installed & Rebooted (Magisk Mounted - Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
+        else:
+            return True, f"Installed & Reboot Triggered (Hash: {target_cert_file}, MD5: {host_md5[:8]}...)"
     else:
         return False, f"Verification Failed (Host: {host_md5[:8]}, User: {re_user_md5 or 'None'}, Magisk: {re_magisk_md5 or 'None'})"
 
