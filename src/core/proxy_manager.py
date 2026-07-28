@@ -978,10 +978,23 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", required=True)
     parser.add_argument("--mode", required=True)
-    parser.add_argument("--task-data", required=True)
+    parser.add_argument("--task-data", required=False, default=None, help="JSON task payload. Auto-fills mock data if omitted.")
     args = parser.parse_args()
     
-    task_data = json.loads(args.task_data)
+    if args.task_data:
+        task_data = json.loads(args.task_data)
+    else:
+        print(f"[*] No --task-data provided. Initializing standalone test payload for [{args.device}]...")
+        task_data = {
+            "task_id": f"standalone_test_{int(time.time())}",
+            "destination": {
+                "target_name": "강남역",
+                "start_lat": 37.5665,
+                "start_lng": 126.9780,
+                "dest_lat": 37.4979,
+                "dest_lng": 127.0276
+            }
+        }
     manager = ProxyManager(args.device, args.mode, task_data)
     manager.execute_task()
 
