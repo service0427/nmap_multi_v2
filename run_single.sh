@@ -64,14 +64,18 @@ def main():
     pkg_name = "com.nhn.android.nmap"
     gps_pkg = "com.rosteam.gpsemulator"
 
-    # 1. Cleanup old proxy & app state
-    print(f"[*] Cleaning up previous processes for [{dev_id}]...")
+    # 1. Cleanup old proxy & app state & lock portrait screen orientation
+    print(f"[*] Cleaning up previous processes & locking portrait mode for [{dev_id}]...")
     ADBManager.run_adb(dev_id, f"shell am force-stop {pkg_name}")
     ADBManager.run_adb(dev_id, f"shell am force-stop {gps_pkg}")
     ADBManager.run_adb(dev_id, "shell settings put global http_proxy :0")
     ADBManager.run_adb(dev_id, "reverse --remove-all")
     ADBManager.run_adb(dev_id, "forward --remove-all")
     subprocess.run(f"pkill -f 'mitmdump.*{mitm_port}'", shell=True)
+
+    # Force Portrait Mode & Mute Sound
+    ADBManager.run_adb(dev_id, "shell \"su -c 'settings put system accelerometer_rotation 0; settings put system user_rotation 0; settings put system volume_music 0; settings put system volume_notification 0; settings put system volume_ring 0; settings put system volume_system 0'\"")
+    ADBManager.check_and_fix_zflip(dev_id)
 
     # 2. Smart Cache Purge
     print(f"[*] Performing data purge on [{dev_id}]...")
