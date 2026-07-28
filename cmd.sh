@@ -116,6 +116,10 @@ def main():
             if input_pw:
                 pw = input_pw
 
+            # Query current Wi-Fi status concurrently for all devices
+            wifi_status_map = ADBManager.run_concurrent('shell "cmd wifi status"', devices)
+            wifi_ip_map = ADBManager.run_concurrent('shell "ip -4 addr show wlan0"', devices)
+
             # Step 2: Target Device Selection Menu
             print("\n============================================================")
             print(f"📱 Select Target Devices (Total Connected: {len(devices)}):")
@@ -128,7 +132,28 @@ def main():
                 except:
                     subnet = "N/A"
                     usb_port = "N/A"
-                print(f"  [{idx:2d}] {dev:<15} (Subnet: {str(subnet):<5} | Port: {usb_port})")
+
+                w_out, _, _ = wifi_status_map.get(dev, ("", "", -1))
+                ip_out, _, _ = wifi_ip_map.get(dev, ("", "", -1))
+
+                dev_wifi_ssid = "Disconnected"
+                if "SSID:" in w_out:
+                    for line in w_out.splitlines():
+                        if "SSID:" in line:
+                            dev_wifi_ssid = line.split("SSID:")[1].strip().strip('"')
+                            break
+
+                match = re.search(r"inet\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", ip_out)
+                dev_wifi_ip = match.group(1) if match else None
+
+                if dev_wifi_ssid != "Disconnected" and dev_wifi_ip:
+                    wifi_str = f"{dev_wifi_ssid} ({dev_wifi_ip})"
+                elif dev_wifi_ssid != "Disconnected":
+                    wifi_str = dev_wifi_ssid
+                else:
+                    wifi_str = "OFF"
+
+                print(f"  [{idx:2d}] {dev:<15} (Subnet: {str(subnet):<2} | Port: {usb_port:<8} | Wi-Fi: {wifi_str})")
             print("============================================================")
 
             dev_choice = input(f"Select Target Devices (A=ALL, 1,3,5, or 1-10) [A]: ").strip()
