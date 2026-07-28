@@ -94,41 +94,42 @@ def load_manifest(auto_create=True):
             return auto_generate_manifest()
         return {}
         
+    data = {}
+    needs_update = False
     try:
         with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
             fcntl.flock(f, fcntl.LOCK_SH)
             data = json.load(f)
+
+        # Sync with connected devices if new devices are found (auto-healing)
+        connected_serials = []
+        try:
+            output = subprocess.check_output(["adb", "devices"], timeout=5).decode("utf-8")
+            lines = output.strip().split("\n")[1:]
+            for line in lines:
+                if line.strip() and "device" in line and not line.startswith("*"):
+                    connected_serials.append(line.split()[0])
+        except: pass
+
+        for serial in connected_serials:
+            if serial not in data:
+                needs_update = True
+                break
+
+        if needs_update and auto_create:
+            print("[*] New devices detected. Merging into devices_manifest.json...")
+            new_manifest = auto_generate_manifest()
+            for k, v in data.items():
+                if k in new_manifest:
+                    new_manifest[k]["is_excluded"] = v.get("is_excluded", False)
             
-            # Sync with connected devices if new devices are found (auto-healing)
-            connected_serials = []
-            try:
-                output = subprocess.check_output(["adb", "devices"], timeout=5).decode("utf-8")
-                lines = output.strip().split("\n")[1:]
-                for line in lines:
-                    if line.strip() and "device" in line and not line.startswith("*"):
-                        connected_serials.append(line.split()[0])
-            except: pass
-            
-            needs_update = False
-            for serial in connected_serials:
-                if serial not in data:
-                    needs_update = True
-                    break
-                    
-            if needs_update and auto_create:
-                print("[*] New devices detected. Merging into devices_manifest.json...")
-                new_manifest = auto_generate_manifest()
-                for k, v in data.items():
-                    if k in new_manifest:
-                        new_manifest[k]["is_excluded"] = v.get("is_excluded", False)
-                
-                with open(MANIFEST_PATH, "w", encoding="utf-8") as wf:
-                    fcntl.flock(wf, fcntl.LOCK_EX)
-                    json.dump(new_manifest, wf, indent=2)
-                return new_manifest
-                
-            return data
-    except:
+            with open(MANIFEST_PATH, "w", encoding="utf-8") as wf:
+                fcntl.flock(wf, fcntl.LOCK_EX)
+                json.dump(new_manifest, wf, indent=2)
+            return new_manifest
+
+        return data
+    except Exception as e:
         if auto_create:
             return auto_generate_manifest()
         return {}
