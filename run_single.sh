@@ -1,206 +1,216 @@
-#!/usr/bin/env python3
-# Nmap Multi V2: Pure Single Device Initial Value & Token Fetcher (V1 run_single.sh replacement)
-import sys
-import os
-import time
-import json
-import subprocess
+#!/usr/bin/env bash
+# Nmap Multi V2: Pure Single Device Launcher (V1 Direct Port)
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-sys.path.insert(0, os.path.join(PROJECT_ROOT, "src", "lib"))
-from adb import ADBManager
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$BASE_DIR" || exit 1
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage:")
-        print("  ./run_single.sh <DEVICE_INDEX (1..N) or SERIAL_ID>")
-        print("Examples:")
-        print("  ./run_single.sh 1")
-        print("  ./run_single.sh R3CR70HT9BX")
-        sys.exit(1)
+DEV_ID=$1
+shift
 
-    arg = sys.argv[1].strip()
-    devices = ADBManager.get_connected_devices()
-    if not devices:
-        print("[-] Error: No active ADB devices connected.")
-        sys.exit(1)
+if [ -z "$DEV_ID" ]; then
+    echo "Usage: ./run_single.sh <DEVICE_ID/INDEX> [--id TARGET_ID]"
+    exit 1
+fi
 
-    dev_id = None
-    if arg.isdigit():
-        idx = int(arg) - 1
-        if 0 <= idx < len(devices):
-            dev_id = devices[idx]
-        else:
-            print(f"[-] Error: Index {arg} out of range (Found {len(devices)} active devices: 1..{len(devices)}).")
-            sys.exit(1)
-    else:
-        if arg in devices:
-            dev_id = arg
-        else:
-            print(f"[-] Error: Device '{arg}' not found in active devices: {', '.join(devices)}")
-            sys.exit(1)
+RESET_MODE=true
+CLOSE_ON_EXIT=true
+NO_FILTER="true"
+TARGET_ID=""
 
-    dev_idx = devices.index(dev_id)
-    mitm_port = 30000 + dev_idx + 1
-    frida_port = 40000 + dev_idx + 1
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --id) TARGET_ID="$2"; shift 2 ;;
+        *) shift ;;
+    esac
+done
 
-    # Fetch alias from device ro.product.model
-    model_res = ADBManager.run_adb(dev_id, "shell getprop ro.product.model")
-    alias = model_res[0].strip().replace("SM-", "") or "UnknownDevice"
+PKG_NAME="com.nhn.android.nmap"
+GPS_PKG="com.rosteam.gpsemulator"
 
-    print("============================================================")
-    print(f"   ⚡ NMAP V2 PURE SINGLE FETCH: {alias} [{dev_id}] (Index #{dev_idx+1})")
-    print(f"   MITM:{mitm_port} | FRIDA:{frida_port}")
-    print("============================================================")
+export PATH=$PATH:/usr/local/bin:$HOME/.local/bin
 
-    # Log setup (Store under logs/init/DEVICE_ID matching requested structure)
-    date_str = time.strftime("%Y%m%d")
-    time_str = time.strftime("%H%M%S")
-    capture_dir = os.path.join(PROJECT_ROOT, "logs", "init", dev_id, date_str, f"{time_str}_original")
-    os.makedirs(capture_dir, exist_ok=True)
-    logs_dir = os.path.join(PROJECT_ROOT, "logs")
-    os.makedirs(logs_dir, exist_ok=True)
+check_cmd() {
+    if ! command -v "$1" &> /dev/null; then
+        if [ -f "$HOME/.local/bin/$1" ]; then
+            export PATH="$PATH:$HOME/.local/bin"
+        elif [ -f "/usr/local/bin/$1" ]; then
+            export PATH="$PATH:/usr/local/bin"
+        else
+            return 1
+        fi
+    fi
+    return 0
+}
 
-    pkg_name = "com.nhn.android.nmap"
-    gps_pkg = "com.rosteam.gpsemulator"
+if ! check_cmd "mitmdump"; then echo -e "\e[1;31m[-] mitmdump not found. Try: pip3 install mitmproxy\e[0m"; exit 1; fi
+if ! check_cmd "frida"; then echo -e "\e[1;31m[-] frida not found. Try: pip3 install frida-tools\e[0m"; exit 1; fi
 
-    # 1. Cleanup old proxy & app state & lock portrait screen orientation
-    print(f"[*] Cleaning up previous processes & locking portrait mode for [{dev_id}]...")
-    ADBManager.run_adb(dev_id, f"shell am force-stop {pkg_name}")
-    ADBManager.run_adb(dev_id, f"shell am force-stop {gps_pkg}")
-    ADBManager.run_adb(dev_id, "shell settings put global http_proxy :0")
-    ADBManager.run_adb(dev_id, "reverse --remove-all")
-    ADBManager.run_adb(dev_id, "forward --remove-all")
-    subprocess.run(f"pkill -f 'mitmdump.*{mitm_port}'", shell=True)
+CYAN="\e[1;36m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"; RED="\e[1;31m"; NC="\e[0m"
 
-    # Force Portrait Mode & Mute Sound
-    ADBManager.run_adb(dev_id, "shell \"su -c 'settings put system accelerometer_rotation 0; settings put system user_rotation 0; settings put system volume_music 0; settings put system volume_notification 0; settings put system volume_ring 0; settings put system volume_system 0'\"")
-    ADBManager.check_and_fix_zflip(dev_id)
+CONNECTED_DEVICES=($(adb devices | grep -w "device" | awk '{print $1}'))
+NUM_CONNECTED=${#CONNECTED_DEVICES[@]}
 
-    # 2. Smart Cache Purge
-    print(f"[*] Performing data purge on [{dev_id}]...")
-    ADBManager.run_adb(dev_id, f"shell \"su -c 'find /data/data/{pkg_name} -mindepth 1 -maxdepth 1 ! -name lib ! -name NaverNavi -exec rm -rf {{}} +'\"")
+if [[ "$DEV_ID" =~ ^[0-9]+$ ]]; then
+    DEV_INDEX=$((DEV_ID - 1))
+    if [ $DEV_INDEX -lt 0 ] || [ $DEV_INDEX -ge $NUM_CONNECTED ]; then
+        echo "[-] Invalid index: $DEV_ID (Only $NUM_CONNECTED devices connected)"
+        exit 1
+    fi
+    DEV_ID=${CONNECTED_DEVICES[$DEV_INDEX]}
+else
+    FOUND=false
+    for d in "${CONNECTED_DEVICES[@]}"; do
+        if [ "$d" == "$DEV_ID" ]; then FOUND=true; break; fi
+    done
+    if [ "$FOUND" = false ]; then
+        echo "[-] Device $DEV_ID not connected or not found!"
+        exit 1
+    fi
+    for i in "${!CONNECTED_DEVICES[@]}"; do
+        if [ "${CONNECTED_DEVICES[$i]}" == "$DEV_ID" ]; then DEV_INDEX=$i; break; fi
+    done
+fi
 
-    # 3. Setup Proxy Tunnel
-    print(f"[*] Establishing reverse proxy tunnel (localhost:{mitm_port})...")
-    ADBManager.run_adb(dev_id, f"reverse tcp:{mitm_port} tcp:{mitm_port}")
-    ADBManager.run_adb(dev_id, f"shell settings put global http_proxy localhost:{mitm_port}")
+BASE_MITM_PORT=30000
+MITM_PORT=$((BASE_MITM_PORT + DEV_INDEX + 1))
+FRIDA_PORT=$((MITM_PORT + 10000))
 
-    # 4. Launch mitmdump with V2 addon
-    mitm_addon_script = os.path.join(PROJECT_ROOT, "src", "mitm", "addon.py")
-    mitm_log_path = os.path.join(capture_dir, "mitm.log")
-    env = os.environ.copy()
-    env["CAPTURE_LOG_DIR"] = capture_dir
-    env["PYTHONWARNINGS"] = "ignore"
+ALIAS=$(adb -s "$DEV_ID" shell getprop ro.product.model | tr -d '\r')
+ALIAS=${ALIAS#SM-}
+if [ -z "$ALIAS" ]; then ALIAS="UnknownDevice"; fi
 
-    mitm_proc = subprocess.Popen(
-        ["mitmdump", "-p", str(mitm_port), "-s", mitm_addon_script, "--ssl-insecure", "--listen-host", "0.0.0.0", "--set", "flow_detail=0"],
-        stdout=open(mitm_log_path, "w"), stderr=subprocess.STDOUT, env=env
-    )
+export NMAP_ORIG_SSAID=""
+export NMAP_ORIG_ADID=""
+export NMAP_ORIG_IDFV=""
+export NMAP_ORIG_NI=""
+export NMAP_ORIG_TOKEN=""
+export NMAP_NO_FILTER="true"
 
-    # 5. Frida Port Forward & App Launch
-    ADBManager.run_adb(dev_id, f"forward tcp:{frida_port} tcp:27042")
-    print(f"[*] Launching Naver Map on [{dev_id}]...")
-    ADBManager.run_adb(dev_id, f"shell monkey -p {pkg_name} -c android.intent.category.LAUNCHER 1")
+echo "============================================================"
+echo "   NMAP V2 PURE ORIGINAL FETCH: $ALIAS ($DEV_ID)"
+echo "   MITM:$MITM_PORT | FRIDA:$FRIDA_PORT | TARGET:${TARGET_ID:-None}"
+echo "   Mode: Reset=ON, CloseOnExit=ON, Filtering=OFF"
+echo "============================================================"
 
-    # Poll for PID
-    pid = None
-    for _ in range(10):
-        pid_res = ADBManager.run_adb(dev_id, f"shell pidof {pkg_name}")
-        if pid_res[0].strip() and pid_res[0].strip().split()[0].isdigit():
-            pid = pid_res[0].strip().split()[0]
-            break
-        time.sleep(1)
+# Lock Portrait & Mute Sound
+adb -s "$DEV_ID" shell "su -c 'settings put system accelerometer_rotation 0; settings put system user_rotation 0; settings put system volume_music 0; settings put system volume_notification 0; settings put system volume_ring 0; settings put system volume_system 0'" >/dev/null 2>&1
 
-    frida_proc = None
-    if pid:
-        print(f"[✓] App launched (PID: {pid}). Attaching Frida instrumentation hooks...")
-        frida_log_path = os.path.join(capture_dir, "frida.log")
-        frida_script = os.path.join(PROJECT_ROOT, "src", "frida", "network_hook.js")
-        frida_proc = subprocess.Popen(
-            ["frida", "-H", f"127.0.0.1:{frida_port}", "--runtime=v8", "-p", pid, "-l", frida_script, "--no-auto-reload"],
-            stdout=open(frida_log_path, "w"), stderr=subprocess.STDOUT
-        )
+DATE_STR=$(date +%Y%m%d); TIME_STR=$(date +%H%M%S)
+LOG_DIR="logs/init/${DEV_ID}/${DATE_STR}/${TIME_STR}_original"
+mkdir -p "$LOG_DIR"
+export CAPTURE_LOG_DIR="$(realpath "$LOG_DIR")"
 
-    print("\n============================================================")
-    print(f" ⌛ Monitoring [{dev_id}] for complete nlogapp packet capture...")
-    print("============================================================\n")
+echo -e "${CYAN}[$ALIAS]${NC} Cleaning up and performing Data Purge..."
+adb -s "$DEV_ID" shell am force-stop $PKG_NAME
+adb -s "$DEV_ID" shell am force-stop $GPS_PKG
+adb -s "$DEV_ID" shell settings put global http_proxy :0 2>/dev/null
+pkill -f "mitmdump.*$MITM_PORT" 2>/dev/null
 
-    def cleanup():
-        print(f"\n[*] Finalizing session & restoring device state for [{dev_id}]...")
-        if mitm_proc:
-            try: mitm_proc.terminate()
-            except: pass
-        if frida_proc:
-            try: frida_proc.terminate()
-            except: pass
-        ADBManager.run_adb(dev_id, f"shell am force-stop {pkg_name}")
-        ADBManager.run_adb(dev_id, "shell settings put global http_proxy :0")
-        ADBManager.run_adb(dev_id, "reverse --remove-all")
-        ADBManager.run_adb(dev_id, "forward --remove-all")
+if [ "$RESET_MODE" = true ]; then
+    HAS_SU=$(adb -s "$DEV_ID" shell "which su" 2>/dev/null | tr -d '\r')
+    if [ -z "$HAS_SU" ]; then
+        HAS_SU=$(adb -s "$DEV_ID" shell "ls /system/bin/su /system/xbin/su /sbin/su 2>/dev/null" | head -1 | tr -d '\r')
+    fi
+    [ -z "$HAS_SU" ] && HAS_SU="su"
+    adb -s "$DEV_ID" shell "$HAS_SU -c \"find /data/data/$PKG_NAME -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} +\""
+fi
 
-    start_time = time.time()
-    extracted = False
-    try:
-        while time.time() - start_time < 90:
-            for root, _, files in os.walk(capture_dir):
-                for fname in files:
-                    if fname.endswith("nlogapp.json") and not fname.endswith(".incomplete"):
-                        fpath = os.path.join(root, fname)
-                        try:
-                            with open(fpath, "r", encoding="utf-8") as jf:
-                                data = json.load(jf)
+echo -e "${CYAN}[$ALIAS]${NC} Setting up Proxy Tunnel (localhost:$MITM_PORT)..."
+adb -s "$DEV_ID" reverse tcp:"$MITM_PORT" tcp:"$MITM_PORT" >/dev/null 2>&1
+adb -s "$DEV_ID" shell settings put global http_proxy localhost:"$MITM_PORT"
 
-                            body = data.get("request", {}).get("body", {})
-                            usr = body.get("usr", {})
-                            evts = body.get("evts", [])
+MITM_ADDON_SCRIPT="$BASE_DIR/src/lib/v1_single/mitm_addon.py"
+MITM_LOG="$CAPTURE_LOG_DIR/mitm.log"
+PYTHONWARNINGS=ignore nohup mitmdump -p "$MITM_PORT" -s "$MITM_ADDON_SCRIPT" --ssl-insecure --listen-host 0.0.0.0 --set flow_detail=0 > "$MITM_LOG" 2>&1 &
+MITM_PID=$!
 
-                            adid = usr.get("adid")
-                            ssaid = usr.get("ssaid")
-                            idfv = usr.get("idfv")
-                            ni = usr.get("ni")
-                            token = None
-                            if evts and isinstance(evts, list) and len(evts) > 0 and "nlog_id" in evts[0]:
-                                full_nlog_id = str(evts[0].get("nlog_id", ""))
-                                token = full_nlog_id.split(".")[-1] if "." in full_nlog_id else full_nlog_id
+adb -s "$DEV_ID" forward tcp:$FRIDA_PORT tcp:27042 >/dev/null 2>&1
+FRIDA_LOG="$CAPTURE_LOG_DIR/frida.log"
 
-                            if adid and ssaid and idfv and ni and adid != "null" and ssaid != "null":
-                                sql_insert = f"INSERT INTO `devices`(`device_id`, `alias`, `orig_ssaid`, `orig_adid`, `orig_idfv`, `orig_ni`, `orig_token`) VALUES ('{dev_id}', '{alias}', '{ssaid}', '{adid}', '{idfv}', '{ni}', '{token or ''}');"
-                                sql_update = f"UPDATE `devices` SET `alias`='{alias}', `orig_ssaid`='{ssaid}', `orig_adid`='{adid}', `orig_idfv`='{idfv}', `orig_ni`='{ni}', `orig_token`='{token or ''}' WHERE `device_id`='{dev_id}';"
+echo -e "${YELLOW}[$ALIAS] Starting app via monkey...${NC}"
+adb -s "$DEV_ID" shell monkey -p "$PKG_NAME" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1
 
-                                print("============================================================")
-                                print(f" [✓] [{alias}] Complete Data Set Captured: {fname}")
-                                print("============================================================")
-                                print("\n--- GENERATED SQL QUERY ---")
-                                print(sql_insert)
-                                print("----------------------------\n")
+PID=""
+for i in {1..10}; do
+    PID=$(adb -s "$DEV_ID" shell pidof "$PKG_NAME" 2>/dev/null | awk '{print $1}' | tr -d '\r\n')
+    [ -n "$PID" ] && break
+    sleep 1
+done
 
-                                insert_path = os.path.join(logs_dir, "insert.txt")
-                                update_path = os.path.join(logs_dir, "update.txt")
+if [ -z "$PID" ]; then
+    adb -s "$DEV_ID" shell monkey -p "$PKG_NAME" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1
+    sleep 3
+    PID=$(adb -s "$DEV_ID" shell pidof "$PKG_NAME" 2>/dev/null | awk '{print $1}' | tr -d '\r\n')
+fi
 
-                                with open(insert_path, "a", encoding="utf-8") as f_ins:
-                                    f_ins.write(sql_insert + "\n")
-                                print(f"[!] Query appended to: {insert_path}")
+HOOKS_DIR="$BASE_DIR/src/lib/v1_single/hooks"
+if [ -n "$PID" ]; then
+    echo -e "${GREEN}[$ALIAS] App started with PID: $PID. Attaching Frida...${NC}"
+    nohup frida -H 127.0.0.1:$FRIDA_PORT --runtime=v8 -p "$PID" \
+        -l "$HOOKS_DIR/survival_light.js" \
+        -l "$HOOKS_DIR/network_hook.js" \
+        -l "$HOOKS_DIR/data_collector.js" \
+        --no-auto-reload > "$FRIDA_LOG" 2>&1 &
+    FRIDA_PID=$!
+fi
 
-                                with open(update_path, "a", encoding="utf-8") as f_up:
-                                    f_up.write(sql_update + "\n")
-                                print(f"[!] Query appended to: {update_path}")
+sleep 3
 
-                                extracted = True
-                                break
-                        except Exception:
-                            pass
-                if extracted:
-                    break
-            if extracted:
-                break
-            time.sleep(2)
+echo -e "${GREEN}============================================================${NC}"
+echo -e " [✓] [$ALIAS] SYSTEM READY. Original Value Logging..."
+echo -e " [!] Log Directory: $CAPTURE_LOG_DIR"
+echo -e "${GREEN}============================================================${NC}"
 
-        if not extracted:
-            print("[-] Timeout (90s) waiting for complete nlogapp identity capture.")
+cleanup() {
+    echo -e "\n${YELLOW}[$ALIAS] Stopping processes...${NC}"
+    kill -9 $MITM_PID $FRIDA_PID 2>/dev/null
+    adb -s "$DEV_ID" shell am force-stop $PKG_NAME
+    adb -s "$DEV_ID" shell settings put global http_proxy :0 2>/dev/null
+    adb -s "$DEV_ID" reverse --remove-all 2>/dev/null
+    adb -s "$DEV_ID" forward --remove-all 2>/dev/null
+    exit 0
+}
+trap cleanup INT TERM
 
-    finally:
-        cleanup()
+echo -e "${YELLOW}[!] Monitoring for complete nlogapp capture...${NC}"
 
-if __name__ == "__main__":
-    main()
+while true; do
+    TARGET_FILE=$(find "$CAPTURE_LOG_DIR" -name "*POST_nlogapp.json" 2>/dev/null | head -n 1)
+    if [ -n "$TARGET_FILE" ]; then
+        sleep 1
+        ADID=$(jq -r '.request.body.usr.adid // empty' "$TARGET_FILE" 2>/dev/null)
+        SSAID=$(jq -r '.request.body.usr.ssaid // empty' "$TARGET_FILE" 2>/dev/null)
+        IDFV=$(jq -r '.request.body.usr.idfv // empty' "$TARGET_FILE" 2>/dev/null)
+        NI=$(jq -r '.request.body.usr.ni // empty' "$TARGET_FILE" 2>/dev/null)
+        
+        FULL_NLOG_ID=$(jq -r '.request.body.evts[0].nlog_id // empty' "$TARGET_FILE" 2>/dev/null)
+        TOKEN=$(echo "$FULL_NLOG_ID" | awk -F'.' '{print $NF}')
+        
+        if [ -n "$ADID" ] && [ "$ADID" != "null" ] && \
+           [ -n "$SSAID" ] && [ "$SSAID" != "null" ] && \
+           [ -n "$IDFV" ] && [ "$IDFV" != "null" ] && \
+           [ -n "$NI" ] && [ "$NI" != "null" ]; then
+            
+            echo -e "${GREEN}[✓] Complete Data Set Found: $(basename "$TARGET_FILE")${NC}"
+            echo -e "\n${CYAN}--- GENERATED SQL QUERY ---${NC}"
+            SQL="INSERT INTO \`devices\`(\`device_id\`, \`alias\`, \`orig_ssaid\`, \`orig_adid\`, \`orig_idfv\`, \`orig_ni\`, \`orig_token\`) VALUES ('$DEV_ID', '$ALIAS', '$SSAID', '$ADID', '$IDFV', '$NI', '$TOKEN');"
+            echo -e "$SQL"
+            echo -e "${CYAN}----------------------------${NC}\n"
+            
+            mkdir -p "logs"
+            echo "$SQL" >> "logs/insert.txt"
+            echo -e "${YELLOW}[!] Query appended to: $BASE_DIR/logs/insert.txt${NC}"
+            
+            SQL_UPDATE="UPDATE \`devices\` SET \`alias\`='$ALIAS', \`orig_ssaid\`='$SSAID', \`orig_adid\`='$ADID', \`orig_idfv\`='$IDFV', \`orig_ni\`='$NI', \`orig_token\`='$TOKEN' WHERE \`device_id\`='$DEV_ID';"
+            echo "$SQL_UPDATE" >> "logs/update.txt"
+            echo -e "${YELLOW}[!] Query appended to: $BASE_DIR/logs/update.txt${NC}"
+            
+            cleanup
+        else
+            mv "$TARGET_FILE" "${TARGET_FILE}.incomplete" 2>/dev/null
+        fi
+    fi
+    sleep 2
+done
+
+wait
