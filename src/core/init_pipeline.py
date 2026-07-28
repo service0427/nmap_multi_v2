@@ -39,7 +39,7 @@ def check_and_install_naver_map(dev):
         # Ensure base.apk is passed FIRST to install-multiple
         apks = sorted(apks, key=lambda x: (0 if os.path.basename(x) == "base.apk" else 1, x))
         if apks:
-            res = ADBManager.run_adb(dev, f"install-multiple -r -d -g {' '.join(apks)}", timeout=120)
+            res = ADBManager.run_adb(dev, f"install-multiple -r -d -g {' '.join(apks)}", timeout=180)
             if res[2] == 0:
                 return True, "v6.8.1.1 (Auto-Installed)"
             else:
