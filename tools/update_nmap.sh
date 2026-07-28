@@ -4,7 +4,7 @@
 # Google Drive Asset Downloader & Updater
 # ============================================================
 
-WORKSPACE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+WORKSPACE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 # Source global configurations
 if [ -f "$WORKSPACE_DIR/version.conf" ]; then

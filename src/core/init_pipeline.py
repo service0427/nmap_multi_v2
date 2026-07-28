@@ -187,11 +187,25 @@ def init_single_device(dev):
     cert_ok, cert_msg = verify_and_install_mitm_cert(dev)
     print(f"  [{'✓' if cert_ok else '❌'}] MITM CA Certificate: {cert_msg}")
 
+def ensure_local_install_assets():
+    """Checks if local install APK assets exist. Downloads them from GDrive via update_nmap.sh if missing."""
+    nmap_apk = os.path.join(INSTALL_DIR, "naver_map_6.8.1.1", "base.apk")
+    base_apk = os.path.join(INSTALL_DIR, "ADBKeyboard.apk")
+    gps_apk = os.path.join(INSTALL_DIR, "gpsemulator", "base.apk")
+    
+    if not (os.path.exists(nmap_apk) and os.path.exists(base_apk) and os.path.exists(gps_apk)):
+        print("[*] Local APK assets missing in install/ directory. Triggering Google Drive auto-downloader...")
+        update_script = os.path.join(PROJECT_ROOT, "tools", "update_nmap.sh")
+        if os.path.exists(update_script):
+            subprocess.run(["bash", update_script, "--non-interactive"])
+
 def main():
     devices = ADBManager.get_connected_devices()
     if not devices:
         print("[-] No active ADB devices found.")
         sys.exit(1)
+        
+    ensure_local_install_assets()
         
     print(f"============================================================")
     print(f"🚀 Nmap Multi V2: Comprehensive Device & App Audit ({len(devices)} devices)")
