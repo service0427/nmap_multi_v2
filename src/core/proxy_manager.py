@@ -978,6 +978,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", required=True)
     parser.add_argument("--mode", required=True)
+    parser.add_argument("--pure", action="store_true", help="Pure identity extraction mode")
     parser.add_argument("--task-data", required=False, default=None, help="JSON task payload. Auto-fills mock data if omitted.")
     args = parser.parse_args()
     
