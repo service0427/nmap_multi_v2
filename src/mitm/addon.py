@@ -260,6 +260,52 @@ class ProxyV2ClassicLog:
                     except Exception as e:
                         print(f" [!] Error intercepting Place HTML: {e}")
 
+        # Save packet JSON files to base_log_dir for identity capture
+        try:
+            m = flow.request.method
+            clean_path = path.split('?')[0].replace('/', '_').strip('_') or "root"
+            if len(clean_path) > 80: clean_path = clean_path[:80] + "_trunc"
+            
+            with self.lock:
+                self.counter += 1
+                idx = self.counter
+
+            filename = f"{idx:03d}_{m}_{clean_path}.json"
+            file_path = os.path.join(self.base_log_dir, filename)
+
+            def try_parse_content(content_bytes, ct):
+                if not content_bytes: return ""
+                ct = ct.lower()
+                if "image" in ct or "font" in ct or "video" in ct: return f"<MEDIA_SKIPPED: {len(content_bytes)} bytes>"
+                if "json" in ct:
+                    try: return json.loads(content_bytes.decode('utf-8', 'ignore'))
+                    except: pass
+                return "base64:" + base64.b64encode(content_bytes).decode('ascii')
+
+            req_body = try_parse_content(flow.request.content, flow.request.headers.get("Content-Type", ""))
+            res_body = try_parse_content(flow.response.content, flow.response.headers.get("Content-Type", ""))
+
+            full_packet = {
+                "index": idx,
+                "timestamp": datetime.datetime.now().isoformat(),
+                "request": {
+                    "method": m,
+                    "url": flow.request.url,
+                    "headers": dict(flow.request.headers),
+                    "body": req_body
+                },
+                "response": {
+                    "status_code": flow.response.status_code if flow.response else 0,
+                    "headers": dict(flow.response.headers) if flow.response else {},
+                    "body": res_body
+                }
+            }
+
+            with open(file_path, "w", encoding="utf-8") as f_pkt:
+                json.dump(full_packet, f_pkt, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f" [!] Error writing packet json file: {e}")
+
         handle_response(self, flow)
 
 addons = [ProxyV2ClassicLog()]

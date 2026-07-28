@@ -53,10 +53,10 @@ def main():
     print(f"   MITM:{mitm_port} | FRIDA:{frida_port}")
     print("============================================================")
 
-    # Log setup
+    # Log setup (Store under logs/init/DEVICE_ID matching requested structure)
     date_str = time.strftime("%Y%m%d")
     time_str = time.strftime("%H%M%S")
-    capture_dir = os.path.join(PROJECT_ROOT, "logs", dev_id, date_str, f"{time_str}_original")
+    capture_dir = os.path.join(PROJECT_ROOT, "logs", "init", dev_id, date_str, f"{time_str}_original")
     os.makedirs(capture_dir, exist_ok=True)
     logs_dir = os.path.join(PROJECT_ROOT, "logs")
     os.makedirs(logs_dir, exist_ok=True)
