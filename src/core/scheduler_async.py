@@ -235,6 +235,20 @@ def main():
     print(f"🚀 Nmap Multi V2 Async Scheduler Starting in '{args.mode.upper()}' Mode ({args.workers} Parallel Workers)")
     print(f"============================================================")
     
+    # Enforce single active scheduler mode: kill any competing scheduler instances
+    try:
+        current_pid = os.getpid()
+        res = subprocess.run(["ps", "-eo", "pid,args"], capture_output=True, text=True, timeout=5)
+        if res.returncode == 0:
+            for line in res.stdout.splitlines():
+                if "scheduler_async.py" in line and "grep" not in line:
+                    parts = line.strip().split(None, 1)
+                    if len(parts) >= 2 and int(parts[0]) != current_pid:
+                        other_pid = parts[0]
+                        print(f"[⚠️] Stopping competing scheduler instance (PID: {other_pid})...")
+                        subprocess.run(["kill", "-9", other_pid], capture_output=True)
+    except: pass
+
     try:
         subprocess.run("pkill -9 -f 'proxy_manager.py'", shell=True)
         subprocess.run("pkill -9 -f 'mitmdump'", shell=True)

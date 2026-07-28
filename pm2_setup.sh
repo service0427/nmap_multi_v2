@@ -45,10 +45,8 @@ if [ -f "start.sh" ]; then
     pm2 start ./start.sh --name "nmap-scheduler-wifi" --cwd "$PROJECT_ROOT" -- --mode wifi
     pm2 stop nmap-scheduler-wifi
 
-    # Default Alias (nmap-scheduler -> local)
-    pm2 delete nmap-scheduler 2>/dev/null
-    pm2 start ./start.sh --name "nmap-scheduler" --cwd "$PROJECT_ROOT" -- --mode local
-    pm2 stop nmap-scheduler
+    # Clean up legacy/duplicate nmap-scheduler alias entry if present
+    pm2 delete nmap-scheduler 2>/dev/null || true
 else
     echo "[!] start.sh not found. Skipping."
 fi

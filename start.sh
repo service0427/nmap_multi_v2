@@ -43,6 +43,14 @@ while [[ $# -gt 0 ]]; do
                 echo "[-] Error: Invalid mode '$MODE'. Must be 'eth', 'local', or 'wifi'."
                 exit 1
             fi
+            # Ensure ONLY ONE scheduler runs at a time - stop competing modes
+            for other_mode in local eth wifi; do
+                if [ "$other_mode" != "$MODE" ]; then
+                    pm2 stop "nmap-scheduler-$other_mode" 2>/dev/null || true
+                fi
+            done
+            pm2 stop "nmap-scheduler" 2>/dev/null || true
+            
             echo "[*] Launching Nmap Multi Async Parallel Scheduler in '$MODE' mode..."
             exec python3 src/core/scheduler_async.py --mode "$MODE"
             ;;
