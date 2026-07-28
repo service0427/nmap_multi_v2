@@ -92,8 +92,60 @@ echo "   MITM:$MITM_PORT | FRIDA:$FRIDA_PORT | TARGET:${TARGET_ID:-None}"
 echo "   Mode: Reset=ON, CloseOnExit=ON, Filtering=OFF"
 echo "============================================================"
 
-# Lock Portrait & Mute Sound
-adb -s "$DEV_ID" shell "su -c 'settings put system accelerometer_rotation 0; settings put system user_rotation 0; settings put system volume_music 0; settings put system volume_notification 0; settings put system volume_ring 0; settings put system volume_system 0'" >/dev/null 2>&1
+# --- V1 Strict Screen Orientation Lock (Portrait Only) ---
+adb -s "$DEV_ID" shell "settings put system accelerometer_rotation 0" >/dev/null 2>&1
+adb -s "$DEV_ID" shell "settings put system user_rotation 0" >/dev/null 2>&1
+adb -s "$DEV_ID" shell "wm set-ignore-orientation-request true" >/dev/null 2>&1 || true
+adb -s "$DEV_ID" shell "wm fixed-to-user-rotation enabled" >/dev/null 2>&1 || true
+adb -s "$DEV_ID" shell "su -c 'settings put system volume_music 0; settings put system volume_notification 0; settings put system volume_ring 0; settings put system volume_system 0'" >/dev/null 2>&1
+
+# --- V1 MITM CA Cert Verification & Magisk Module Check ---
+CERT_PATH="$HOME/.mitmproxy/mitmproxy-ca-cert.pem"
+if [ ! -f "$CERT_PATH" ]; then
+    echo -e "${YELLOW}[!] Host mitmproxy CA cert missing. Auto-generating...${NC}"
+    if command -v mitmdump >/dev/null 2>&1; then
+        mitmdump &
+        TMP_MITM_PID=$!
+        sleep 2
+        kill $TMP_MITM_PID 2>/dev/null
+    fi
+fi
+
+CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in "$CERT_PATH" 2>/dev/null | head -1)
+if [ -n "$CERT_HASH" ]; then
+    HAS_SU=$(adb -s "$DEV_ID" shell "which su" 2>/dev/null | tr -d '\r')
+    [ -z "$HAS_SU" ] && HAS_SU="su"
+    
+    # Check if cert exists in /data/misc/user/0/cacerts-added and Magisk system dir
+    CERT_INSTALLED=$(adb -s "$DEV_ID" shell "$HAS_SU -c '[ -f /data/misc/user/0/cacerts-added/$CERT_HASH.0 ] && echo YES || echo NO'" 2>/dev/null | tr -d '\r')
+    
+    if [ "$CERT_INSTALLED" != "YES" ]; then
+        echo -e "${YELLOW}[!] Injecting MITM CA Certificate ($CERT_HASH.0) to system stores...${NC}"
+        adb -s "$DEV_ID" push "$CERT_PATH" "/data/local/tmp/$CERT_HASH.0" >/dev/null 2>&1
+        
+        adb -s "$DEV_ID" shell "$HAS_SU -c '
+            mkdir -p /data/misc/user/0/cacerts-added
+            cp /data/local/tmp/$CERT_HASH.0 /data/misc/user/0/cacerts-added/$CERT_HASH.0
+            chown system:system /data/misc/user/0/cacerts-added/$CERT_HASH.0
+            chmod 644 /data/misc/user/0/cacerts-added/$CERT_HASH.0
+            
+            if [ -d /data/adb/modules/trustusercerts ]; then
+                mkdir -p /data/adb/modules/trustusercerts/system/etc/security/cacerts
+                cp /data/local/tmp/$CERT_HASH.0 /data/adb/modules/trustusercerts/system/etc/security/cacerts/$CERT_HASH.0
+                chown root:root /data/adb/modules/trustusercerts/system/etc/security/cacerts/$CERT_HASH.0
+                chmod 644 /data/adb/modules/trustusercerts/system/etc/security/cacerts/$CERT_HASH.0
+                chcon u:object_r:system_security_cacerts_file:s0 /data/adb/modules/trustusercerts/system/etc/security/cacerts/$CERT_HASH.0 2>/dev/null
+            fi
+            rm -f /data/local/tmp/$CERT_HASH.0
+        '" >/dev/null 2>&1
+        
+        echo -e "${YELLOW}[!] New cert injected. Rebooting device to apply Magisk trustusercerts mount...${NC}"
+        adb -s "$DEV_ID" reboot
+        echo -e "${YELLOW}[!] Waiting for device to come back online...${NC}"
+        adb -s "$DEV_ID" wait-for-device
+        sleep 5
+    fi
+fi
 
 DATE_STR=$(date +%Y%m%d); TIME_STR=$(date +%H%M%S)
 LOG_DIR="logs/init/${DEV_ID}/${DATE_STR}/${TIME_STR}_original"
