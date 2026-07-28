@@ -261,33 +261,53 @@ def ensure_local_install_assets():
         print("[✓] Local 'install' directory and APK assets verified.")
 
 def check_device_root_authorization(devices):
-    """Pre-audits all connected devices for su root shell authorization (uid=0). Output clear interactive Magisk instructions if root prompt is pending or missing."""
+    """Pre-audits all connected devices for su root shell authorization (uid=0). Summarize root status and halt execution if any device lacks root approval."""
     print(f"[*] Performing preliminary Root Shell (su) authorization audit on {len(devices)} devices...")
+    authorized_devices = []
     unauthorized_devices = []
     no_su_devices = []
 
     for dev in devices:
         res = run_su(dev, "id")
         if "uid=0" in res:
-            continue
-        
-        has_su_bin = run_shell(dev, "which su 2>/dev/null || ls /system/bin/su /system/xbin/su 2>/dev/null")
-        if "su" in has_su_bin:
-            unauthorized_devices.append(dev)
+            authorized_devices.append(dev)
         else:
-            no_su_devices.append(dev)
+            has_su_bin = run_shell(dev, "which su 2>/dev/null || ls /system/bin/su /system/xbin/su 2>/dev/null")
+            if "su" in has_su_bin:
+                unauthorized_devices.append(dev)
+            else:
+                no_su_devices.append(dev)
+
+    print("\n============================================================")
+    print("🔐 Root Shell (su) Authorization Status Report")
+    print("============================================================")
+    print(f"  [✓] Authorized (uid=0)   : {len(authorized_devices)} devices")
+    if authorized_devices:
+        print(f"      • {', '.join(authorized_devices)}")
+        
+    print(f"  [❌] Pending / Denied     : {len(unauthorized_devices)} devices")
+    if unauthorized_devices:
+        print(f"      • {', '.join(unauthorized_devices)}")
+
+    print(f"  [❌] Missing 'su' Binary   : {len(no_su_devices)} devices")
+    if no_su_devices:
+        print(f"      • {', '.join(no_su_devices)}")
+    print("============================================================")
 
     if unauthorized_devices or no_su_devices:
-        print("\n============================================================")
-        print("⚠️  [Root Shell Authorization Required / Root 권한 승인 필요]")
-        print("============================================================")
+        print("\n⛔ [HALT] Root Shell Authorization Failure detected!")
+        print("------------------------------------------------------------")
         if unauthorized_devices:
-            print(f"[!] Root authorization pending on devices: {', '.join(unauthorized_devices)}")
-            print("    👉 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 눌러주세요.")
+            print(f"[!] {len(unauthorized_devices)} device(s) require Magisk Root approval:")
+            print(f"    Target Devices: {', '.join(unauthorized_devices)}")
+            print("    👉 휴대폰 화면을 켜고 Magisk 팝업 창에서 'Grant(허용)' 버튼을 누른 후 스크립트를 재실행해주세요.")
         if no_su_devices:
-            print(f"[!] 'su' binary missing on devices: {', '.join(no_su_devices)}")
+            print(f"[!] {len(no_su_devices)} device(s) do NOT have 'su' binary installed:")
+            print(f"    Target Devices: {', '.join(no_su_devices)}")
             print("    👉 기기가 정상적으로 루팅(Magisk)되어 있는지 확인해주세요.")
-        print("============================================================\n")
+        print("------------------------------------------------------------")
+        print("❌ Initialization halted. Please resolve root permissions and re-run './cmd.sh --init'.\n")
+        sys.exit(1)
 
 def main():
     devices = ADBManager.get_connected_devices()
