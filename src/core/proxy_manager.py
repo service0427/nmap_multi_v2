@@ -559,11 +559,12 @@ class ProxyManager:
                 else:
                     self.app_closed_count = 0
                         
-                # 2. Check Frida connection
+                # 2. Check Frida connection (Matching V1 main.sh line 422: if frida client exits, terminate session)
                 if self.config.get("USE_FRIDA", True) and self.frida_proc:
                     if self.frida_proc.poll() is not None:
-                        self.log("[ℹ️] Frida client CLI detached (hooks remain active in memory). Session continuing...")
-                        self.frida_proc = None
+                        self.log("[!] Frida instrumentation hook crash detected (Frida process exited).")
+                        self.cleanup("Frida Crash (Connection lost)")
+                        break
                         
                 # 3. Check mitmproxy
                 if self.config.get("USE_PROXY", True) and self.mitm_proc:
