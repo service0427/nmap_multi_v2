@@ -806,6 +806,10 @@ class ProxyManager:
                         if not success:
                             success = MacroExecutor.run_step(self.device_id, "contains:안내시작", category="01.SearchAndNavi") or \
                                       MacroExecutor.run_step(self.device_id, "text:안내시작", category="01.SearchAndNavi")
+                        if not success:
+                            self.log("    > Guidance Start query failed. Tapping bottom-right start coordinate (750, 2350)...")
+                            ADBManager.run_adb(self.device_id, "shell input tap 750 2350")
+                            success = True
                         if success:
                             state_flags["STEP_07_NAVI_START"] = 1
                             state_flags["STEP_07_2_DRIVING_STARTED"] = 1
