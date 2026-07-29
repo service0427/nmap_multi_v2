@@ -752,7 +752,10 @@ class ProxyManager:
                         try: os.remove(xml_file)
                         except: pass
                         
-                    if has_poi_event or has_arrival_btn:
+                    if 'text="안내시작"' in xml_content or 'content-desc="안내시작"' in xml_content:
+                        self.log("[✓] Direct route preview active ('안내시작' button visible). Skipping POI arrival step.")
+                        state_flags["STEP_05_POI_ARRIVAL"] = 1
+                    elif has_poi_event or has_arrival_btn:
                         self.log("[Action] Clicking '도착' (POI Arrival)...")
                         self.report_live_status("CONFIRM_ARRIVAL")
                         success = MacroExecutor.run_step(self.device_id, "exact:도착", category="01.SearchAndNavi")
