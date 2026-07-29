@@ -470,7 +470,7 @@ class ProxyManager:
 
             frida_args = ["frida", "-H", f"localhost:{self.frida_port}", "--runtime=v8", "-p", str(pid), "--no-auto-reload", "-q", "-t", "inf"]
             frida_args.extend(frida_script_arg)
-            self.frida_proc = subprocess.Popen(frida_args, stdout=frida_log, stderr=frida_log)
+            self.frida_proc = subprocess.Popen(frida_args, stdin=subprocess.PIPE, stdout=frida_log, stderr=frida_log)
 
         # 9. Launch Macro Actions Executor
         if self.config.get("USE_MACRO", True):
