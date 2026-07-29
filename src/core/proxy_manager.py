@@ -468,9 +468,8 @@ class ProxyManager:
                     "-l", "/home/tech/nmap_multi_v2/src/frida/version_adapters/android_12_13.js"
                 ]
 
-            frida_args = ["frida", "-H", f"localhost:{self.frida_port}", "--runtime=v8", "-p", str(pid), "--no-auto-reload", "-q", "-t", "inf"]
-            frida_args.extend(frida_script_arg)
-            self.frida_proc = subprocess.Popen(frida_args, stdin=subprocess.PIPE, stdout=frida_log, stderr=frida_log)
+            cmd_str = f"exec tail -f /dev/null | frida -H localhost:{self.frida_port} --runtime=v8 -p {pid} --no-auto-reload -q -t inf " + " ".join(frida_script_arg) + f" >> {os.path.join(self.capture_dir, 'frida.log')} 2>&1"
+            self.frida_proc = subprocess.Popen(["bash", "-c", cmd_str], start_new_session=True)
 
         # 9. Launch Macro Actions Executor
         if self.config.get("USE_MACRO", True):
