@@ -547,8 +547,10 @@ class ProxyManager:
                     if self.app_closed_count >= 3:
                         devices = ADBManager.get_connected_devices()
                         if self.device_id in devices:
-                            if is_driving and (now - start_ts) >= max(30, self.arrival_time - 15):
-                                self.log("[✓] Driving duration completed successfully before app close. Reporting SUCCESS!")
+                            events = self.get_events()
+                            has_routeend = any("routeend" in evt.lower() for evt in events) or len(glob.glob(os.path.join(self.capture_dir, "*routeend*.json"))) > 0
+                            if has_routeend:
+                                self.log("[✓] Verified routeend packet before app close. Reporting SUCCESS!")
                                 self.cleanup("Task Completed")
                             else:
                                 self.log("[!] App Closed by system/user (3 consecutive retries).")
@@ -850,27 +852,33 @@ class ProxyManager:
                     self.report_live_status("FINISHING")
                     time.sleep(10)
                     
-                    # Check arrival / routeend packets or events presence
+                    # 1. Verify mandatory routeend packet presence (matching V1 monitor.sh lines 634-641)
                     events = self.get_events()
-                    has_routeend_evt = any("routeend" in evt.lower() for evt in events) or any("checkmapservice" in evt.lower() for evt in events)
-                    summary_path = os.path.join(self.capture_dir, "session_summary.json")
-                    has_arrived_summary = False
-                    if os.path.exists(summary_path):
+                    has_routeend_evt = any("routeend" in evt.lower() for evt in events) or len(glob.glob(os.path.join(self.capture_dir, "*routeend*.json"))) > 0
+                    
+                    # 2. Extract actual driving distance and time from trafficjam / global_driving packets
+                    actual_dist = 0
+                    actual_time = 0
+                    trafficjam_files = glob.glob(os.path.join(self.capture_dir, "*_trafficjam*.json")) + glob.glob(os.path.join(self.capture_dir, "*_global_driving*.json"))
+                    for f in trafficjam_files:
                         try:
-                            with open(summary_path, "r", encoding="utf-8") as sf:
-                                sdata = json.load(sf)
-                                if sdata.get("status") in ["ARRIVED", "DRIVING"]:
-                                    has_arrived_summary = True
+                            with open(f, "r", encoding="utf-8", errors="ignore") as tf:
+                                tdata = json.load(tf)
+                                d = tdata.get("request", {}).get("body", {}).get("_decoded", {}).get("1", {}).get("12", 0)
+                                t = tdata.get("request", {}).get("body", {}).get("_decoded", {}).get("1", {}).get("13", 0)
+                                if d > 0 and t > 0:
+                                    actual_dist = d
+                                    actual_time = t
                         except: pass
 
-                    if has_routeend_evt or has_arrived_summary or state_flags.get("STEP_08_DRIVING_GOAL", 0) >= 1:
-                        self.log("[✓] Verified arrival event and destination completion. Reporting SUCCESS!")
-                        state_flags["STEP_09_FINISH"] = 1
-                        self.cleanup("Task Completed")
+                    if not has_routeend_evt:
+                        self.log("[🚨] SUCCESS VERIFICATION FAILED: Missing routeend packet.")
+                        self.cleanup("MISSING_ARRIVAL_PACKETS: routeend log missing")
                         break
                     else:
-                        self.log("[🚨] SUCCESS VERIFICATION FAILED: Missing routeend/arrival event.")
-                        self.cleanup("MISSING_ARRIVAL_PACKETS")
+                        self.log(f"[✓] Verified mandatory routeend packet & trafficjam movement (Dist: {actual_dist}m, Time: {actual_time}s). Reporting SUCCESS!")
+                        state_flags["STEP_09_FINISH"] = 1
+                        self.cleanup("Task Completed")
                         break
             # Dynamic Subnet Lock Release
             if getattr(self, "has_subnet_lock", False):
