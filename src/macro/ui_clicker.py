@@ -133,7 +133,7 @@ def find_element(xml_file, query):
                 else:
                     match_target = clean_val
                 match = match_target in node_text
-            elif mode == "contains": match = val in node_text
+            elif mode == "contains": match = (val in node_text) or (val in node_desc)
             elif mode == "exact": match = node_text == val
             elif mode == "id": match = node_id == val
             elif mode == "desc": match = val in node_desc
