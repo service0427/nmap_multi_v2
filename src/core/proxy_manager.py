@@ -763,6 +763,9 @@ class ProxyManager:
                         self.log("[Action] Clicking '도착' (POI Arrival)...")
                         self.report_live_status("CONFIRM_ARRIVAL")
                         success = MacroExecutor.run_step(self.device_id, "exact:도착", category="01.SearchAndNavi")
+                        if not success:
+                            success = MacroExecutor.run_step(self.device_id, "contains:도착", category="01.SearchAndNavi") or \
+                                      MacroExecutor.run_step(self.device_id, "contains:길찾기", category="01.SearchAndNavi")
                         if success:
                             state_flags["STEP_05_POI_ARRIVAL"] = 1
                             time.sleep(5)
