@@ -420,9 +420,10 @@ class ProxyManager:
                 "--arrival-time", str(self.arrival_time)
             ], stdout=gps_log, stderr=gps_log)
 
-        # 6. Unlock Keyguard
-        self.log(f"[*] Dismissing screen keyguard...")
+        # 6. Unlock Keyguard & Configure Device Stay Awake
+        self.log(f"[*] Dismissing screen keyguard & configuring device stay awake...")
         ADBManager.dismiss_keyguard(self.device_id)
+        ADBManager.configure_device_stay_awake(self.device_id)
 
         # 7. Start Naver Map App
         self.log(f"[*] Launching Naver Map...")

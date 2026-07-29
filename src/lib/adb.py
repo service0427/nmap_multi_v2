@@ -119,6 +119,13 @@ class ADBManager:
         return False, "Failed to unlock"
 
     @classmethod
+    def configure_device_stay_awake(cls, device_id):
+        """Configures device stay awake on USB, deviceidle whitelist, and background app execution permission."""
+        cls.run_adb(device_id, "shell settings put global stay_on_while_plugged_in 7")
+        cls.run_adb(device_id, "shell dumpsys deviceidle whitelist +com.nhn.android.nmap")
+        cls.run_adb(device_id, "shell appops set com.nhn.android.nmap RUN_IN_BACKGROUND allow")
+
+    @classmethod
     def check_and_fix_zflip(cls, device_id):
         """Checks if Z Flip closed (CLOSE) and overrides to OPEN (state 3)."""
         model, _, _ = cls.run_adb(device_id, "shell getprop ro.product.model")
