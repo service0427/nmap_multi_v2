@@ -722,6 +722,11 @@ class ProxyManager:
                         success = MacroExecutor.run_step(self.device_id, f"contains:{self.dest_addr}", category="01.SearchAndNavi")
                         
                     if not success:
+                        self.log("    > Address text not matched directly. Tapping top recommendation result item...")
+                        success = MacroExecutor.run_step(self.device_id, "entry_search_result_item", category="01.SearchAndNavi") or \
+                                  MacroExecutor.run_step(self.device_id, "exact:도착", category="01.SearchAndNavi")
+
+                    if not success:
                         self.log("[🚨] Failure Reason: ADDRESS_NOT_FOUND (Fail-fast)")
                         self.cleanup("ADDRESS_NOT_FOUND")
                         break
