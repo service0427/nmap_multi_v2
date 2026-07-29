@@ -533,40 +533,43 @@ class ProxyManager:
         last_home_check_ts = time.time()
         last_ui_check_ts = time.time()
         arrival_click_fail_count = 0
+        last_survival_check_ts = time.time()
         
         while True:
-            # A. Basic Process Survival Checks
-            # 1. Check if Naver Map is still running (Requires 3 consecutive failures to prevent false positives)
-            map_status, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
-            if not map_status.strip():
-                self.app_closed_count = getattr(self, "app_closed_count", 0) + 1
-                if self.app_closed_count >= 3:
-                    devices = ADBManager.get_connected_devices()
-                    if self.device_id in devices:
-                        self.log("[!] App Closed by system/user (3 consecutive retries).")
-                        self.cleanup("App Closed")
+            now = time.time()
+
+            # A. Basic Process Survival Checks (Matching V1 exact 15-second check interval)
+            if now - last_survival_check_ts >= 15:
+                last_survival_check_ts = now
+                map_status, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
+                if not map_status.strip():
+                    self.app_closed_count = getattr(self, "app_closed_count", 0) + 1
+                    if self.app_closed_count >= 3:
+                        devices = ADBManager.get_connected_devices()
+                        if self.device_id in devices:
+                            self.log("[!] App Closed by system/user (3 consecutive retries).")
+                            self.cleanup("App Closed")
+                            break
+                else:
+                    self.app_closed_count = 0
+                        
+                # 2. Check Frida connection
+                if self.config.get("USE_FRIDA", True) and self.frida_proc:
+                    if self.frida_proc.poll() is not None:
+                        self.log("[ℹ️] Frida client CLI detached (hooks remain active in memory). Session continuing...")
+                        self.frida_proc = None
+                        
+                # 3. Check mitmproxy
+                if self.config.get("USE_PROXY", True) and self.mitm_proc:
+                    if self.mitm_proc.poll() is not None:
+                        self.log("[!] mitmdump proxy crash detected.")
+                        self.cleanup("mitmdump Crash (Proxy stopped)")
                         break
-            else:
-                self.app_closed_count = 0
-                    
-            # 2. Check Frida connection
-            if self.config.get("USE_FRIDA", True) and self.frida_proc:
-                if self.frida_proc.poll() is not None:
-                    self.log("[ℹ️] Frida client CLI detached (hooks remain active in memory). Session continuing...")
-                    self.frida_proc = None
-                    
-            # 3. Check mitmproxy
-            if self.config.get("USE_PROXY", True) and self.mitm_proc:
-                if self.mitm_proc.poll() is not None:
-                    self.log("[!] mitmdump proxy crash detected.")
-                    self.cleanup("mitmdump Crash (Proxy stopped)")
-                    break
 
             # B. Macro State Machine (Event-driven UI Automation)
             if self.config.get("USE_MACRO", True):
                 events = self.get_events()
                 
-                now = time.time()
                 # Auto-heal ADB reverse proxy tunnel if dropped by ADB daemon re-enumeration
                 if self.config.get("USE_PROXY", True) and (now - getattr(self, "last_reverse_check_ts", 0) >= 5):
                     self.last_reverse_check_ts = now
@@ -575,8 +578,8 @@ class ProxyManager:
                         ADBManager.run_adb(self.device_id, f"reverse tcp:{self.mitm_port} tcp:{self.mitm_port}")
                         ADBManager.run_adb(self.device_id, f"shell settings put global http_proxy localhost:{self.mitm_port}")
 
-                # Global Fast Recovery for Fatal UI / Dismiss Popups (Throttled to 25s to avoid freezing Android UI)
-                if now - last_ui_check_ts >= 25:
+                # Global Fast Recovery for Fatal UI / Dismiss Popups (Matching V1 exact 30s check interval)
+                if now - last_ui_check_ts >= 30:
                     last_ui_check_ts = now
                     xml_file, _ = ui_clicker.get_ui_dump_pair(self.device_id, "check_fatal")
                     now = time.time()  # Refresh timestamp after UI dump delay
@@ -638,8 +641,8 @@ class ProxyManager:
                         self.log(f"[Action] Typing destination keyword: {self.dest_name}")
                         self.report_live_status("SEARCHING")
                         type_helper.type_humanized(self.device_id, self.dest_name)
-                        self.log("    > Waiting 2.5s for recommendation list...")
-                        time.sleep(2.5)
+                        self.log("    > Waiting 8s for recommendation list...")
+                        time.sleep(8)
                         state_flags["STEP_03_TYPING"] = 1
 
                 # Step 3: Select Address List
