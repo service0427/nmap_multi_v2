@@ -132,7 +132,9 @@ def process_device(dev_id, mode, config):
             with open(task_json, "r") as f:
                 task_data = json.load(f)
                 if task_data.get("status") == "ON_HOLD":
-                    return
+                    until = task_data.get("exclude_until", 0)
+                    if current_time < until:
+                        return
         except:
             pass
 
