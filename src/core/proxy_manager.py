@@ -722,6 +722,13 @@ class ProxyManager:
                         success = MacroExecutor.run_step(self.device_id, f"contains:{self.dest_addr}", category="01.SearchAndNavi")
                         
                     if not success:
+                        words = cleaned_addr.split()
+                        if len(words) >= 2:
+                            street_addr = " ".join(words[-2:])
+                            self.log(f"    > Matching by street address: {street_addr}")
+                            success = MacroExecutor.run_step(self.device_id, f"contains:{street_addr}", category="01.SearchAndNavi")
+
+                    if not success:
                         self.log("    > Address text not matched directly. Hiding keyboard and tapping recommendation result...")
                         ADBManager.run_adb(self.device_id, "shell input keyevent 111")
                         time.sleep(1)
