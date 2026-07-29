@@ -536,28 +536,24 @@ class ProxyManager:
         
         while True:
             # A. Basic Process Survival Checks
-            # 1. Check if Naver Map is still running
+            # 1. Check if Naver Map is still running (Requires 3 consecutive failures to prevent false positives)
             map_status, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
             if not map_status.strip():
-                # Verify if ADB disconnected temporarily
-                devices = ADBManager.get_connected_devices()
-                if self.device_id in devices:
-                    self.log("[!] App Closed by system/user.")
-                    self.cleanup("App Closed")
-                    break
+                self.app_closed_count = getattr(self, "app_closed_count", 0) + 1
+                if self.app_closed_count >= 3:
+                    devices = ADBManager.get_connected_devices()
+                    if self.device_id in devices:
+                        self.log("[!] App Closed by system/user (3 consecutive retries).")
+                        self.cleanup("App Closed")
+                        break
+            else:
+                self.app_closed_count = 0
                     
             # 2. Check Frida connection
             if self.config.get("USE_FRIDA", True) and self.frida_proc:
                 if self.frida_proc.poll() is not None:
-                    # Check if Naver Map app process is still alive on device
-                    map_status, _, _ = ADBManager.run_adb(self.device_id, "shell pidof com.nhn.android.nmap")
-                    if map_status.strip():
-                        self.log("[ℹ️] Frida client detached (hooks remain active in memory). Session continuing...")
-                        self.frida_proc = None
-                    else:
-                        self.log("[!] Frida instrumentation hook crash detected (App process died).")
-                        self.cleanup("Frida Crash (Connection lost)")
-                        break
+                    self.log("[ℹ️] Frida client CLI detached (hooks remain active in memory). Session continuing...")
+                    self.frida_proc = None
                     
             # 3. Check mitmproxy
             if self.config.get("USE_PROXY", True) and self.mitm_proc:
@@ -579,8 +575,8 @@ class ProxyManager:
                         ADBManager.run_adb(self.device_id, f"reverse tcp:{self.mitm_port} tcp:{self.mitm_port}")
                         ADBManager.run_adb(self.device_id, f"shell settings put global http_proxy localhost:{self.mitm_port}")
 
-                # Global Fast Recovery for Fatal UI / Dismiss Popups
-                if now - last_ui_check_ts >= 10:
+                # Global Fast Recovery for Fatal UI / Dismiss Popups (Throttled to 25s to avoid freezing Android UI)
+                if now - last_ui_check_ts >= 25:
                     last_ui_check_ts = now
                     xml_file, _ = ui_clicker.get_ui_dump_pair(self.device_id, "check_fatal")
                     now = time.time()  # Refresh timestamp after UI dump delay
@@ -642,8 +638,8 @@ class ProxyManager:
                         self.log(f"[Action] Typing destination keyword: {self.dest_name}")
                         self.report_live_status("SEARCHING")
                         type_helper.type_humanized(self.device_id, self.dest_name)
-                        self.log("    > Waiting 8s for recommendation list...")
-                        time.sleep(8)
+                        self.log("    > Waiting 2.5s for recommendation list...")
+                        time.sleep(2.5)
                         state_flags["STEP_03_TYPING"] = 1
 
                 # Step 3: Select Address List
