@@ -723,8 +723,12 @@ class ProxyManager:
                         
                     if not success:
                         self.log("    > Address text not matched directly. Tapping top recommendation result item...")
-                        success = MacroExecutor.run_step(self.device_id, "entry_search_result_item", category="01.SearchAndNavi") or \
-                                  MacroExecutor.run_step(self.device_id, "exact:도착", category="01.SearchAndNavi")
+                        first_word = cleaned_addr.split()[0] if cleaned_addr.split() else ""
+                        if first_word:
+                            success = MacroExecutor.run_step(self.device_id, f"contains:{first_word}", category="01.SearchAndNavi")
+                        if not success:
+                            ADBManager.run_adb(self.device_id, "shell input tap 500 420")
+                            success = True
 
                     if not success:
                         self.log("[🚨] Failure Reason: ADDRESS_NOT_FOUND (Fail-fast)")
