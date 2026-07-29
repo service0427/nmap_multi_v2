@@ -789,6 +789,9 @@ class ProxyManager:
                         self.log("[Action] Clicking '안내시작' (Guidance Start)...")
                         self.report_live_status("STARTING_NAVI")
                         success = MacroExecutor.run_step(self.device_id, "btn_start_guidance", category="01.SearchAndNavi")
+                        if not success:
+                            success = MacroExecutor.run_step(self.device_id, "contains:안내시작", category="01.SearchAndNavi") or \
+                                      MacroExecutor.run_step(self.device_id, "text:안내시작", category="01.SearchAndNavi")
                         if success:
                             state_flags["STEP_07_NAVI_START"] = 1
                             state_flags["STEP_07_2_DRIVING_STARTED"] = 1
