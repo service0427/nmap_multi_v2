@@ -722,12 +722,16 @@ class ProxyManager:
                         success = MacroExecutor.run_step(self.device_id, f"contains:{self.dest_addr}", category="01.SearchAndNavi")
                         
                     if not success:
-                        self.log("    > Address text not matched directly. Tapping top recommendation result item...")
+                        self.log("    > Address text not matched directly. Hiding keyboard and tapping recommendation result...")
+                        ADBManager.run_adb(self.device_id, "shell input keyevent 111")
+                        time.sleep(1)
                         first_word = cleaned_addr.split()[0] if cleaned_addr.split() else ""
                         if first_word:
                             success = MacroExecutor.run_step(self.device_id, f"contains:{first_word}", category="01.SearchAndNavi")
                         if not success:
-                            ADBManager.run_adb(self.device_id, "shell input tap 500 420")
+                            success = MacroExecutor.run_step(self.device_id, "contains:도착", category="01.SearchAndNavi")
+                        if not success:
+                            ADBManager.run_adb(self.device_id, "shell input tap 500 380")
                             success = True
 
                     if not success:
