@@ -547,8 +547,12 @@ class ProxyManager:
                     if self.app_closed_count >= 3:
                         devices = ADBManager.get_connected_devices()
                         if self.device_id in devices:
-                            self.log("[!] App Closed by system/user (3 consecutive retries).")
-                            self.cleanup("App Closed")
+                            if is_driving and (now - start_ts) >= max(30, self.arrival_time - 15):
+                                self.log("[✓] Driving duration completed successfully before app close. Reporting SUCCESS!")
+                                self.cleanup("Task Completed")
+                            else:
+                                self.log("[!] App Closed by system/user (3 consecutive retries).")
+                                self.cleanup("App Closed")
                             break
                 else:
                     self.app_closed_count = 0
